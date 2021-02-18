@@ -21,6 +21,7 @@ export default memo(function Slider(props) {
   }, [bannerList.length, sliderSwiper]);
   return (
     <SliderContainer>
+      <div className="before"></div>
       <div className="slider-container">
         <div className="swiper-wrapper">
           {bannerList.map((slider) => {
