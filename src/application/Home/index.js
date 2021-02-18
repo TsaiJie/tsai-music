@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import { renderRoutes } from 'react-router-config';
 import { NavLink } from 'react-router-dom';
-import { Tab, Top, TabItem } from './style';
+import { Top, TabContainer } from './style';
 
 export default memo(function Home(props) {
   return (
@@ -11,23 +11,17 @@ export default memo(function Home(props) {
         <span className="title">WebApp</span>
         <span className="iconfont search">&#xe62b;</span>
       </Top>
-      <Tab>
-        <NavLink to="/recommend" activeClassName="selected">
-          <TabItem>
-            <span> 推荐 </span>
-          </TabItem>
+      <TabContainer className="tab">
+        <NavLink to="/recommend" className="tab-item">
+          <span> 推荐 </span>
         </NavLink>
-        <NavLink to="/singers" activeClassName="selected">
-          <TabItem>
-            <span> 歌手 </span>
-          </TabItem>
+        <NavLink to="/singers" className="tab-item">
+          <span> 歌手 </span>
         </NavLink>
-        <NavLink to="/rank" activeClassName="selected">
-          <TabItem>
-            <span> 排行榜 </span>
-          </TabItem>
+        <NavLink to="/rank" className="tab-item">
+          <span> 排行 </span>
         </NavLink>
-      </Tab>
+      </TabContainer>
       {renderRoutes(props.route.routes)}
     </div>
   );
