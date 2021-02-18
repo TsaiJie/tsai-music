@@ -1,6 +1,8 @@
 import React, { memo } from 'react';
 import Slider from '@/components/Slider';
 import RecommendList from '@/components/RecommendList';
+import Scroll from '@/baseUI/Scroll';
+import { Content } from './style';
 export default memo(function Recommend() {
   //mock 数据
   const bannerList = [1, 2, 3, 4].map((item) => {
@@ -19,9 +21,13 @@ export default memo(function Recommend() {
     };
   });
   return (
-    <>
-      <Slider bannerList={bannerList}></Slider>
-      <RecommendList recommendList={recommendList}></RecommendList>
-    </>
+    <Content>
+      <Scroll>
+        <div>
+          <Slider bannerList={bannerList}></Slider>
+          <RecommendList recommendList={recommendList}></RecommendList>
+        </div>
+      </Scroll>
+    </Content>
   );
 });

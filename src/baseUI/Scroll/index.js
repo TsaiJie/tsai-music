@@ -23,6 +23,7 @@ const Scroll = forwardRef((props, ref) => {
     pullDownLoading,
     bounceTop,
     bounceBottom,
+    data,
   } = props;
   const { pullUp, pullDown, onScroll } = props;
   //better-scroll 实例对象
@@ -78,6 +79,10 @@ const Scroll = forwardRef((props, ref) => {
       bScroll.refresh();
     }
   });
+  // 如果数据变化，则刷新bScroll
+  useEffect(() => {
+    bScroll && bScroll.refresh();
+  }, [data, bScroll]);
   useImperativeHandle(ref, () => ({
     refresh() {
       if (bScroll) {
@@ -123,6 +128,7 @@ Scroll.defaultProps = {
   onScroll: null,
   pullUp: null,
   pulllDown: null,
+  data: null,
 };
 
 Scroll.propTypes = {
@@ -136,5 +142,6 @@ Scroll.propTypes = {
   onScroll: PropTypes.func, // 滑动触发的回调函数
   pullUp: PropTypes.func, // 上拉加载逻辑
   pullDown: PropTypes.func, // 下拉加载逻辑
+  data: PropTypes.array,
 };
 export default memo(Scroll);
