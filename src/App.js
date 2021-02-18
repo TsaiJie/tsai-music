@@ -1,19 +1,18 @@
 import { Fragment } from 'react';
-import ResetStyle from './assets/reset';
-import BaseStyle from './assets/base'
+import ResetStyle from '@/assets/reset';
+import BaseStyle from '@/assets/base';
+import { IconStyle } from '@/assets/iconfont/iconfont';
+import { HashRouter } from 'react-router-dom';
+import routes from './routes';
+import { renderRoutes } from 'react-router-config';
 function App() {
   return (
-    <Fragment>
+    <HashRouter>
       <ResetStyle />
       <BaseStyle />
-      <div className="App">
-        <header className="App-header">
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-        </header>
-      </div>
-    </Fragment>
+      <IconStyle />
+      {renderRoutes(routes)}
+    </HashRouter>
   );
 }
 
