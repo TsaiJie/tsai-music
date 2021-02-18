@@ -20,7 +20,7 @@ export const TabContainer = styled.div`
   height: 44px;
   display: flex;
   line-height: 44px;
-  font-size: ${style['font-size-large']};
+  font-size: ${style['font-size-medium-x']};
   .tab-item {
     flex: 1;
     text-align: center;
