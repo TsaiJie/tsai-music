@@ -8,6 +8,7 @@ export const RecommendListWrapper = styled.div`
     padding-left: 6px;
     font-size: 14px;
     line-height: 60px;
+    color: ${style['color-theme']};
   }
 `;
 export const RecommendList = styled.div`
@@ -59,6 +60,6 @@ export const RecommendListItem = styled.div`
     text-align: left;
     font-size: ${style['font-size-small']};
     line-height: 1.4;
-    color: ${style['color-text-ll']};
+    color: ${style['color-text']};
   }
 `;

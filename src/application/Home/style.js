@@ -24,6 +24,7 @@ export const TabContainer = styled.div`
   .tab-item {
     flex: 1;
     text-align: center;
+    color: ${style['color-text-l']};
     &.active {
       span {
         color: ${style['color-theme']};
