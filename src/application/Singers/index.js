@@ -74,6 +74,7 @@ export default memo(function Singers() {
   );
   const pullUpGetMoreData = useCallback(() => {
     console.log('pullUpGetMoreData');
+    dispatch(changePullUpLoadingAction(true));
     if (category === null && alpha === null) {
       dispatch(changePageCountAction(pageCount + 1));
       dispatch(getHotSingerListAction());

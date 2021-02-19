@@ -10,6 +10,7 @@ import PropTypes from 'prop-types';
 import BScroll from '@better-scroll/core';
 import styled from 'styled-components';
 import Loading from '../Loading';
+import Loadingv2 from '../Loadingv2';
 const ScrollContainer = styled.div`
   width: 100%;
   height: 100%;
@@ -144,7 +145,7 @@ const Scroll = forwardRef((props, ref) => {
         <Loading></Loading>
       </PullUpLoading>
       <PullDownLoading style={PullDowndisplayStyle}>
-        <Loading></Loading>
+        <Loadingv2></Loadingv2>
       </PullDownLoading>
     </ScrollContainer>
   );
