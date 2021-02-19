@@ -17,8 +17,6 @@ const {
   changeEnterLoadingAction,
   changePullUpLoadingAction,
   changePullDownLoadingAction,
-  refreshGetMoreCategorySingerListAction,
-  refreshGetMoreHotSingerListAction,
   changeAlphaAction,
   changeCategoryAction,
 } = actionCreators;
@@ -58,7 +56,7 @@ export default memo(function Singers() {
     dispatch(changePageCountAction(0)); //由于改变了分类，所以pageCount清零
     dispatch(changeEnterLoadingAction(true)); //loading，现在实现控制逻辑，效果实现放到下一节，后面的loading同理
     dispatch(getCateorySingerListAction());
-    scrollRef.current.refresh()
+    scrollRef.current.refresh();
   }, [dispatch]);
   const changeAlphaActionDispatch = useCallback(
     (val) => {
@@ -75,6 +73,7 @@ export default memo(function Singers() {
     [dispatch, alpha, categoryOrAlphaChange]
   );
   const pullUpGetMoreData = useCallback(() => {
+    console.log('pullUpGetMoreData');
     if (category === null && alpha === null) {
       dispatch(changePageCountAction(pageCount + 1));
       dispatch(getHotSingerListAction());
@@ -82,7 +81,16 @@ export default memo(function Singers() {
       dispatch(getMoreCateorySingerListAction());
     }
   }, [dispatch, pageCount, category, alpha]);
-  console.log(singerList);
+  const pullDownRefreshData = useCallback(() => {
+    console.log('pullDownRefreshData');
+    dispatch(changePullDownLoadingAction(true));
+    dispatch(changePageCountAction(0)); //属于重新获取数据
+    if (category === null && alpha === null) {
+      dispatch(getHotSingerListAction('pullDown'));
+    } else {
+      dispatch(getCateorySingerListAction());
+    }
+  }, [category, alpha, dispatch]);
   // 渲染函数，返回歌手列表
   const renderSingerList = () => {
     return (
@@ -122,7 +130,12 @@ export default memo(function Singers() {
         />
       </NavContainer>
       <ListWrapper>
-        <Scroll ref={scrollRef} pullUp={pullUpGetMoreData} data={singerList}>
+        <Scroll
+          ref={scrollRef}
+          pullDown={pullDownRefreshData}
+          pullUp={pullUpGetMoreData}
+          data={singerList}
+        >
           {renderSingerList()}
         </Scroll>
       </ListWrapper>

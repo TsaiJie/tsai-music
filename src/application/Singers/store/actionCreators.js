@@ -39,15 +39,19 @@ export const changeAlphaAction = (data) => ({
   alpha: data,
 });
 // 加载热门歌手
-export const getHotSingerListAction = () => {
+export const getHotSingerListAction = (mode) => {
   return async (dispatch, getState) => {
     try {
       const pageCount = getState().singers.pageCount;
       const singerList = getState().singers.singerList;
       const res = await getHotSingerListRequest(pageCount);
       const newArtists = res.artists;
-      const totalArtists = [...singerList, ...newArtists];
-      console.log(totalArtists);
+      let totalArtists;
+      if (mode ==='pullDown') {
+        totalArtists = newArtists
+      }else {
+        totalArtists = [...singerList, ...newArtists];
+      }
       dispatch(changeSingerListAction(totalArtists));
       // 进场动画设置为false
       dispatch(changeEnterLoadingAction(false));
@@ -97,4 +101,3 @@ export const getMoreCateorySingerListAction = () => {
     }
   };
 };
-
