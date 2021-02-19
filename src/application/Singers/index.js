@@ -5,9 +5,12 @@ import { NavContainer, ListItem, List, ListWrapper } from './style';
 import Scroll from '@/baseUI/Scroll';
 import { actionCreators } from './store';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
-import { useEffect } from 'react/cjs/react.development';
+import { useEffect, useRef } from 'react/cjs/react.development';
 import Loading from '@/baseUI/Loading';
-import { getCateorySingerListAction } from './store/actionCreators';
+import {
+  getCateorySingerListAction,
+  getMoreCateorySingerListAction,
+} from './store/actionCreators';
 const {
   getHotSingerListAction,
   changePageCountAction,
@@ -20,6 +23,7 @@ const {
   changeCategoryAction,
 } = actionCreators;
 export default memo(function Singers() {
+  const scrollRef = useRef(null);
   // redux
   const dispatch = useDispatch();
   const {
@@ -50,14 +54,12 @@ export default memo(function Singers() {
     }
   }, [dispatch, singerList]);
   //  函数
-  const categoryOrAlphaChange = useCallback(
-    (category, alpha) => {
-      dispatch(changePageCountAction(0)); //由于改变了分类，所以pageCount清零
-      dispatch(changeEnterLoadingAction(true)); //loading，现在实现控制逻辑，效果实现放到下一节，后面的loading同理
-      dispatch(getCateorySingerListAction(category, alpha));
-    },
-    [dispatch]
-  );
+  const categoryOrAlphaChange = useCallback(() => {
+    dispatch(changePageCountAction(0)); //由于改变了分类，所以pageCount清零
+    dispatch(changeEnterLoadingAction(true)); //loading，现在实现控制逻辑，效果实现放到下一节，后面的loading同理
+    dispatch(getCateorySingerListAction());
+    scrollRef.current.refresh()
+  }, [dispatch]);
   const changeAlphaActionDispatch = useCallback(
     (val) => {
       dispatch(changeAlphaAction(val));
@@ -73,9 +75,13 @@ export default memo(function Singers() {
     [dispatch, alpha, categoryOrAlphaChange]
   );
   const pullUpGetMoreData = useCallback(() => {
-    dispatch(changePageCountAction(pageCount + 1));
-    dispatch(getHotSingerListAction());
-  }, [dispatch, pageCount]);
+    if (category === null && alpha === null) {
+      dispatch(changePageCountAction(pageCount + 1));
+      dispatch(getHotSingerListAction());
+    } else {
+      dispatch(getMoreCateorySingerListAction());
+    }
+  }, [dispatch, pageCount, category, alpha]);
   console.log(singerList);
   // 渲染函数，返回歌手列表
   const renderSingerList = () => {
@@ -116,7 +122,7 @@ export default memo(function Singers() {
         />
       </NavContainer>
       <ListWrapper>
-        <Scroll pullUp={pullUpGetMoreData} data={singerList}>
+        <Scroll ref={scrollRef} pullUp={pullUpGetMoreData} data={singerList}>
           {renderSingerList()}
         </Scroll>
       </ListWrapper>

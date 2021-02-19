@@ -38,7 +38,7 @@ export const changeAlphaAction = (data) => ({
   type: actionTypes.CHANGE_ALPHA,
   alpha: data,
 });
-// 第一次加载热门歌手
+// 加载热门歌手
 export const getHotSingerListAction = () => {
   return async (dispatch, getState) => {
     try {
@@ -61,34 +61,40 @@ export const getHotSingerListAction = () => {
   };
 };
 // 第一次加载对应类别的歌手
-export const getCateorySingerListAction = (category, alpha) => {
-  return (dispatch, getState) => {
-    getCategorySingerListRequest(category, alpha, 0)
-      .then((res) => {
-        const data = res.artists;
-        dispatch(changeSingerListAction(data));
-        dispatch(changeEnterLoadingAction(false));
-        dispatch(changePullDownLoadingAction(false));
-        dispatch(changePullUpLoadingAction(false));
-      })
-      .catch(() => {
-        console.log('类别歌手数据获取失败');
-      });
+export const getCateorySingerListAction = () => {
+  return async (dispatch, getState) => {
+    try {
+      const category = getState().singers.category;
+      const alpha = getState().singers.alpha;
+      const res = await getCategorySingerListRequest(category, alpha, 0);
+      const newArtists = res.artists;
+      dispatch(changeSingerListAction(newArtists));
+      dispatch(changeEnterLoadingAction(false));
+      dispatch(changePullDownLoadingAction(false));
+      dispatch(changePullUpLoadingAction(false));
+    } catch (error) {
+      console.log('类别歌手数据获取失败', error);
+    }
   };
 };
-// 加载更多歌手
-export const refreshGetMoreCategorySingerListAction = (category, alpha) => {
-  return (dispatch, getState) => {
-    const pageCount = getState().singers.pageCount;
-    const singerList = getState().singers.singerList;
-    getCategorySingerListRequest(category, alpha, pageCount)
-      .then((res) => {
-        const data = [...singerList, ...res.artists];
-        dispatch(changeSingerListAction(data));
-        dispatch(changePullUpLoadingAction(false));
-      })
-      .catch(() => {
-        console.log('获取更多类别歌手数据获取失败');
-      });
+export const getMoreCateorySingerListAction = () => {
+  return async (dispatch, getState) => {
+    try {
+      const pageCount = getState().singers.pageCount;
+      const singerList = getState().singers.singerList;
+      const category = getState().singers.category;
+      const alpha = getState().singers.alpha;
+      const res = await getCategorySingerListRequest(
+        category,
+        alpha,
+        pageCount
+      );
+      const data = [...singerList, ...res.artists];
+      dispatch(changeSingerListAction(data));
+      dispatch(changePullUpLoadingAction(false));
+    } catch (error) {
+      console.log('获取更多类别歌手数据获取失败');
+    }
   };
 };
+
