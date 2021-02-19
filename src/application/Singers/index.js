@@ -1,7 +1,7 @@
 import React, { memo, useCallback, useState } from 'react';
 import { categoryTypes, alphaTypes } from '@/api/config';
 import HorizonScroll from '@/baseUI/HorizonScroll';
-import { NavContainer, ListItem, List, ListContainer } from './style';
+import { NavContainer, ListItem, List,ListWrapper } from './style';
 import Scroll from '@/baseUI/Scroll';
 export default memo(function Singers() {
   const [category, setCategory] = useState({});
@@ -62,9 +62,9 @@ export default memo(function Singers() {
           value={alpha.key}
         />
       </NavContainer>
-      <ListContainer>
+      <ListWrapper>
         <Scroll data={singerList}>{renderSingerList()}</Scroll>
-      </ListContainer>
+      </ListWrapper>
     </div>
   );
 });

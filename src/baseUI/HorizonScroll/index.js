@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, memo } from 'react';
+import React, { useRef, useEffect, memo } from 'react';
 import styled from 'styled-components';
 import Scroll from '../Scroll';
 import { PropTypes } from 'prop-types';
@@ -8,6 +8,9 @@ const List = styled.div`
   align-items: center;
   height: 30px;
   overflow: hidden;
+  > span {
+    color: ${style['color-text-ll']}
+  }
   > span:first-of-type {
     display: inline-block;
     flex: 0 0 auto;
@@ -84,4 +87,4 @@ Horizon.propTypes = {
   title: PropTypes.string,
   handleClick: PropTypes.func,
 };
-export default Horizon;
+export default memo(Horizon);
