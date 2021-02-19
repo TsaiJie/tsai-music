@@ -19,6 +19,7 @@ const {
   changeCategoryAction,
 } = actionCreators;
 export default memo(function Singers() {
+  // redux
   const dispatch = useDispatch();
   const {
     singerList,
@@ -47,6 +48,7 @@ export default memo(function Singers() {
       dispatch(getHotSingerListAction());
     }
   }, [dispatch, singerList]);
+  //  函数
   const changeAlphaActionDispatch = useCallback(
     (val) => {
       dispatch(changeAlphaAction(val));
@@ -59,13 +61,17 @@ export default memo(function Singers() {
     },
     [dispatch]
   );
+  const pullUpGetMoreData = useCallback(() => {
+    dispatch(changePageCountAction(pageCount + 1));
+    dispatch(getHotSingerListAction());
+  }, [dispatch, pageCount]);
   // 渲染函数，返回歌手列表
   const renderSingerList = () => {
     return (
       <List>
         {singerList.map((item, index) => {
           return (
-            <ListItem key={item.id}>
+            <ListItem key={item.picUrl + index}>
               <div className="img_wrapper">
                 <img
                   src={`${item.picUrl}?param=300x300`}
@@ -98,7 +104,9 @@ export default memo(function Singers() {
         />
       </NavContainer>
       <ListWrapper>
-        <Scroll data={singerList}>{renderSingerList()}</Scroll>
+        <Scroll pullUp={pullUpGetMoreData} data={singerList}>
+          {renderSingerList()}
+        </Scroll>
       </ListWrapper>
       {enterLoading ? <Loading></Loading> : null}
     </div>

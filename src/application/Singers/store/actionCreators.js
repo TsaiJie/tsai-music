@@ -1,4 +1,7 @@
-import { getHotSingerListRequest, getSingerListRequest } from '@/api/singers';
+import {
+  getHotSingerListRequest,
+  getCategorySingerListRequest,
+} from '@/api/singers';
 import * as actionTypes from './constants';
 // 改变歌手列表
 const changeSingerListAction = (data) => ({
@@ -37,20 +40,24 @@ export const changeAlphaAction = (data) => ({
 });
 // 第一次加载热门歌手
 export const getHotSingerListAction = () => {
-  return (dispatch) => {
-    getHotSingerListRequest(0)
-      .then((res) => {
-        const data = res.artists;
-        dispatch(changeSingerListAction(data));
-        // 进场动画设置为false
-        dispatch(changeEnterLoadingAction(false));
-        // 下拉动画设置为false
-        dispatch(changePullDownLoadingAction(false));
-        dispatch(changePullUpLoadingAction(false));
-      })
-      .catch(() => {
-        console.log('热门歌手数据获取失败');
-      });
+  return async (dispatch, getState) => {
+    try {
+      const pageCount = getState().singers.pageCount;
+      const singerList = getState().singers.singerList;
+      const res = await getHotSingerListRequest(pageCount);
+      const newArtists = res.artists;
+      const totalArtists = [...singerList, ...newArtists];
+      console.log(totalArtists);
+      dispatch(changeSingerListAction(totalArtists));
+      // 进场动画设置为false
+      dispatch(changeEnterLoadingAction(false));
+      // 下拉动画设置为false
+      dispatch(changePullDownLoadingAction(false));
+      // 上拉动画设置为false
+      dispatch(changePullUpLoadingAction(false));
+    } catch (error) {
+      console.log('热门歌手数据获取失败', error);
+    }
   };
 };
 // 加载更多热门歌手
@@ -73,7 +80,7 @@ export const refreshGetMoreHotSingerListAction = () => {
 // 第一次加载对应类别的歌手
 export const getCateorySingerListAction = (category, alpha) => {
   return (dispatch, getState) => {
-    getSingerListRequest(category, alpha, 0)
+    getCategorySingerListRequest(category, alpha, 0)
       .then((res) => {
         const data = res.artists;
         dispatch(changeSingerListAction(data));
@@ -91,7 +98,7 @@ export const refreshGetMoreCategorySingerListAction = (category, alpha) => {
   return (dispatch, getState) => {
     const pageCount = getState().singers.pageCount;
     const singerList = getState().singers.singerList;
-    getSingerListRequest(category, alpha, pageCount)
+    getCategorySingerListRequest(category, alpha, pageCount)
       .then((res) => {
         const data = [...singerList, ...res.artists];
         dispatch(changeSingerListAction(data));

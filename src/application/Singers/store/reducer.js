@@ -31,7 +31,8 @@ const reducer = produce((draft, action) => {
       draft.category = action.category;
       break;
     case actionTypes.CHANGE_ALPHA:
-      draft.alpha = action.alpha
+      draft.alpha = action.alpha;
+      break;
     default:
       break;
   }
