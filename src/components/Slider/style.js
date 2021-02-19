@@ -19,6 +19,8 @@ export const SliderContainer = styled.div`
     height: 160px;
     overflow: hidden;
     margin: auto;
+    /* 解决 ios使用border-radius时失效 */
+    -webkit-transform: rotate(0deg);
     border-radius: 6px;
     .slider-nav {
       position: absolute;

@@ -1,4 +1,6 @@
 import React, { memo, useEffect } from 'react';
+// 引入 forceCheck 方法
+import { forceCheck } from 'react-lazyload';
 import Slider from '@/components/Slider';
 import RecommendList from '@/components/RecommendList';
 import Scroll from '@/baseUI/Scroll';
@@ -25,7 +27,7 @@ export default memo(function Recommend() {
 
   return (
     <Content>
-      <Scroll data={recommendList}>
+      <Scroll data={recommendList} onScroll={forceCheck}>
         <div>
           <Slider bannerList={bannerList}></Slider>
           <RecommendList recommendList={recommendList}></RecommendList>
