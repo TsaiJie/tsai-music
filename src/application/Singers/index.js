@@ -1,11 +1,45 @@
 import React, { memo, useCallback, useState } from 'react';
 import { categoryTypes, alphaTypes } from '@/api/config';
 import HorizonScroll from '@/baseUI/HorizonScroll';
-import { NavContainer, ListItem, List,ListWrapper } from './style';
+import { NavContainer, ListItem, List, ListWrapper } from './style';
 import Scroll from '@/baseUI/Scroll';
+import { actionCreators } from './store';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react/cjs/react.development';
+const {
+  getHotSingerListAction,
+  changePageCountAction,
+  changeEnterLoadingAction,
+  changePullUpLoadingAction,
+  changePullDownLoadingAction,
+  refreshGetMoreCategorySingerListAction,
+  refreshGetMoreHotSingerListAction,
+} = actionCreators;
 export default memo(function Singers() {
-  const [category, setCategory] = useState({});
-  const [alpha, setAlpha] = useState({});
+  const dispatch = useDispatch();
+  const [category, setCategory] = useState(null);
+  const [alpha, setAlpha] = useState(null);
+  const {
+    singerList,
+    enterLoading,
+    pullDownLoading,
+    pageCount,
+    pullUpLoading,
+  } = useSelector(
+    (state) => ({
+      singerList: state.singers.singerList,
+      enterLoading: state.singers.enterLoading,
+      pullUpLoading: state.singers.pullUpLoading,
+      pullDownLoading: state.singers.pullDownLoading,
+      pageCount: state.singers.pageCount,
+    }),
+    shallowEqual
+  );
+
+  // 组件第一次渲染时 获取热门歌手数据
+  useEffect(() => {
+    dispatch(getHotSingerListAction());
+  }, [dispatch]);
   const handleUpdateAlpha = useCallback((val) => {
     console.log(val);
     setAlpha(val);
@@ -15,22 +49,13 @@ export default memo(function Singers() {
     console.log(val);
     setCategory(val);
   }, []);
-  //mock 数据
-  const singerList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((item) => {
-    return {
-      picUrl:
-        'https://p2.music.126.net/uTwOm8AEFFX_BYHvfvFcmQ==/109951164232057952.jpg',
-      name: '隔壁老樊',
-      accountId: 277313426,
-    };
-  });
   // 渲染函数，返回歌手列表
   const renderSingerList = () => {
     return (
       <List>
         {singerList.map((item, index) => {
           return (
-            <ListItem>
+            <ListItem key={item.id}>
               <div className="img_wrapper">
                 <img
                   src={`${item.picUrl}?param=300x300`}
@@ -53,13 +78,13 @@ export default memo(function Singers() {
           list={categoryTypes}
           title={'分类 (默认热门):'}
           handleClick={handleUpdateCatetory}
-          value={category.key}
+          value={category && category.key}
         />
         <HorizonScroll
           list={alphaTypes}
           title={'首字母:'}
           handleClick={handleUpdateAlpha}
-          value={alpha.key}
+          value={alpha && alpha.key}
         />
       </NavContainer>
       <ListWrapper>
