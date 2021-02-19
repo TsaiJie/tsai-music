@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useCallback, useState } from 'react';
 import { categoryTypes, alphaTypes } from '@/api/config';
 import HorizonScroll from '@/baseUI/HorizonScroll';
 import styled from 'styled-components';
@@ -12,10 +12,31 @@ export const NavContainer = styled.div`
   overflow: hidden;
 `;
 export default memo(function Singers() {
+  const [category, setCategory] = useState('');
+  const [alpha, setAlpha] = useState('');
+  const handleUpdateAlpha = useCallback((val) => {
+    console.log(val);
+    setAlpha(val);
+  }, []);
+
+  const handleUpdateCatetory = useCallback((val) => {
+    console.log(val);
+    setCategory(val);
+  }, []);
   return (
     <NavContainer>
-      <HorizonScroll list={categoryTypes} title={'分类 (默认热门):'} />
-      <HorizonScroll list={alphaTypes} title={'首字母:'} />
+      <HorizonScroll
+        list={categoryTypes}
+        title={'分类 (默认热门):'}
+        handleClick={handleUpdateCatetory}
+        value={category.key}
+      />
+      <HorizonScroll
+        list={alphaTypes}
+        title={'首字母:'}
+        handleClick={handleUpdateAlpha}
+        value={alpha.key}
+      />
     </NavContainer>
   );
 });
