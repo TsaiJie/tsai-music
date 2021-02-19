@@ -60,23 +60,6 @@ export const getHotSingerListAction = () => {
     }
   };
 };
-// 加载更多热门歌手
-export const refreshGetMoreHotSingerListAction = () => {
-  return (dispatch, getState) => {
-    const pageCount = getState().singers.pageCount;
-    const singerList = getState().singers.singerList;
-    getHotSingerListRequest(pageCount)
-      .then((res) => {
-        const data = [...singerList, ...res.artists];
-        dispatch(changeSingerListAction(data));
-        dispatch(changePullDownLoadingAction(false));
-        dispatch(changePullUpLoadingAction(false));
-      })
-      .catch(() => {
-        console.log('刷新热门歌手数据获取失败');
-      });
-  };
-};
 // 第一次加载对应类别的歌手
 export const getCateorySingerListAction = (category, alpha) => {
   return (dispatch, getState) => {

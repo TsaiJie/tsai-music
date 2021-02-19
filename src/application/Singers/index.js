@@ -7,6 +7,7 @@ import { actionCreators } from './store';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react/cjs/react.development';
 import Loading from '@/baseUI/Loading';
+import { getCateorySingerListAction } from './store/actionCreators';
 const {
   getHotSingerListAction,
   changePageCountAction,
@@ -49,22 +50,33 @@ export default memo(function Singers() {
     }
   }, [dispatch, singerList]);
   //  函数
+  const categoryOrAlphaChange = useCallback(
+    (category, alpha) => {
+      dispatch(changePageCountAction(0)); //由于改变了分类，所以pageCount清零
+      dispatch(changeEnterLoadingAction(true)); //loading，现在实现控制逻辑，效果实现放到下一节，后面的loading同理
+      dispatch(getCateorySingerListAction(category, alpha));
+    },
+    [dispatch]
+  );
   const changeAlphaActionDispatch = useCallback(
     (val) => {
       dispatch(changeAlphaAction(val));
+      categoryOrAlphaChange(category, val);
     },
-    [dispatch]
+    [dispatch, category, categoryOrAlphaChange]
   );
   const changeCategoryActionDispatch = useCallback(
     (val) => {
       dispatch(changeCategoryAction(val));
+      categoryOrAlphaChange(val, alpha);
     },
-    [dispatch]
+    [dispatch, alpha, categoryOrAlphaChange]
   );
   const pullUpGetMoreData = useCallback(() => {
     dispatch(changePageCountAction(pageCount + 1));
     dispatch(getHotSingerListAction());
   }, [dispatch, pageCount]);
+  console.log(singerList);
   // 渲染函数，返回歌手列表
   const renderSingerList = () => {
     return (
