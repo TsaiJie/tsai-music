@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useState } from 'react';
+import React, { memo, useCallback } from 'react';
 import { categoryTypes, alphaTypes } from '@/api/config';
 import HorizonScroll from '@/baseUI/HorizonScroll';
 import { NavContainer, ListItem, List, ListWrapper } from './style';
@@ -135,6 +135,8 @@ export default memo(function Singers() {
           pullDown={pullDownRefreshData}
           pullUp={pullUpGetMoreData}
           data={singerList}
+          pullUpLoading={pullUpLoading}
+          pullDownLoading={pullDownLoading}
         >
           {renderSingerList()}
         </Scroll>

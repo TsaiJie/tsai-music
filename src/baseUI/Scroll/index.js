@@ -9,10 +9,31 @@ import React, {
 import PropTypes from 'prop-types';
 import BScroll from '@better-scroll/core';
 import styled from 'styled-components';
+import Loading from '../Loading';
 const ScrollContainer = styled.div`
   width: 100%;
   height: 100%;
   overflow: hidden;
+`;
+const PullUpLoading = styled.div`
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 5px;
+  width: 60px;
+  height: 60px;
+  margin: auto;
+  z-index: 100;
+`;
+
+export const PullDownLoading = styled.div`
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0px;
+  height: 30px;
+  margin: auto;
+  z-index: 100;
 `;
 const Scroll = forwardRef((props, ref) => {
   const {
@@ -109,9 +130,22 @@ const Scroll = forwardRef((props, ref) => {
     });
     setBScroll(scroll);
   };
+  const PullUpdisplayStyle = pullUpLoading
+    ? { display: '' }
+    : { display: 'none' };
+  const PullDowndisplayStyle = pullDownLoading
+    ? { display: '' }
+    : { display: 'none' };
   return (
     <ScrollContainer className="scroll" ref={scrollContaninerRef}>
       {props.children}
+      {/* 滑到底部加载动画 */}
+      <PullUpLoading style={PullUpdisplayStyle}>
+        <Loading></Loading>
+      </PullUpLoading>
+      <PullDownLoading style={PullDowndisplayStyle}>
+        <Loading></Loading>
+      </PullDownLoading>
     </ScrollContainer>
   );
 });

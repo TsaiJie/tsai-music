@@ -12,7 +12,7 @@ const loading = keyframes`
 
 const LoadingWrapper = styled.div`
   > div {
-    position: fixed;
+    position: absolute;
     z-index: 1000;
     left: 0;
     right: 0;
