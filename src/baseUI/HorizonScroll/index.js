@@ -32,10 +32,20 @@ const ListItem = styled.span`
 const Horizon = (props) => {
   const { list, value, title } = props;
   const { handleClick } = props;
+  const categoryRef = useRef(null);
+  useEffect(() => {
+    let categoryDOM = categoryRef.current;
+    let tagElems = categoryDOM.querySelectorAll('span');
+    let totalWidth = 0;
+    Array.from(tagElems).forEach((ele) => {
+      totalWidth += ele.offsetWidth;
+    });
+    categoryDOM.style.width = `${totalWidth}px`;
+  }, []);
 
   return (
     <Scroll direction={'horizontal'} data={list}>
-      <div>
+      <div ref={categoryRef}>
         <List>
           <span>{title}</span>
           {list.map((item) => {
