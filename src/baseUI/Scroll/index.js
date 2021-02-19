@@ -109,7 +109,6 @@ const Scroll = forwardRef((props, ref) => {
     });
     setBScroll(scroll);
   };
-
   return (
     <ScrollContainer className="scroll" ref={scrollContaninerRef}>
       {props.children}
@@ -132,7 +131,7 @@ Scroll.defaultProps = {
 };
 
 Scroll.propTypes = {
-  direction: PropTypes.oneOf(['vertical', 'horizental']), // 滚动的方向
+  direction: PropTypes.oneOf(['vertical', 'horizontal']), // 滚动的方向
   click: PropTypes.bool, // 是否支持点击
   refresh: PropTypes.bool, // 是否刷新
   pullUpLoading: PropTypes.bool, // 是否显示上拉 loading 动画
