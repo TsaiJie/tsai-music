@@ -6,6 +6,7 @@ import Scroll from '@/baseUI/Scroll';
 import { actionCreators } from './store';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react/cjs/react.development';
+import Loading from '@/baseUI/Loading';
 const {
   getHotSingerListAction,
   changePageCountAction,
@@ -14,19 +15,23 @@ const {
   changePullDownLoadingAction,
   refreshGetMoreCategorySingerListAction,
   refreshGetMoreHotSingerListAction,
+  changeAlphaAction,
+  changeCategoryAction,
 } = actionCreators;
 export default memo(function Singers() {
   const dispatch = useDispatch();
-  const [category, setCategory] = useState(null);
-  const [alpha, setAlpha] = useState(null);
   const {
     singerList,
     enterLoading,
+    alpha,
+    category,
     pullDownLoading,
     pageCount,
     pullUpLoading,
   } = useSelector(
     (state) => ({
+      category: state.singers.category,
+      alpha: state.singers.alpha,
       singerList: state.singers.singerList,
       enterLoading: state.singers.enterLoading,
       pullUpLoading: state.singers.pullUpLoading,
@@ -38,17 +43,22 @@ export default memo(function Singers() {
 
   // 组件第一次渲染时 获取热门歌手数据
   useEffect(() => {
-    dispatch(getHotSingerListAction());
-  }, [dispatch]);
-  const handleUpdateAlpha = useCallback((val) => {
-    console.log(val);
-    setAlpha(val);
-  }, []);
-
-  const handleUpdateCatetory = useCallback((val) => {
-    console.log(val);
-    setCategory(val);
-  }, []);
+    if (singerList.length === 0) {
+      dispatch(getHotSingerListAction());
+    }
+  }, [dispatch, singerList]);
+  const changeAlphaActionDispatch = useCallback(
+    (val) => {
+      dispatch(changeAlphaAction(val));
+    },
+    [dispatch]
+  );
+  const changeCategoryActionDispatch = useCallback(
+    (val) => {
+      dispatch(changeCategoryAction(val));
+    },
+    [dispatch]
+  );
   // 渲染函数，返回歌手列表
   const renderSingerList = () => {
     return (
@@ -77,19 +87,20 @@ export default memo(function Singers() {
         <HorizonScroll
           list={categoryTypes}
           title={'分类 (默认热门):'}
-          handleClick={handleUpdateCatetory}
+          handleClick={changeCategoryActionDispatch}
           value={category && category.key}
         />
         <HorizonScroll
           list={alphaTypes}
           title={'首字母:'}
-          handleClick={handleUpdateAlpha}
+          handleClick={changeAlphaActionDispatch}
           value={alpha && alpha.key}
         />
       </NavContainer>
       <ListWrapper>
         <Scroll data={singerList}>{renderSingerList()}</Scroll>
       </ListWrapper>
+      {enterLoading ? <Loading></Loading> : null}
     </div>
   );
 });

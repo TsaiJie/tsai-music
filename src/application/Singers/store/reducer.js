@@ -6,6 +6,8 @@ const defaultState = {
   pullUpLoading: false, //控制上拉加载动画
   pullDownLoading: false, //控制下拉加载动画
   pageCount: 0, //这里是当前页数，我们即将实现分页功能
+  category: null,
+  alpha: null,
 };
 
 const reducer = produce((draft, action) => {
@@ -25,6 +27,11 @@ const reducer = produce((draft, action) => {
     case actionTypes.CHANGE_PAGE_COUNT:
       draft.pageCount = action.pageCount;
       break;
+    case actionTypes.CHANGE_CATEGORY:
+      draft.category = action.category;
+      break;
+    case actionTypes.CHANGE_ALPHA:
+      draft.alpha = action.alpha
     default:
       break;
   }

@@ -1,9 +1,11 @@
 import { getHotSingerListRequest, getSingerListRequest } from '@/api/singers';
 import * as actionTypes from './constants';
+// 改变歌手列表
 const changeSingerListAction = (data) => ({
   type: actionTypes.CHANGE_SINGER_LIST,
   singerList: data,
 });
+// 改变页码
 export const changePageCountAction = (data) => ({
   type: actionTypes.CHANGE_PAGE_COUNT,
   pageCount: data,
@@ -22,6 +24,16 @@ export const changePullUpLoadingAction = (data) => ({
 export const changePullDownLoadingAction = (data) => ({
   type: actionTypes.CHANGE_PULLDOWN_LOADING,
   pullDownLoading: data,
+});
+//  改变category
+export const changeCategoryAction = (data) => ({
+  type: actionTypes.CHANGE_CATEGORY,
+  category: data,
+});
+// 改变alpha
+export const changeAlphaAction = (data) => ({
+  type: actionTypes.CHANGE_ALPHA,
+  alpha: data,
 });
 // 第一次加载热门歌手
 export const getHotSingerListAction = () => {
