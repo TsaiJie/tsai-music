@@ -2,6 +2,7 @@ import Header from '@/baseUI/Header';
 import Scroll from '@/baseUI/Scroll';
 import React, { memo, useState } from 'react';
 import { CSSTransition } from 'react-transition-group';
+import SongsList from '../SongsList';
 import { Container, TopDesc, Menu } from './style';
 export default memo(function Album(props) {
   //mock 数据
@@ -157,6 +158,10 @@ export default memo(function Album(props) {
           <div>
             {renderTopInfo(currentAlbum)}
             {renderMenu()}
+            <SongsList
+              songList={currentAlbum.tracks}
+              subscribedCount={currentAlbum.subscribedCount}
+            ></SongsList>
           </div>
         </Scroll>
       </Container>
