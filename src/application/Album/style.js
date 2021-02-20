@@ -27,3 +27,8 @@ export const Container = styled.div`
     transform: rotateZ(30deg) translate3d(100%, 0, 0);
   }
 `;
+// 添加 TopDesc 和 Menu
+export const TopDesc = styled.div``;
+export const Menu = styled.div``;
+//style.js 中加入
+export const SongList = styled.div``;
