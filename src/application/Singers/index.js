@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useEffect, useRef} from 'react';
+import React, { memo, useCallback, useEffect, useRef } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import LazyLoad, { forceCheck } from 'react-lazyload';
 import { categoryTypes, alphaTypes } from '@/api/config';
@@ -88,13 +88,16 @@ export default memo(function Singers() {
       dispatch(getCateorySingerListAction());
     }
   }, [category, alpha, dispatch]);
+  const enterDetail = (item) => {
+    console.log(item);
+  };
   // 渲染函数，返回歌手列表
   const renderSingerList = () => {
     return (
       <List>
         {singerList.map((item, index) => {
           return (
-            <ListItem key={item.id}>
+            <ListItem key={item.id} onClick={() => enterDetail(item)}>
               <div className="img_wrapper">
                 <LazyLoad
                   placeholder={
@@ -114,7 +117,7 @@ export default memo(function Singers() {
                   />
                 </LazyLoad>
               </div>
-              <span className="name">{item.index} {item.name} {item.id}</span>
+              <span className="name"> {item.name}</span>
             </ListItem>
           );
         })}

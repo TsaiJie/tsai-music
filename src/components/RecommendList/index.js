@@ -8,13 +8,16 @@ import {
 } from './style';
 export default memo(function RecommnedList(props) {
   const { recommendList } = props;
+  const enterDetail = (item) => {
+    console.log(item);
+  }
   return (
     <RecommendListWrapper>
       <h1 className="title">推荐歌单</h1>
       <RecommendList>
         {recommendList.map((item, index) => {
           return (
-            <RecommendListItem key={item.id + index}>
+            <RecommendListItem key={item.id} onClick={()=> enterDetail(item)}>
               <div className="img_wrapper">
                 <div className="decorate"></div>
                 <LazyLoad
