@@ -1,9 +1,7 @@
-import React, { memo } from 'react'
+import React, { memo } from 'react';
+import { Container } from './style';
+export default memo(function Singer(props) {
+  const { id } = props.match.params;
 
-export default memo(function Singer() {
-  return (
-    <div>
-      Singer 
-    </div>
-  )
-})
+  return <Container>Singer {id}</Container>;
+});
