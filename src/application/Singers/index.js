@@ -9,9 +9,10 @@ import { NavContainer, ListItem, List, ListWrapper } from './style';
 import { actionCreators } from './store';
 
 import {
-  getCateorySingerListAction,
-  getMoreCateorySingerListAction,
+  getCategorySingerListAction,
+  getMoreCategorySingerListAction,
 } from './store/actionCreators';
+import { renderRoutes } from 'react-router-config';
 const {
   getHotSingerListAction,
   getMoreHotSingerListAction,
@@ -21,7 +22,7 @@ const {
   changeAlphaAction,
   changeCategoryAction,
 } = actionCreators;
-export default memo(function Singers() {
+export default memo(function Singers(props) {
   const scrollRef = useRef(null);
   // redux
   const dispatch = useDispatch();
@@ -53,7 +54,7 @@ export default memo(function Singers() {
   //  函数
   const categoryOrAlphaChange = useCallback(() => {
     dispatch(changeEnterLoadingAction(true)); //loading，现在实现控制逻辑，效果实现放到下一节，后面的loading同理
-    dispatch(getCateorySingerListAction());
+    dispatch(getCategorySingerListAction());
     scrollRef.current.refresh();
   }, [dispatch]);
   const changeAlphaActionDispatch = useCallback(
@@ -76,7 +77,7 @@ export default memo(function Singers() {
     if (category === null && alpha === null) {
       dispatch(getMoreHotSingerListAction());
     } else {
-      dispatch(getMoreCateorySingerListAction());
+      dispatch(getMoreCategorySingerListAction());
     }
   }, [dispatch, category, alpha]);
   const pullDownRefreshData = useCallback(() => {
@@ -85,11 +86,11 @@ export default memo(function Singers() {
     if (category === null && alpha === null) {
       dispatch(getHotSingerListAction());
     } else {
-      dispatch(getCateorySingerListAction());
+      dispatch(getCategorySingerListAction());
     }
   }, [category, alpha, dispatch]);
   const enterDetail = (item) => {
-    console.log(item);
+    props.history.push(`/singers/${item.id}`);
   };
   // 渲染函数，返回歌手列表
   const renderSingerList = () => {
@@ -154,6 +155,7 @@ export default memo(function Singers() {
         </Scroll>
       </ListWrapper>
       {enterLoading ? <Loading></Loading> : null}
+      {renderRoutes(props.route.routes)}
     </div>
   );
 });

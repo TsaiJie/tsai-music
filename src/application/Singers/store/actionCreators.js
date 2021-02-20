@@ -77,7 +77,7 @@ export const getMoreHotSingerListAction = (mode) => {
   };
 };
 // 第一次加载对应类别的歌手
-export const getCateorySingerListAction = () => {
+export const getCategorySingerListAction = () => {
   return async (dispatch, getState) => {
     try {
       const category = getState().singers.category;
@@ -94,7 +94,7 @@ export const getCateorySingerListAction = () => {
   };
 };
 
-export const getMoreCateorySingerListAction = () => {
+export const getMoreCategorySingerListAction = () => {
   return async (dispatch, getState) => {
     try {
       const listOffset = getState().singers.listOffset;
