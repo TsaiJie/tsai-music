@@ -1,8 +1,9 @@
 import { filterIndex } from '@/api/utils';
+import Loading from '@/baseUI/Loading';
 import Scroll from '@/baseUI/Scroll';
 import React, { memo, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getRankListAction, changeLoadingAction } from './store';
+import { getRankListAction } from './store';
 import { List, ListItem, Container, SongList } from './style';
 export default memo(function Rank() {
   const { rankList, loading } = useSelector((state) => ({
@@ -12,7 +13,6 @@ export default memo(function Rank() {
   const dispatch = useDispatch();
   useEffect(() => {
     if (!rankList.length) {
-      dispatch(changeLoadingAction(false));
       dispatch(getRankListAction());
     }
   }, [dispatch, rankList]);
@@ -28,9 +28,8 @@ export default memo(function Rank() {
   // 这是渲染榜单列表函数，传入 global 变量来区分不同的布局方式
   const renderRankList = (list, global) => {
     return (
-      <List>
+      <List globalRank={global}>
         {list.map((item) => {
-          console.log(item.updateFrequency);
           return (
             <ListItem
               key={item.id}
@@ -42,15 +41,29 @@ export default memo(function Rank() {
                 <div className="decorate"></div>
                 <span className="update_frequency">{item.updateFrequency}</span>
               </div>
+              {renderSongList(item.tracks)}
             </ListItem>
           );
         })}
       </List>
     );
   };
+  const renderSongList = (list) => {
+    return list.length ? (
+      <SongList>
+        {list.map((item, index) => {
+          return (
+            <li key={index}>
+              {index + 1}. {item.first} - {item.second}
+            </li>
+          );
+        })}
+      </SongList>
+    ) : null;
+  };
   return (
     <Container>
-      <Scroll>
+      <Scroll data={rankList}>
         <div>
           <h1 className="official" style={displayStyle}>
             官方榜
@@ -59,8 +72,9 @@ export default memo(function Rank() {
           <h1 className="global" style={displayStyle}>
             全球榜
           </h1>
-          {renderRankList(globalList)}
+          {renderRankList(globalList, true)}
         </div>
+        {loading ? <Loading /> : null}
       </Scroll>
     </Container>
   );
