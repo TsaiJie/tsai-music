@@ -87,6 +87,111 @@ export default memo(function Album(props) {
           name: '学友 热',
         },
       },
+      {
+        name: '我真的受伤了',
+        ar: [{ name: '张学友' }, { name: '周华健' }],
+        al: {
+          name: '学友 热',
+        },
+      },
+      {
+        name: '我真的受伤了',
+        ar: [{ name: '张学友' }, { name: '周华健' }],
+        al: {
+          name: '学友 热',
+        },
+      },
+      {
+        name: '我真的受伤了',
+        ar: [{ name: '张学友' }, { name: '周华健' }],
+        al: {
+          name: '学友 热',
+        },
+      },
+      {
+        name: '我真的受伤了',
+        ar: [{ name: '张学友' }, { name: '周华健' }],
+        al: {
+          name: '学友 热',
+        },
+      },
+      {
+        name: '我真的受伤了',
+        ar: [{ name: '张学友' }, { name: '周华健' }],
+        al: {
+          name: '学友 热',
+        },
+      },
+      {
+        name: '我真的受伤了',
+        ar: [{ name: '张学友' }, { name: '周华健' }],
+        al: {
+          name: '学友 热',
+        },
+      },
+      {
+        name: '我真的受伤了',
+        ar: [{ name: '张学友' }, { name: '周华健' }],
+        al: {
+          name: '学友 热',
+        },
+      },
+      {
+        name: '我真的受伤了',
+        ar: [{ name: '张学友' }, { name: '周华健' }],
+        al: {
+          name: '学友 热',
+        },
+      },
+      {
+        name: '我真的受伤了',
+        ar: [{ name: '张学友' }, { name: '周华健' }],
+        al: {
+          name: '学友 热',
+        },
+      },
+      {
+        name: '我真的受伤了',
+        ar: [{ name: '张学友' }, { name: '周华健' }],
+        al: {
+          name: '学友 热',
+        },
+      },
+      {
+        name: '我真的受伤了',
+        ar: [{ name: '张学友' }, { name: '周华健' }],
+        al: {
+          name: '学友 热',
+        },
+      },
+      {
+        name: '我真的受伤了',
+        ar: [{ name: '张学友' }, { name: '周华健' }],
+        al: {
+          name: '学友 热',
+        },
+      },
+      {
+        name: '我真的受伤了',
+        ar: [{ name: '张学友' }, { name: '周华健' }],
+        al: {
+          name: '学友 热',
+        },
+      },
+      {
+        name: '我真的受伤了',
+        ar: [{ name: '张学友' }, { name: '周华健' }],
+        al: {
+          name: '学友 热',
+        },
+      },
+      {
+        name: '我真的受伤了',
+        ar: [{ name: '张学友' }, { name: '周华健' }],
+        al: {
+          name: '学友 热',
+        },
+      },
     ],
   };
   const [showStatus, setShowStatus] = useState(true);
@@ -154,7 +259,7 @@ export default memo(function Album(props) {
     >
       <Container>
         <Header title={'返回'} handleClick={handleBack} />
-        <Scroll>
+        <Scroll bounceTop={false}>
           <div>
             {renderTopInfo(currentAlbum)}
             {renderMenu()}

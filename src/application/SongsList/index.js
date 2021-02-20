@@ -23,7 +23,7 @@ export default memo(function SongsList(props) {
         <SongItem>
           {songList.map((item, index) => {
             return (
-              <li key={item.id}>
+              <li key={item.name}>
                 <div className="index">{index + 1}</div>
                 <div className="info">
                   <span>{item.name}</span>
