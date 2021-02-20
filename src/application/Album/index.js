@@ -1,5 +1,18 @@
-import React, { memo } from 'react';
+import React, { memo, useState } from 'react';
+import { CSSTransition } from 'react-transition-group';
 import { Container } from './style';
 export default memo(function Album() {
-  return <Container>Album</Container>;
+  const [showStatus, setShowStatus] = useState(true);
+
+  return (
+    <CSSTransition
+      in={showStatus}
+      timeout={300}
+      classNames="fly"
+      appear={true}
+      unmountOnExit
+    >
+      <Container>Album</Container>
+    </CSSTransition>
+  );
 });

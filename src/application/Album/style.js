@@ -1,4 +1,4 @@
-import styled from'styled-components';
+import styled from 'styled-components';
 import style from '@/assets/global-style';
 
 export const Container = styled.div`
@@ -9,4 +9,21 @@ export const Container = styled.div`
   bottom: 0;
   z-index: 100;
   background: ${style['color-background']};
-`
+  transform-origin: right bottom;
+  &.fly-enter,
+  &.fly-appear {
+    transform: rotateZ(30deg) translate3d(100%, 0, 0);
+  }
+  &.fly-enter-active,
+  &.fly-appear-active {
+    transition: transform 0.3s;
+    transform: rotateZ(0deg) translate3d(0, 0, 0);
+  }
+  &.fly-exit {
+    transform: rotateZ(0deg) translate3d(0, 0, 0);
+  }
+  &.fly-exit-active {
+    transition: transform 0.3s;
+    transform: rotateZ(30deg) translate3d(100%, 0, 0);
+  }
+`;
