@@ -1,200 +1,28 @@
-import Header from '@/baseUI/Header';
-import Scroll from '@/baseUI/Scroll';
-import React, { memo, useCallback, useRef, useState } from 'react';
+import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { CSSTransition } from 'react-transition-group';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { isEmptyObject } from '@/api/utils';
 import SongsList from '../SongsList';
 import { Container, TopDesc, Menu } from './style';
 import style from '@/assets/global-style';
+import { getAlbumListAction, changeEnterLoadingAction } from './store';
+import Header from '@/baseUI/Header';
+import Scroll from '@/baseUI/Scroll';
+import Loading from '@/baseUI/Loading';
 export default memo(function Album(props) {
-  //mock 数据
-  const currentAlbum = {
-    creator: {
-      avatarUrl:
-        'http://p1.music.126.net/O9zV6jeawR43pfiK2JaVSw==/109951164232128905.jpg',
-      nickname: '浪里推舟',
-    },
-    coverImgUrl:
-      'http://p2.music.126.net/ecpXnH13-0QWpWQmqlR0gw==/109951164354856816.jpg',
-    subscribedCount: 2010711,
-    name: '听完就睡，耳机是天黑以后柔软的梦境',
-    tracks: [
-      {
-        name: '我真的受伤了',
-        ar: [{ name: '张学友' }, { name: '周华健' }],
-        al: {
-          name: '学友 热',
-        },
-      },
-      {
-        name: '我真的受伤了',
-        ar: [{ name: '张学友' }, { name: '周华健' }],
-        al: {
-          name: '学友 热',
-        },
-      },
-      {
-        name: '我真的受伤了',
-        ar: [{ name: '张学友' }, { name: '周华健' }],
-        al: {
-          name: '学友 热',
-        },
-      },
-      {
-        name: '我真的受伤了',
-        ar: [{ name: '张学友' }, { name: '周华健' }],
-        al: {
-          name: '学友 热',
-        },
-      },
-      {
-        name: '我真的受伤了',
-        ar: [{ name: '张学友' }, { name: '周华健' }],
-        al: {
-          name: '学友 热',
-        },
-      },
-      {
-        name: '我真的受伤了',
-        ar: [{ name: '张学友' }, { name: '周华健' }],
-        al: {
-          name: '学友 热',
-        },
-      },
-      {
-        name: '我真的受伤了',
-        ar: [{ name: '张学友' }, { name: '周华健' }],
-        al: {
-          name: '学友 热',
-        },
-      },
-      {
-        name: '我真的受伤了',
-        ar: [{ name: '张学友' }, { name: '周华健' }],
-        al: {
-          name: '学友 热',
-        },
-      },
-      {
-        name: '我真的受伤了',
-        ar: [{ name: '张学友' }, { name: '周华健' }],
-        al: {
-          name: '学友 热',
-        },
-      },
-      {
-        name: '我真的受伤了',
-        ar: [{ name: '张学友' }, { name: '周华健' }],
-        al: {
-          name: '学友 热',
-        },
-      },
-      {
-        name: '我真的受伤了',
-        ar: [{ name: '张学友' }, { name: '周华健' }],
-        al: {
-          name: '学友 热',
-        },
-      },
-      {
-        name: '我真的受伤了',
-        ar: [{ name: '张学友' }, { name: '周华健' }],
-        al: {
-          name: '学友 热',
-        },
-      },
-      {
-        name: '我真的受伤了',
-        ar: [{ name: '张学友' }, { name: '周华健' }],
-        al: {
-          name: '学友 热',
-        },
-      },
-      {
-        name: '我真的受伤了',
-        ar: [{ name: '张学友' }, { name: '周华健' }],
-        al: {
-          name: '学友 热',
-        },
-      },
-      {
-        name: '我真的受伤了',
-        ar: [{ name: '张学友' }, { name: '周华健' }],
-        al: {
-          name: '学友 热',
-        },
-      },
-      {
-        name: '我真的受伤了',
-        ar: [{ name: '张学友' }, { name: '周华健' }],
-        al: {
-          name: '学友 热',
-        },
-      },
-      {
-        name: '我真的受伤了',
-        ar: [{ name: '张学友' }, { name: '周华健' }],
-        al: {
-          name: '学友 热',
-        },
-      },
-      {
-        name: '我真的受伤了',
-        ar: [{ name: '张学友' }, { name: '周华健' }],
-        al: {
-          name: '学友 热',
-        },
-      },
-      {
-        name: '我真的受伤了',
-        ar: [{ name: '张学友' }, { name: '周华健' }],
-        al: {
-          name: '学友 热',
-        },
-      },
-      {
-        name: '我真的受伤了',
-        ar: [{ name: '张学友' }, { name: '周华健' }],
-        al: {
-          name: '学友 热',
-        },
-      },
-      {
-        name: '我真的受伤了',
-        ar: [{ name: '张学友' }, { name: '周华健' }],
-        al: {
-          name: '学友 热',
-        },
-      },
-      {
-        name: '我真的受伤了',
-        ar: [{ name: '张学友' }, { name: '周华健' }],
-        al: {
-          name: '学友 热',
-        },
-      },
-      {
-        name: '我真的受伤了',
-        ar: [{ name: '张学友' }, { name: '周华健' }],
-        al: {
-          name: '学友 热',
-        },
-      },
-      {
-        name: '我真的受伤了',
-        ar: [{ name: '张学友' }, { name: '周华健' }],
-        al: {
-          name: '学友 热',
-        },
-      },
-      {
-        name: '我真的受伤了',
-        ar: [{ name: '张学友' }, { name: '周华健' }],
-        al: {
-          name: '学友 热',
-        },
-      },
-    ],
-  };
+  const { currentAlbum, enterLoading } = useSelector(
+    (state) => ({
+      currentAlbum: state.album.currentAlbum,
+      enterLoading: state.album.enterLoading,
+    }),
+    shallowEqual
+  );
+  const dispatch = useDispatch();
+  const id = props.match.params.id;
+  useEffect(() => {
+    dispatch(changeEnterLoadingAction(true));
+    dispatch(getAlbumListAction(id));
+  }, [dispatch, id]);
   const HEADER_HEIGHT = 45;
   const [showStatus, setShowStatus] = useState(true);
   const [title, setTitle] = useState('歌单');
@@ -203,23 +31,26 @@ export default memo(function Album(props) {
   const handleBack = () => {
     setShowStatus(false);
   };
-  const handleScroll = useCallback((pos) => {
-    const minScrollY = -HEADER_HEIGHT;
-    const percent = Math.abs(pos.y / minScrollY);
-    const headerDom = headerRef.current;
-    // 滑过顶部的高度开始变化
-    if (pos.y < minScrollY) {
-      headerDom.style.backgroundColor = style['color-theme-d'];
-      headerDom.style.opacity = Math.min(1, (percent - 1) / 2);
-      setTitle(currentAlbum.name);
-      setIsMarquee(true);
-    } else {
-      headerDom.style.backgroundColor = '';
-      headerDom.style.opacity = 1;
-      setTitle('歌单');
-      setIsMarquee(false);
-    }
-  }, [currentAlbum]);
+  const handleScroll = useCallback(
+    (pos) => {
+      const minScrollY = -HEADER_HEIGHT;
+      const percent = Math.abs(pos.y / minScrollY);
+      const headerDom = headerRef.current;
+      // 滑过顶部的高度开始变化
+      if (pos.y < minScrollY) {
+        headerDom.style.backgroundColor = style['color-theme-d'];
+        headerDom.style.opacity = Math.min(1, (percent - 1) / 2);
+        setTitle(currentAlbum.name);
+        setIsMarquee(true);
+      } else {
+        headerDom.style.backgroundColor = '';
+        headerDom.style.opacity = 1;
+        setTitle('歌单');
+        setIsMarquee(false);
+      }
+    },
+    [currentAlbum]
+  );
   const renderTopInfo = (currentAlbum) => {
     return (
       <TopDesc background={currentAlbum.coverImgUrl}>
@@ -286,16 +117,19 @@ export default memo(function Album(props) {
           isMarquee={isMarquee}
           handleClick={handleBack}
         />
-        <Scroll bounceTop={false} onScroll={handleScroll}>
-          <div>
-            {renderTopInfo(currentAlbum)}
-            {renderMenu()}
-            <SongsList
-              songList={currentAlbum.tracks}
-              subscribedCount={currentAlbum.subscribedCount}
-            ></SongsList>
-          </div>
-        </Scroll>
+        {!isEmptyObject(currentAlbum) ? (
+          <Scroll bounceTop={false} onScroll={handleScroll}>
+            <div>
+              {renderTopInfo(currentAlbum)}
+              {renderMenu()}
+              <SongsList
+                songList={currentAlbum.tracks}
+                subscribedCount={currentAlbum.subscribedCount}
+              ></SongsList>
+            </div>
+          </Scroll>
+        ) : null}
+        {enterLoading ? <Loading /> : null}
       </Container>
     </CSSTransition>
   );
