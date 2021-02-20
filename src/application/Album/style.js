@@ -60,20 +60,67 @@ export const TopDesc = styled.div`
     }
   }
   .img_wrapper {
-    background: red;
     width: 120px;
     height: 120px;
     position: relative;
+    .decorate {
+      position: absolute;
+      height: 35px;
+      width: 100%;
+      background: linear-gradient(hsla(0, 0%, 43%, 0.4), hsla(0, 0%, 100%, 0));
+      top: 0;
+      border-radius: 3px;
+      z-index: 1;
+    }
     .play_count {
       position: absolute;
       right: 2px;
       top: 2px;
+      font-size: ${style['font-size-small']};
+      line-height: 15px;
+      color: ${style['color-text-ll']};
+      .play {
+        vertical-align: top;
+      }
     }
     img {
       width: 100%;
       height: 100%;
       -webkit-transform: rotate(0deg);
       border-radius: 4px;
+    }
+  }
+  .desc_wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    height: 120px;
+    padding: 0 10px;
+    .title {
+      max-height: 70px;
+      color: ${style['color-text-ll']};
+      font-weight: 700;
+      line-height: 1.5;
+      font-size: ${style['font-size-large']};
+    }
+    .person {
+      display: flex;
+      .avatar {
+        width: 20px;
+        height: 20px;
+        margin-right: 5px;
+        img {
+          width: 100%;
+          height: 100%;
+          border-radius: 50%;
+        }
+      }
+      .name {
+        line-height: 20px;
+        font-size: ${style['font-size-medium-x']};
+        color: ${style['color-text-ll']};
+      }
     }
   }
 `;
