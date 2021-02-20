@@ -94,7 +94,7 @@ export default memo(function Album(props) {
   };
   const renderTopInfo = (currentAlbum) => {
     return (
-      <TopDesc>
+      <TopDesc background={currentAlbum.coverImgUrl}>
         <div className="background">
           <div className="filter"></div>
         </div>
@@ -112,7 +112,12 @@ export default memo(function Album(props) {
           <div className="title">{currentAlbum.name}</div>
           <div className="person">
             <div className="avatar">
-              <img src={currentAlbum.creator.avatarUrl} alt="avator" />
+              <img
+                width="20"
+                height="20"
+                src={currentAlbum.creator.avatarUrl}
+                alt="avator"
+              />
             </div>
             <div className="name">{currentAlbum.creator.nickname}</div>
           </div>
