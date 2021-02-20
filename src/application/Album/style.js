@@ -78,7 +78,7 @@ export const TopDesc = styled.div`
       top: 2px;
       font-size: ${style['font-size-small']};
       line-height: 15px;
-      color: ${style['color-text-ll']};
+      color: white;
       .play {
         vertical-align: top;
       }
@@ -124,6 +124,26 @@ export const TopDesc = styled.div`
     }
   }
 `;
-export const Menu = styled.div``;
+export const Menu = styled.div`
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  box-sizing: border-box;
+  padding: 0 30px 20px 30px;
+  margin: -100px 0 0 0;
+  > div {
+    display: flex;
+    flex-direction: column;
+    line-height: 20px;
+    text-align: center;
+    font-size: ${style['font-size-small']};
+    color: ${style['color-text-ll']};
+    z-index: 1000;
+    font-weight: 500;
+    .iconfont {
+      font-size: 20px;
+    }
+  }
+`;
 //style.js 中加入
 export const SongList = styled.div``;
