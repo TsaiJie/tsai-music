@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import style from '@/assets/global-style';
 export const SongList = styled.div`
+  -webkit-transform: rotate(0deg);
   border-radius: 10px;
   background: ${style['color-highlight-background']};
   .first_line {
@@ -27,8 +28,7 @@ export const SongList = styled.div`
         vertical-align: top;
       }
     }
-    .add_list,
-    .isCollected {
+    .add_list {
       position: absolute;
       display: flex;
       align-items: center;
@@ -54,4 +54,37 @@ export const SongList = styled.div`
     }
   }
 `;
-export const SongItem = styled.ul``;
+export const SongItem = styled.ul`
+  > li {
+    display: flex;
+    height: 60px;
+    align-items: center;
+    .index {
+      flex: 0 0 60px;
+      height: 60px;
+      line-height: 60px;
+      text-align: center;
+    }
+    .info {
+      box-sizing: border-box;
+      flex: 1;
+      display: flex;
+      height: 100%;
+      padding: 5px 0;
+      flex-direction: column;
+      justify-content: space-around;
+      border-bottom: 1px solid ${style['border-color']};
+      ${style.noWrap()}
+      > span {
+        ${style.noWrap()}
+      }
+      > span:first-child {
+        color: ${style['color-text-ll']};
+      }
+      > span:last-child {
+        font-size: ${style['font-size-small']};
+        color: #bba8a8;
+      }
+    }
+  }
+`;
