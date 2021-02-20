@@ -14,7 +14,17 @@ export const getRankListAction = () => {
     try {
       const data = await getRankListRequest();
       const list = data && data.list;
-      dispatch(changeRankListAction(list));
+      const resList = list.map((item, index) => {
+        const id = item.id;
+        const name = item.name;
+        const playCount = item.playCount;
+        const userId = item.userId;
+        const coverImgId = item.coverImgId;
+        const coverImgUrl = item.coverImgUrl;
+        const tracks = item.tracks;
+        return { id, name, playCount, userId, coverImgId, coverImgUrl, tracks };
+      });
+      dispatch(changeRankListAction(resList));
       dispatch(changeLoadingAction(false));
     } catch (error) {
       console.log(error);

@@ -1,7 +1,6 @@
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect } from 'react/cjs/react.development';
-import { getRankListAction } from './store';
+import { getRankListAction, changeLoadingAction } from './store';
 
 export default memo(function Rank() {
   const { rankList, loading } = useSelector((state) => ({
@@ -11,9 +10,10 @@ export default memo(function Rank() {
   const dispatch = useDispatch();
   useEffect(() => {
     if (!rankList.length) {
+      dispatch(changeLoadingAction(false));
       dispatch(getRankListAction());
     }
   }, [dispatch, rankList]);
-  console.log(rankList, loading);
+  console.log(rankList);
   return <div>Rank</div>;
 });
