@@ -1,9 +1,10 @@
 import Header from '@/baseUI/Header';
 import Scroll from '@/baseUI/Scroll';
-import React, { memo, useRef, useState } from 'react';
+import React, { memo, useCallback, useRef, useState } from 'react';
 import { CSSTransition } from 'react-transition-group';
 import SongsList from '../SongsList';
 import { Container, TopDesc, Menu } from './style';
+import style from '@/assets/global-style';
 export default memo(function Album(props) {
   //mock 数据
   const currentAlbum = {
@@ -194,6 +195,7 @@ export default memo(function Album(props) {
       },
     ],
   };
+  const HEADER_HEIGHT = 45;
   const [showStatus, setShowStatus] = useState(true);
   const [title, setTitle] = useState('歌单');
   const [isMarquee, setIsMarquee] = useState(false); // 是否跑马灯
@@ -201,6 +203,23 @@ export default memo(function Album(props) {
   const handleBack = () => {
     setShowStatus(false);
   };
+  const handleScroll = useCallback((pos) => {
+    const minScrollY = -HEADER_HEIGHT;
+    const percent = Math.abs(pos.y / minScrollY);
+    const headerDom = headerRef.current;
+    // 滑过顶部的高度开始变化
+    if (pos.y < minScrollY) {
+      headerDom.style.backgroundColor = style['color-theme-d'];
+      headerDom.style.opacity = Math.min(1, (percent - 1) / 2);
+      setTitle(currentAlbum.name);
+      setIsMarquee(true);
+    } else {
+      headerDom.style.backgroundColor = '';
+      headerDom.style.opacity = 1;
+      setTitle('歌单');
+      setIsMarquee(false);
+    }
+  }, [currentAlbum]);
   const renderTopInfo = (currentAlbum) => {
     return (
       <TopDesc background={currentAlbum.coverImgUrl}>
@@ -267,7 +286,7 @@ export default memo(function Album(props) {
           isMarquee={isMarquee}
           handleClick={handleBack}
         />
-        <Scroll bounceTop={false}>
+        <Scroll bounceTop={false} onScroll={handleScroll}>
           <div>
             {renderTopInfo(currentAlbum)}
             {renderMenu()}
