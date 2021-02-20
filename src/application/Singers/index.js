@@ -7,6 +7,7 @@ import { actionCreators } from './store';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { useEffect, useRef } from 'react/cjs/react.development';
 import Loading from '@/baseUI/Loading';
+import LazyLoad, { forceCheck } from 'react-lazyload';
 import {
   getCateorySingerListAction,
   getMoreCateorySingerListAction,
@@ -98,16 +99,27 @@ export default memo(function Singers() {
       <List>
         {singerList.map((item, index) => {
           return (
-            <ListItem key={item.picUrl + index}>
+            <ListItem key={item.id}>
               <div className="img_wrapper">
-                <img
-                  src={`${item.picUrl}?param=300x300`}
-                  width="100%"
-                  height="100%"
-                  alt="music"
-                />
+                <LazyLoad
+                  placeholder={
+                    <img
+                      width="100%"
+                      height="100%"
+                      src={require('./singer.png').default}
+                      alt="music"
+                    />
+                  }
+                >
+                  <img
+                    src={`${item.picUrl}?param=300x300`}
+                    width="100%"
+                    height="100%"
+                    alt="music"
+                  />
+                </LazyLoad>
               </div>
-              <span className="name">{item.name}</span>
+              <span className="name">{item.index} {item.name} {item.id}</span>
             </ListItem>
           );
         })}
@@ -138,6 +150,7 @@ export default memo(function Singers() {
           data={singerList}
           pullUpLoading={pullUpLoading}
           pullDownLoading={pullDownLoading}
+          onScroll={forceCheck}
         >
           {renderSingerList()}
         </Scroll>

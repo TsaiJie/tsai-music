@@ -47,9 +47,9 @@ export const getHotSingerListAction = (mode) => {
       const res = await getHotSingerListRequest(pageCount);
       const newArtists = res.artists;
       let totalArtists;
-      if (mode ==='pullDown') {
-        totalArtists = newArtists
-      }else {
+      if (mode === 'pullDown') {
+        totalArtists = newArtists;
+      } else {
         totalArtists = [...singerList, ...newArtists];
       }
       dispatch(changeSingerListAction(totalArtists));

@@ -15,11 +15,11 @@ const Loading = styled.div`
   width: 100%;
   margin: auto;
   text-align: center;
-  color: ${style['color-theme']};
-  font-size: ${style['font-size-medium']};
+  color: ${style['color-dialog-background']};
+  font-size: ${style['color-dialog-background']};
   > div {
     display: inline-block;
-    background: ${style['color-theme']};
+    background: ${style['color-dialog-background']};
     height: 100%;
     width: 1px;
     margin-right: 2px;

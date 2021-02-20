@@ -1,6 +1,7 @@
 import { axiosInstance } from './config';
 // 获取热门歌手数据
 export const getHotSingerListRequest = (count) => {
+  console.log(`/top/artists?offset=${count}`);
   return axiosInstance.get(`/top/artists?offset=${count}`);
 };
 // 获取类别歌手数据
