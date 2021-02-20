@@ -10,6 +10,13 @@ import Header from '@/baseUI/Header';
 import Scroll from '@/baseUI/Scroll';
 import Loading from '@/baseUI/Loading';
 export default memo(function Album(props) {
+  const HEADER_HEIGHT = 45;
+  const [showStatus, setShowStatus] = useState(true);
+  const [title, setTitle] = useState('歌单');
+  const [isMarquee, setIsMarquee] = useState(false); // 是否跑马灯
+  const headerRef = useRef();
+  const dispatch = useDispatch();
+  const id = props.match.params.id;
   const { currentAlbum, enterLoading } = useSelector(
     (state) => ({
       currentAlbum: state.album.currentAlbum,
@@ -17,17 +24,11 @@ export default memo(function Album(props) {
     }),
     shallowEqual
   );
-  const dispatch = useDispatch();
-  const id = props.match.params.id;
   useEffect(() => {
     dispatch(changeEnterLoadingAction(true));
     dispatch(getAlbumListAction(id));
   }, [dispatch, id]);
-  const HEADER_HEIGHT = 45;
-  const [showStatus, setShowStatus] = useState(true);
-  const [title, setTitle] = useState('歌单');
-  const [isMarquee, setIsMarquee] = useState(false); // 是否跑马灯
-  const headerRef = useRef();
+  console.log('album');
   const handleBack = () => {
     setShowStatus(false);
   };

@@ -3,9 +3,10 @@ import Loading from '@/baseUI/Loading';
 import Scroll from '@/baseUI/Scroll';
 import React, { memo, useEffect } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { renderRoutes } from 'react-router-config';
 import { getRankListAction } from './store';
 import { List, ListItem, Container, SongList } from './style';
-export default memo(function Rank() {
+export default memo(function Rank(props) {
   const { rankList, loading } = useSelector(
     (state) => ({
       rankList: state.rank.rankList,
@@ -13,20 +14,20 @@ export default memo(function Rank() {
     }),
     shallowEqual
   );
+  const globalStartIndex = filterIndex(rankList);
+  const officialList = rankList.slice(0, globalStartIndex);
+  const globalList = rankList.slice(globalStartIndex);
   const dispatch = useDispatch();
+  // 榜单数据未加载出来之前都给隐藏
+  const displayStyle = loading ? { display: 'none' } : { display: '' };
   useEffect(() => {
     if (!rankList.length) {
       dispatch(getRankListAction());
     }
   }, [dispatch, rankList]);
-  const globalStartIndex = filterIndex(rankList);
-  const officialList = rankList.slice(0, globalStartIndex);
-  const globalList = rankList.slice(globalStartIndex);
   const enterDetail = (item) => {
-    console.log(item);
+    props.history.push(`/rank/${item.id}`);
   };
-  // 榜单数据未加载出来之前都给隐藏
-  let displayStyle = loading ? { display: 'none' } : { display: '' };
 
   // 这是渲染榜单列表函数，传入 global 变量来区分不同的布局方式
   const renderRankList = (list, global) => {
@@ -79,6 +80,7 @@ export default memo(function Rank() {
         </div>
         {loading ? <Loading /> : null}
       </Scroll>
+      {renderRoutes(props.route.routes)}
     </Container>
   );
 });

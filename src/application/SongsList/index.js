@@ -4,7 +4,6 @@ import { SongList, SongItem } from './style';
 export default memo(function SongsList(props) {
   const { songList, subscribedCount } = props;
   const renderSongList = (songList) => {
-    console.log(songList);
     return (
       <SongList>
         <div className="first_line">
