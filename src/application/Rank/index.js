@@ -2,14 +2,17 @@ import { filterIndex } from '@/api/utils';
 import Loading from '@/baseUI/Loading';
 import Scroll from '@/baseUI/Scroll';
 import React, { memo, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { getRankListAction } from './store';
 import { List, ListItem, Container, SongList } from './style';
 export default memo(function Rank() {
-  const { rankList, loading } = useSelector((state) => ({
-    rankList: state.rank.rankList,
-    loading: state.rank.loading,
-  }));
+  const { rankList, loading } = useSelector(
+    (state) => ({
+      rankList: state.rank.rankList,
+      loading: state.rank.loading,
+    }),
+    shallowEqual
+  );
   const dispatch = useDispatch();
   useEffect(() => {
     if (!rankList.length) {

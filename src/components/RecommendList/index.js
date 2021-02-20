@@ -7,17 +7,17 @@ import {
   RecommendListWrapper,
 } from './style';
 export default memo(function RecommnedList(props) {
-  const { recommendList } = props;
+  const { recommendList, history } = props;
   const enterDetail = (item) => {
-    console.log(item);
-  }
+    history.push(`/recommend/${item.id}`);
+  };
   return (
     <RecommendListWrapper>
       <h1 className="title">推荐歌单</h1>
       <RecommendList>
         {recommendList.map((item, index) => {
           return (
-            <RecommendListItem key={item.id} onClick={()=> enterDetail(item)}>
+            <RecommendListItem key={item.id} onClick={() => enterDetail(item)}>
               <div className="img_wrapper">
                 <div className="decorate"></div>
                 <LazyLoad

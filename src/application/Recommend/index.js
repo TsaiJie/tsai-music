@@ -13,8 +13,9 @@ import {
   getBannerListAction,
   getRecommendListAction,
 } from './store/actionCreators';
+import { renderRoutes } from 'react-router-config';
 
-export default memo(function Recommend() {
+export default memo(function Recommend(props) {
   //mock 数据
   const dispatch = useDispatch();
   const { bannerList, recommendList, enterLoading } = useSelector(
@@ -41,9 +42,10 @@ export default memo(function Recommend() {
       <Scroll data={recommendList} onScroll={forceCheck}>
         <div>
           <Slider bannerList={bannerList}></Slider>
-          <RecommendList recommendList={recommendList}></RecommendList>
+          <RecommendList history={props.history} recommendList={recommendList}></RecommendList>
         </div>
       </Scroll>
+      {renderRoutes(props.route.routes)}
       {enterLoading ? <Loading /> : null}
     </Content>
   );
