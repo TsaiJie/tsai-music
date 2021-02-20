@@ -1,6 +1,6 @@
 import Header from '@/baseUI/Header';
 import Scroll from '@/baseUI/Scroll';
-import React, { memo, useState } from 'react';
+import React, { memo, useRef, useState } from 'react';
 import { CSSTransition } from 'react-transition-group';
 import SongsList from '../SongsList';
 import { Container, TopDesc, Menu } from './style';
@@ -195,6 +195,9 @@ export default memo(function Album(props) {
     ],
   };
   const [showStatus, setShowStatus] = useState(true);
+  const [title, setTitle] = useState('歌单');
+  const [isMarquee, setIsMarquee] = useState(false); // 是否跑马灯
+  const headerRef = useRef();
   const handleBack = () => {
     setShowStatus(false);
   };
@@ -258,7 +261,12 @@ export default memo(function Album(props) {
       onExit={props.history.goBack}
     >
       <Container>
-        <Header title={'返回'} handleClick={handleBack} />
+        <Header
+          ref={headerRef}
+          title={title}
+          isMarquee={isMarquee}
+          handleClick={handleBack}
+        />
         <Scroll bounceTop={false}>
           <div>
             {renderTopInfo(currentAlbum)}

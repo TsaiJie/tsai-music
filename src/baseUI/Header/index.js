@@ -23,24 +23,52 @@ const HeaderContainer = styled.div`
     font-weight: 700;
   }
 `;
-
+const Marquee = styled.div`
+  @keyframes marquee {
+    from {
+      transform: translateX(100%);
+    }
+    to {
+      transform: translateX(-100%);
+    }
+  }
+  width: 100%;
+  height: 35px;
+  overflow: hidden;
+  position: relative;
+  white-space: nowrap;
+  .text {
+    position: absolute;
+    animation: marquee 6s linear infinite;
+    font-size: ${style['font-size-l']};
+    font-weight: 700;
+  }
+`;
 const Header = forwardRef((props, ref) => {
-  const { handleClick, title } = props;
+  const { handleClick, title, isMarquee } = props;
   return (
     <HeaderContainer ref={ref}>
       <i className="iconfont back" onClick={handleClick}>
         &#xe655;
       </i>
-      <h1>{title}</h1>
+      {isMarquee ? (
+        <Marquee>
+          <h1 className="text">{title}</h1>
+        </Marquee>
+      ) : (
+        <h1>{title}</h1>
+      )}
     </HeaderContainer>
   );
 });
 Header.defaultProps = {
   handleClick: () => {},
   title: '标题',
+  isMarquee: false,
 };
 Header.propTypes = {
   handleClick: PropTypes.func,
   title: PropTypes.string,
+  isMarquee: PropTypes.bool,
 };
 export default memo(Header);
