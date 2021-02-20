@@ -38,13 +38,17 @@ export const changeAlphaAction = (data) => ({
   type: actionTypes.CHANGE_ALPHA,
   alpha: data,
 });
+export const changeListOffset = (data) => ({
+  type: actionTypes.CHANGE_LIST_OFFSET,
+  listOffset: data
+});
 // 加载热门歌手
 export const getHotSingerListAction = (mode) => {
   return async (dispatch, getState) => {
     try {
-      const pageCount = getState().singers.pageCount;
+      const listOffset = getState().singers.listOffset;
       const singerList = getState().singers.singerList;
-      const res = await getHotSingerListRequest(pageCount);
+      const res = await getHotSingerListRequest(listOffset);
       const newArtists = res.artists;
       let totalArtists;
       if (mode === 'pullDown') {
@@ -52,6 +56,7 @@ export const getHotSingerListAction = (mode) => {
       } else {
         totalArtists = [...singerList, ...newArtists];
       }
+      dispatch(changeListOffset(totalArtists.length))
       dispatch(changeSingerListAction(totalArtists));
       // 进场动画设置为false
       dispatch(changeEnterLoadingAction(false));
@@ -75,7 +80,8 @@ export const getCateorySingerListAction = () => {
       dispatch(changeSingerListAction(newArtists));
       dispatch(changeEnterLoadingAction(false));
       dispatch(changePullDownLoadingAction(false));
-      dispatch(changePullUpLoadingAction(false));
+      dispatch(changeListOffset(newArtists.length));
+
     } catch (error) {
       console.log('类别歌手数据获取失败', error);
     }
@@ -84,16 +90,17 @@ export const getCateorySingerListAction = () => {
 export const getMoreCateorySingerListAction = () => {
   return async (dispatch, getState) => {
     try {
-      const pageCount = getState().singers.pageCount;
+      const listOffset = getState().singers.listOffset;
       const singerList = getState().singers.singerList;
       const category = getState().singers.category;
       const alpha = getState().singers.alpha;
       const res = await getCategorySingerListRequest(
         category,
         alpha,
-        pageCount
+        listOffset
       );
       const data = [...singerList, ...res.artists];
+      dispatch(changeListOffset(data.length))
       dispatch(changeSingerListAction(data));
       dispatch(changePullUpLoadingAction(false));
     } catch (error) {

@@ -31,7 +31,6 @@ export default memo(function Singers() {
     alpha,
     category,
     pullDownLoading,
-    pageCount,
     pullUpLoading,
   } = useSelector(
     (state) => ({
@@ -41,7 +40,6 @@ export default memo(function Singers() {
       enterLoading: state.singers.enterLoading,
       pullUpLoading: state.singers.pullUpLoading,
       pullDownLoading: state.singers.pullDownLoading,
-      pageCount: state.singers.pageCount,
     }),
     shallowEqual
   );
@@ -77,12 +75,11 @@ export default memo(function Singers() {
     console.log('pullUpGetMoreData');
     dispatch(changePullUpLoadingAction(true));
     if (category === null && alpha === null) {
-      dispatch(changePageCountAction(pageCount + 1));
       dispatch(getHotSingerListAction());
     } else {
       dispatch(getMoreCateorySingerListAction());
     }
-  }, [dispatch, pageCount, category, alpha]);
+  }, [dispatch, category, alpha]);
   const pullDownRefreshData = useCallback(() => {
     console.log('pullDownRefreshData');
     dispatch(changePullDownLoadingAction(true));
