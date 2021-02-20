@@ -1,4 +1,5 @@
 import { filterIndex } from '@/api/utils';
+import Scroll from '@/baseUI/Scroll';
 import React, { memo, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getRankListAction, changeLoadingAction } from './store';
@@ -29,6 +30,7 @@ export default memo(function Rank() {
     return (
       <List>
         {list.map((item) => {
+          console.log(item.updateFrequency);
           return (
             <ListItem
               key={item.id}
@@ -47,15 +49,19 @@ export default memo(function Rank() {
     );
   };
   return (
-    <div>
-      <h1 className="offical" style={displayStyle}>
-        官方榜
-      </h1>
-      {renderRankList(officialList)}
-      <h1 className="global" style={displayStyle}>
-        全球榜
-      </h1>
-      {renderRankList(globalList)}
-    </div>
+    <Container>
+      <Scroll>
+        <div>
+          <h1 className="official" style={displayStyle}>
+            官方榜
+          </h1>
+          {renderRankList(officialList)}
+          <h1 className="global" style={displayStyle}>
+            全球榜
+          </h1>
+          {renderRankList(globalList)}
+        </div>
+      </Scroll>
+    </Container>
   );
 });

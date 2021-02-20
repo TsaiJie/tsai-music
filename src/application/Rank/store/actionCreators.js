@@ -22,7 +22,17 @@ export const getRankListAction = () => {
         const coverImgId = item.coverImgId;
         const coverImgUrl = item.coverImgUrl;
         const tracks = item.tracks;
-        return { id, name, playCount, userId, coverImgId, coverImgUrl, tracks };
+        const updateFrequency = item.updateFrequency;
+        return {
+          id,
+          name,
+          updateFrequency,
+          playCount,
+          userId,
+          coverImgId,
+          coverImgUrl,
+          tracks,
+        };
       });
       dispatch(changeRankListAction(resList));
       dispatch(changeLoadingAction(false));
