@@ -6,11 +6,13 @@ import React, {
   useRef,
   useState,
 } from 'react';
+import { debounce } from '@/api/utils';
 import PropTypes from 'prop-types';
 import BScroll from '@better-scroll/core';
 import styled from 'styled-components';
 import Loading from '../Loading';
 import Loadingv2 from '../Loadingv2';
+import { useMemo } from 'react';
 const ScrollContainer = styled.div`
   width: 100%;
   height: 100%;
@@ -36,6 +38,7 @@ export const PullDownLoading = styled.div`
   margin: auto;
   z-index: 100;
 `;
+
 const Scroll = forwardRef((props, ref) => {
   const {
     direction,
@@ -52,6 +55,12 @@ const Scroll = forwardRef((props, ref) => {
   const [bScroll, setBScroll] = useState(null);
   //current 指向初始化 bs 实例需要的 DOM 元素
   const scrollContaninerRef = useRef(null);
+  const pullUpDebounce = useMemo(() => {
+    return debounce(pullUp, 300);
+  }, [pullUp]);
+  const pullDownDebounce = useMemo(() => {
+    return debounce(pullDown, 300);
+  }, [pullDown]);
   useEffect(() => {
     _initScroll();
     return () => {
@@ -75,26 +84,28 @@ const Scroll = forwardRef((props, ref) => {
     bScroll.on('scrollEnd', () => {
       // 判断是否滑动到了底部
       if (bScroll.y <= bScroll.maxScrollY + 100) {
-        pullUp();
+        // pullUp();
+        pullUpDebounce();
       }
     });
     return () => {
       bScroll.off('scrollEnd');
     };
-  }, [pullUp, bScroll]);
+  }, [pullUp, bScroll, pullUpDebounce]);
   // 如果bScroll实例不为空且传入pullDown 为bScroll绑定事件
   useEffect(() => {
     if (!bScroll || !pullDown) return;
     bScroll.on('touchEnd', (pos) => {
       // 判断用户的下拉动作
       if (pos.y > 50) {
-        pullDown();
+        // pullDown();
+        pullDownDebounce();
       }
     });
     return () => {
       bScroll.off('touchEnd');
     };
-  }, [pullDown, bScroll]);
+  }, [pullDown, bScroll, pullDownDebounce]);
   // 每次重新渲染都要刷新实例，防止无法滑动:
   useEffect(() => {
     if (refresh && bScroll) {

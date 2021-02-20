@@ -1,20 +1,20 @@
-import React, { memo, useCallback } from 'react';
+import React, { memo, useCallback, useEffect, useRef} from 'react';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import LazyLoad, { forceCheck } from 'react-lazyload';
 import { categoryTypes, alphaTypes } from '@/api/config';
 import HorizonScroll from '@/baseUI/HorizonScroll';
-import { NavContainer, ListItem, List, ListWrapper } from './style';
 import Scroll from '@/baseUI/Scroll';
-import { actionCreators } from './store';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
-import { useEffect, useRef } from 'react/cjs/react.development';
 import Loading from '@/baseUI/Loading';
-import LazyLoad, { forceCheck } from 'react-lazyload';
+import { NavContainer, ListItem, List, ListWrapper } from './style';
+import { actionCreators } from './store';
+
 import {
   getCateorySingerListAction,
   getMoreCateorySingerListAction,
 } from './store/actionCreators';
 const {
   getHotSingerListAction,
-  changePageCountAction,
+  getMoreHotSingerListAction,
   changeEnterLoadingAction,
   changePullUpLoadingAction,
   changePullDownLoadingAction,
@@ -52,7 +52,6 @@ export default memo(function Singers() {
   }, [dispatch, singerList]);
   //  函数
   const categoryOrAlphaChange = useCallback(() => {
-    dispatch(changePageCountAction(0)); //由于改变了分类，所以pageCount清零
     dispatch(changeEnterLoadingAction(true)); //loading，现在实现控制逻辑，效果实现放到下一节，后面的loading同理
     dispatch(getCateorySingerListAction());
     scrollRef.current.refresh();
@@ -75,7 +74,7 @@ export default memo(function Singers() {
     console.log('pullUpGetMoreData');
     dispatch(changePullUpLoadingAction(true));
     if (category === null && alpha === null) {
-      dispatch(getHotSingerListAction());
+      dispatch(getMoreHotSingerListAction());
     } else {
       dispatch(getMoreCateorySingerListAction());
     }
@@ -83,9 +82,8 @@ export default memo(function Singers() {
   const pullDownRefreshData = useCallback(() => {
     console.log('pullDownRefreshData');
     dispatch(changePullDownLoadingAction(true));
-    dispatch(changePageCountAction(0)); //属于重新获取数据
     if (category === null && alpha === null) {
-      dispatch(getHotSingerListAction('pullDown'));
+      dispatch(getHotSingerListAction());
     } else {
       dispatch(getCateorySingerListAction());
     }
