@@ -28,7 +28,6 @@ export default memo(function Album(props) {
     dispatch(changeEnterLoadingAction(true));
     dispatch(getAlbumListAction(id));
   }, [dispatch, id]);
-  console.log('album');
   const handleBack = () => {
     setShowStatus(false);
   };
@@ -102,6 +101,7 @@ export default memo(function Album(props) {
       </Menu>
     );
   };
+  console.log('currentAlbum', currentAlbum);
   return (
     <CSSTransition
       in={showStatus}

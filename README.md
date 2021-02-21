@@ -13,7 +13,7 @@
 - react 配置覆盖 `@craco/craco`
 
 ## 项目运行
-
+后台在自己的服务器上，使用的是 `NeteaseCloudMusicApi` 项目
 ```powershell
 yarn add # 安装依赖
 yarn start  # or npm run start

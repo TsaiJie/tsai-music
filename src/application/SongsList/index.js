@@ -4,6 +4,7 @@ import { SongList, SongItem } from './style';
 export default memo(
   forwardRef(function SongsList(props, refs) {
     const { songList, subscribedCount, showCollect } = props;
+    console.log('songList', songList);
     const selectItem = (item, index) => {
       console.log(item, index);
     };
