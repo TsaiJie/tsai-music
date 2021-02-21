@@ -126,6 +126,7 @@ export default memo(function Album(props) {
               <SongsList
                 songList={currentAlbum.tracks}
                 subscribedCount={currentAlbum.subscribedCount}
+                showCollect={true}
               ></SongsList>
             </div>
           </Scroll>
