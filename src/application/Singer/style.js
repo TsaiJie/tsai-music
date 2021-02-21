@@ -46,6 +46,47 @@ export const ImgWrapper = styled.div`
     background: rgba(7, 17, 27, 0.3);
   }
 `;
-export const CollectButton = styled.div``;
-export const SongListWrapper = styled.div``;
+export const CollectButton = styled.div`
+  position: absolute;
+  box-sizing: border-box;
+  left: 0;
+  right: 0;
+  margin: auto;
+  width: 120px;
+  height: 40px;
+  margin-top: -55px;
+  z-index: 50;
+  background: ${style['color-theme-d']};
+  color: ${style['color-text-ll']};
+  -webkit-transform: rotate(0deg);
+  border-radius: 20px;
+  text-align: center;
+  font-size: 0;
+  line-height: 40px;
+  .iconfont {
+    display: inline-block;
+    margin-right: 10px;
+    font-size: 12px;
+    vertical-align: 1px
+  }
+  .text {
+    display: inline-block;
+    font-size: 14px;
+    letter-spacing: 5px;
+  }
+`;
+export const SongListWrapper = styled.div`
+  position:absolute;
+  z-index: 50;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  /* > div {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    overflow: visible;
+  } */
+`;
 export const BgLayer = styled.div``;
