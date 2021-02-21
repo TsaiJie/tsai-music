@@ -27,3 +27,8 @@ export const Container = styled.div`
     transform: rotateZ(30deg) translate3d(100%, 0, 0);
   }
 `;
+export const ImgWrapper = styled.div``;
+export const CollectButton = styled.div``;
+export const SongListWrapper = styled.div``;
+export const BgLayer = styled.div``;
+
