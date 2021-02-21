@@ -109,7 +109,7 @@ export default memo(function Album(props) {
       classNames="fly"
       appear={true}
       unmountOnExit
-      onExit={props.history.goBack}
+      onExited={props.history.goBack}
     >
       <Container>
         <Header
