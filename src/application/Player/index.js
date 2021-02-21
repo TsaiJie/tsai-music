@@ -35,7 +35,6 @@ export default memo(function Player() {
     shallowEqual
   );
   const dispatch = useDispatch();
-  console.log(playList.length, fullScreen);
   const changeFullScreenDispatch = useCallback(
     (data) => {
       console.log(data);
@@ -47,7 +46,7 @@ export default memo(function Player() {
     <div>
       {playList.length > 0 ? (
         <div>
-          <MiniPlayer song={currentSong} fullScreen={fullScreen} />
+          {!fullScreen && <MiniPlayer song={currentSong} fullScreen={fullScreen} />}
           <NormalPlayer
             song={currentSong}
             fullScreen={fullScreen}

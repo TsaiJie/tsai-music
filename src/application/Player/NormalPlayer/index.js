@@ -16,6 +16,7 @@ export default memo(function NormalPlayer(props) {
   console.log('normal', song);
   console.log('normal', fullScreen);
   const normalPlayerRef = useRef();
+  const cdWrapperRef = useRef();
   return (
     // onEnter入场动画第一帧时执行
     // onEntering当入场动画执行到第二帧时执行
@@ -27,7 +28,6 @@ export default memo(function NormalPlayer(props) {
       classNames="normal"
       in={fullScreen}
       timeout={400}
-      // mountOnEnter
       onExited={() => {
         normalPlayerRef.current.style.display = 'none';
       }}
@@ -57,7 +57,7 @@ export default memo(function NormalPlayer(props) {
           <h1 className="title">{song.name}</h1>
           <h1 className="subtitle">{getName(song.ar)}</h1>
         </Top>
-        <Middle>
+        <Middle ref={cdWrapperRef}>
           <CDWrapper>
             <div className="cd">
               <img
