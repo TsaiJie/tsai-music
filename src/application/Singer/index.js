@@ -1,10 +1,11 @@
 import Header from '@/baseUI/Header';
+import Loading from '@/baseUI/Loading';
 import Scroll from '@/baseUI/Scroll';
 import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { CSSTransition } from 'react-transition-group';
 import SongsList from '../SongsList';
-import { getSingerInfoAction } from './store';
+import { getSingerInfoAction , changeEnterLoadingAction} from './store';
 import {
   Container,
   ImgWrapper,
@@ -37,8 +38,10 @@ export default memo(function Singer(props) {
   );
   const dispatch = useDispatch();
   useEffect(() => {
+    dispatch(changeEnterLoadingAction(true))
     dispatch(getSingerInfoAction(id));
   }, [dispatch, id]);
+  // 获取图片的高度
   useEffect(() => {
     let imageWrapperHeight = imageWrapperRef.current.offsetHeight;
     songScrollWrapperRef.current.style.top = `${imageWrapperHeight - OFFSET}px`;
@@ -47,6 +50,7 @@ export default memo(function Singer(props) {
     layerRef.current.style.top = `${imageWrapperHeight - OFFSET}px`;
     songScrollRef.current.refresh();
   }, []);
+  // 上滑下滑时的交互逻辑
   const handleScroll = useCallback((pos) => {
     const imageWrapperHeight = initialHeight.current;
     const slideY = pos.y;
@@ -89,6 +93,10 @@ export default memo(function Singer(props) {
       imageDOM.style.zIndex = 99;
     }
   }, []);
+
+  const setShowStatusFalse = useCallback(() => {
+    setShowStatus(false);
+  }, []);
   return (
     <CSSTransition
       in={showStatus}
@@ -99,7 +107,11 @@ export default memo(function Singer(props) {
       onExited={() => props.history.goBack()}
     >
       <Container>
-        <Header title={'头部'} ref={headerRef} />
+        <Header
+          ref={headerRef}
+          handleClick={setShowStatusFalse}
+          title={artist.name}
+        />
         <ImgWrapper bgUrl={artist.picUrl} ref={imageWrapperRef}>
           <div className="filter"></div>
         </ImgWrapper>
@@ -113,6 +125,7 @@ export default memo(function Singer(props) {
             <SongsList songList={songsOfArtist} showCollect={false} />
           </Scroll>
         </SongListWrapper>
+        {loading ? <Loading /> : null}
       </Container>
     </CSSTransition>
   );
