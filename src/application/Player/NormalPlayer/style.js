@@ -89,8 +89,46 @@ export const Top = styled.div`
     ${style.noWrap()}
   }
 `;
-export const Middle = styled.div``;
-export const CDWrapper = styled.div``;
+export const Middle = styled.div`
+  position: fixed;
+  width: 100%;
+  top: 80px;
+  bottom: 170px;
+  white-space: nowrap;
+  font-size: 0;
+  overflow: hidden;
+`;
+export const CDWrapper = styled.div`
+  position: absolute;
+  margin: auto;
+  top: 10%;
+  left: 0;
+  right: 0;
+  width: 80%;
+  box-sizing: border-box;
+  height: 80vw;
+  .cd {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    .image {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      -webkit-transform: rotate(0deg);
+      border-radius: 50%;
+      border: 10px solid rgba(255, 255, 255, 0.1);
+    }
+    .play {
+      animation: ${rotate} 20s linear infinite;
+      &.pause {
+        animation-play-state: paused;
+      }
+    }
+  }
+`;
 export const Bottom = styled.div``;
 export const ProgressWrapper = styled.div``;
 export const Operators = styled.div``;
