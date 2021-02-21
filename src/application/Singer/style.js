@@ -82,19 +82,19 @@ export const SongListWrapper = styled.div`
   left: 0;
   bottom: 0;
   right: 0;
-  /* > div {
+  > div {
     position: absolute;
     left: 0;
     width: 100%;
     overflow: visible;
-  } */
+  }
 `;
 export const BgLayer = styled.div`
   position: absolute;
   top: 0;
   bottom: 0;
   width: 100%;
-  background: white;
+  background: ${style['color-highlight-background']};
   border-radius: 10px;
   z-index: 50;
 `;

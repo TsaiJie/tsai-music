@@ -64,7 +64,7 @@ export default memo(function Singer(props) {
           <span className="text"> 收藏 </span>
         </CollectButton>
         <BgLayer ref={layerRef}></BgLayer>
-        <SongListWrapper ref={songScrollWrapperRef}>
+        <SongListWrapper ref={songScrollWrapperRef} className="SongListWrapper">
           <Scroll ref={songScrollRef}>
             <SongsList songList={songsOfArtist} showCollect={false} />
           </Scroll>
