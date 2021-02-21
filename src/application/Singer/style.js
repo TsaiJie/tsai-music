@@ -67,7 +67,7 @@ export const CollectButton = styled.div`
     display: inline-block;
     margin-right: 10px;
     font-size: 12px;
-    vertical-align: 1px
+    vertical-align: 1px;
   }
   .text {
     display: inline-block;
@@ -76,7 +76,7 @@ export const CollectButton = styled.div`
   }
 `;
 export const SongListWrapper = styled.div`
-  position:absolute;
+  position: absolute;
   z-index: 50;
   top: 0;
   left: 0;
@@ -89,4 +89,12 @@ export const SongListWrapper = styled.div`
     overflow: visible;
   } */
 `;
-export const BgLayer = styled.div``;
+export const BgLayer = styled.div`
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  background: white;
+  border-radius: 10px;
+  z-index: 50;
+`;
