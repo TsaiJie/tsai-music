@@ -129,6 +129,41 @@ export const CDWrapper = styled.div`
     }
   }
 `;
-export const Bottom = styled.div``;
+export const Bottom = styled.div`
+  position: absolute;
+  bottom: 50px;
+  width: 100%;
+`;
 export const ProgressWrapper = styled.div``;
-export const Operators = styled.div``;
+export const Operators = styled.div`
+  display: flex;
+  align-items: center;
+  .icon {
+    font-weight: 300;
+    flex: 1;
+    color: ${style['color-theme']};
+    &.disable {
+      color: ${style['color-theme-d']};
+    }
+    i {
+      font-weight: 300;
+      font-size: 30px;
+    }
+  }
+  .i-left {
+    text-align: right;
+  }
+  .i-center {
+    padding: 0 20px;
+    text-align: center;
+    i {
+      font-size: 40px;
+    }
+  }
+  .i-right {
+    text-align: left;
+  }
+  .icon-favorite {
+    color: ${style['theme-color']};
+  }
+`;

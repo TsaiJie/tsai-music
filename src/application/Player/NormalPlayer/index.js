@@ -68,6 +68,25 @@ export default memo(function NormalPlayer(props) {
             </div>
           </CDWrapper>
         </Middle>
+        <Bottom className="bottom">
+          <Operators>
+            <div className="icon i-left">
+              <i className="iconfont">&#xe625;</i>
+            </div>
+            <div className="icon i-left">
+              <i className="iconfont">&#xe6e1;</i>
+            </div>
+            <div className="icon i-center">
+              <i className="iconfont">&#xe723;</i>
+            </div>
+            <div className="icon i-right">
+              <i className="iconfont">&#xe718;</i>
+            </div>
+            <div className="icon i-right">
+              <i className="iconfont">&#xe640;</i>
+            </div>
+          </Operators>
+        </Bottom>
       </NormalPlayerContainer>
     </CSSTransition>
   );
