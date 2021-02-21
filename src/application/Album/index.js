@@ -72,7 +72,7 @@ export default memo(function Album(props) {
           <div className="title">{currentAlbum.name}</div>
           <div className="person">
             <div className="avatar">
-              <img src={currentAlbum.creator.avatarUrl} alt="avator" />
+              <img src={currentAlbum.creator.avatarUrl} alt="avatar" />
             </div>
             <div className="name">{currentAlbum.creator.nickname}</div>
           </div>

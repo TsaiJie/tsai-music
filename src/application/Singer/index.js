@@ -1,11 +1,12 @@
-import Header from '@/baseUI/Header';
-import Loading from '@/baseUI/Loading';
-import Scroll from '@/baseUI/Scroll';
 import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { CSSTransition } from 'react-transition-group';
-import SongsList from '../SongsList';
 import { getSingerInfoAction , changeEnterLoadingAction} from './store';
+import Header from '@/baseUI/Header';
+import Loading from '@/baseUI/Loading';
+import Scroll from '@/baseUI/Scroll';
+import SongsList from '../SongsList';
+
 import {
   Container,
   ImgWrapper,
