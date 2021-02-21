@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
-import { useDispatch } from 'react-redux';
-import { shallowEqual } from 'react-redux';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector, shallowEqual } from 'react-redux';
+import MiniPlayer from './MiniPlayer';
+import NormalPlayer from './NormalPlayer';
 
 export default memo(function Player() {
   const {
@@ -25,5 +25,14 @@ export default memo(function Player() {
     shallowEqual
   );
   const dispatch = useDispatch();
-  return <div>player</div>;
+  return (
+    <div>
+      {playList.length > 0 ? (
+        <div>
+          {!fullScreen && <MiniPlayer />}
+          {fullScreen && <NormalPlayer />}
+        </div>
+      ) : null}
+    </div>
+  );
 });
