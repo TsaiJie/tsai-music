@@ -27,8 +27,25 @@ export const Container = styled.div`
     transform: rotateZ(30deg) translate3d(100%, 0, 0);
   }
 `;
-export const ImgWrapper = styled.div``;
+export const ImgWrapper = styled.div`
+  position: relative;
+  width: 100%;
+  height: 0;
+  background: url(${(props) => props.bgUrl});
+  padding-top: 75%;
+  background-size: cover;
+  z-index: 50;
+  transform-origin: top;
+  // 对图片的色调进行修饰
+  .filter {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(7, 17, 27, 0.3);
+  }
+`;
 export const CollectButton = styled.div``;
 export const SongListWrapper = styled.div``;
 export const BgLayer = styled.div``;
-
