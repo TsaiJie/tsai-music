@@ -1,9 +1,7 @@
-import React, { memo } from 'react'
+import React, { memo } from 'react';
 
-export default memo(function MiniPlayer() {
-  return (
-    <div>
-      MiniPlayer
-    </div>
-  )
-})
+export default memo(function MiniPlayer(props) {
+  const { song } = props;
+  console.log(song);
+  return <div>MiniPlayer</div>;
+});

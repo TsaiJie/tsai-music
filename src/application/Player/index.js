@@ -1,3 +1,4 @@
+import { isEmptyObject } from '@/api/utils';
 import React, { memo } from 'react';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import MiniPlayer from './MiniPlayer';
@@ -30,8 +31,8 @@ export default memo(function Player() {
     <div>
       {playList.length > 0 ? (
         <div>
-          {!fullScreen && <MiniPlayer />}
-          {fullScreen && <NormalPlayer />}
+          {!fullScreen && <MiniPlayer song={currentSong} />}
+          {fullScreen && <NormalPlayer song={currentSong} />}
         </div>
       ) : null}
     </div>
