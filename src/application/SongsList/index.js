@@ -32,7 +32,7 @@ export default memo(
           <SongItem>
             {songList.map((item, index) => {
               return (
-                <li key={item.name} onClick={(item) => selectItem(item, index)}>
+                <li key={item.id} onClick={(item) => selectItem(item, index)}>
                   <div className="index">{index + 1}</div>
                   <div className="info">
                     <span>{item.name}</span>
