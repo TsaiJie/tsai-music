@@ -12,7 +12,8 @@ export const changePlayListAction = (playList) => ({
   playList,
 });
 export const changeSequenceListAction = (sequenceList) => ({
-  type: actionTypes.SET_SEQUENCE_LIST
+  type: actionTypes.SET_SEQUENCE_LIST,
+  sequenceList
 })
 export const changePlayModeAction = (mode) => ({
   type: actionTypes.SET_PLAY_MODE,

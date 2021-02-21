@@ -25,6 +25,7 @@ export default memo(function Player() {
     shallowEqual
   );
   const dispatch = useDispatch();
+  console.log(playList.length, fullScreen);
   return (
     <div>
       {playList.length > 0 ? (

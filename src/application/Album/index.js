@@ -101,7 +101,6 @@ export default memo(function Album(props) {
       </Menu>
     );
   };
-  console.log('currentAlbum', currentAlbum);
   return (
     <CSSTransition
       in={showStatus}

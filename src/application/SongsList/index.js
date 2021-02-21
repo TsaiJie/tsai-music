@@ -1,12 +1,24 @@
 import { getCount, getName } from '@/api/utils';
 import React, { memo, forwardRef } from 'react';
 import { SongList, SongItem } from './style';
+import {
+  changeCurrentIndexAction,
+  changeFullScreenAction,
+  changePlayListAction,
+  changePlayingStateAction,
+  changeSequenceListAction,
+} from '@/application/Player/store';
+import { useDispatch } from 'react-redux';
 export default memo(
   forwardRef(function SongsList(props, refs) {
     const { songList, subscribedCount, showCollect } = props;
-    console.log('songList', songList);
+    const dispatch = useDispatch();
     const selectItem = (item, index) => {
-      console.log(item, index);
+      dispatch(changeSequenceListAction(songList));
+      dispatch(changePlayListAction(songList));
+      dispatch(changeCurrentIndexAction(index));
+      dispatch(changeFullScreenAction(true));
+      dispatch(changePlayingStateAction(true));
     };
     const collect = (count) => {
       return (
