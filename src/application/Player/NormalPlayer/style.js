@@ -33,7 +33,40 @@ export const NormalPlayerContainer = styled.div`
     }
   }
 `;
-export const Top = styled.div``;
+export const Top = styled.div`
+  position: relative;
+  margin-bottom: 25px;
+  .back {
+    position: absolute;
+    top: 0;
+    left: 6px;
+    z-index: 50;
+    .iconfont {
+      display: block;
+      padding: 9px;
+      font-size: 24px;
+      color: ${style['color-theme']};
+      font-weight: bold;
+      transform: rotate(90deg);
+    }
+  }
+  .title {
+    width: 70%;
+    margin: 0 auto;
+    line-height: 40px;
+    text-align: center;
+    font-size: ${style['font-size-large']};
+    color: ${style['color-text-ll']};
+    ${style.noWrap()}
+  }
+  .subtitle {
+    line-height: 20px;
+    font-size: ${style['font-size-medium']};
+    color: ${style['color-text-l']};
+    text-align: center;
+    ${style.noWrap()}
+  }
+`;
 export const Middle = styled.div``;
 export const CDWrapper = styled.div``;
 export const Bottom = styled.div``;

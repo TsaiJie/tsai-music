@@ -22,6 +22,13 @@ export default memo(function NormalPlayer(props) {
         />
       </div>
       <div className="background layer"></div>
+      <Top className="top">
+        <div className="back">
+          <i className="iconfont icon-back">&#xe662;</i>
+        </div>
+        <h1 className="title">{song.name}</h1>
+        <h1 className="subtitle">{getName(song.ar)}</h1>
+      </Top>
     </NormalPlayerContainer>
   );
 });
