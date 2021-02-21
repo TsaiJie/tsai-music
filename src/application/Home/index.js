@@ -2,6 +2,7 @@ import React, { memo } from 'react';
 import { renderRoutes } from 'react-router-config';
 import { NavLink } from 'react-router-dom';
 import { Top, TabContainer } from './style';
+import Player from '@/application/Player';
 
 export default memo(function Home(props) {
   return (
@@ -23,6 +24,7 @@ export default memo(function Home(props) {
         </NavLink>
       </TabContainer>
       {renderRoutes(props.route.routes)}
+      <Player />
     </div>
   );
 });

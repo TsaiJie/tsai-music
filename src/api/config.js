@@ -1,7 +1,7 @@
 import axios from 'axios';
 export const baseUrl = 'http://39.103.216.202:4000';
 //axios 的实例及拦截器配置
-const axiosInstance = axios.create({
+export const axiosInstance = axios.create({
   baseURL: baseUrl,
 });
 
@@ -213,4 +213,9 @@ export const alphaTypes = [
     name: 'Z',
   },
 ];
-export { axiosInstance };
+// 播放模式
+export const playMode = {
+  sequence: 0,
+  loop: 1,
+  random: 2,
+};
