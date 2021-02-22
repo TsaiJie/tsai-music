@@ -1,7 +1,7 @@
 import React, { memo, useRef } from 'react';
 import { CSSTransition } from 'react-transition-group';
 import animations from 'create-keyframe-animation';
-import { getName } from '@/api/utils';
+import { getName, prefixStyle } from '@/api/utils';
 import {
   NormalPlayerContainer,
   Top,
@@ -15,7 +15,7 @@ export default memo(function NormalPlayer(props) {
   const { changeFullScreenDispatch } = props;
   const normalPlayerRef = useRef();
   const cdWrapperRef = useRef();
-
+  const transform = prefixStyle('transform');
   const _getPosAndScale = () => {
     const miniPlayerImgWidth = 40;
     // miniPlayerImg中心到屏幕左边的距离
@@ -42,7 +42,6 @@ export default memo(function NormalPlayer(props) {
   // onEnter入场动画第一帧时执行
   const enter = () => {
     const { x, y, scale } = _getPosAndScale();
-    console.log(x, y, scale);
     // 定义动画
     const animation = {
       0: {
@@ -74,10 +73,22 @@ export default memo(function NormalPlayer(props) {
     cdWrapperRef.current.style.animation = '';
   };
   // onExit出场动画第一帧时执行
-  const leave = () => {};
+  // 离开时的动画只需要缩小并移动到左小角即可
+  const leave = () => {
+    if (!cdWrapperRef.current) return;
+    const { x, y, scale } = _getPosAndScale();
+    cdWrapperRef.current.style.transition = 'all 0.4s';
+    cdWrapperRef.current.style[
+      transform
+    ] = `translate3d(${x}px,${y}px,0) scale(${scale})`;
+  };
   // onExiting出场动画第二帧时执行
   // onExited整个动画出场结束时执行
-  const afterLeave = () => {};
+  const afterLeave = () => {
+    if (!cdWrapperRef.current) return;
+    cdWrapperRef.current.style.transition = '';
+    cdWrapperRef.current.style[transform] = '';
+  };
 
   return (
     <CSSTransition
