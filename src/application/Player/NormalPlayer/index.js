@@ -39,7 +39,8 @@ export default memo(function NormalPlayer(props) {
     };
   };
 
-  // onEnter入场动画第一帧时执行
+  // onEnter入场动画第一帧时执行 
+  // translate3d(0,0,0)是元素的当前位置
   const enter = () => {
     const { x, y, scale } = _getPosAndScale();
     // 定义动画
