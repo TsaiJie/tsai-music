@@ -11,7 +11,7 @@ import {
   CDWrapper,
 } from './style';
 export default memo(function NormalPlayer(props) {
-  const { song, fullScreen, playing } = props;
+  const { song, fullScreen, playing, songReady } = props;
   const {
     changeFullScreenDispatch,
     changePlayingStateDispatch,
@@ -148,11 +148,14 @@ export default memo(function NormalPlayer(props) {
             <div className="icon i-left">
               <i className="iconfont">&#xe625;</i>
             </div>
-            <div className="icon i-left" onClick={() => togglePrevSong()}>
+            <div
+              className={songReady ? 'icon i-left' : 'icon i-left disable'}
+              onClick={() => togglePrevSong()}
+            >
               <i className="iconfont">&#xe6e1;</i>
             </div>
             <div
-              className="icon i-center"
+              className={songReady ? 'icon i-center' : 'icon i-center disable'}
               onClick={(e) => changePlayingStateDispatch(e, !playing)}
             >
               <i
@@ -162,7 +165,10 @@ export default memo(function NormalPlayer(props) {
                 }}
               />
             </div>
-            <div className="icon i-right" onClick={() => toggleNextSong()}>
+            <div
+              className={songReady ? 'icon i-right' : 'icon i-right disable'}
+              onClick={() => toggleNextSong()}
+            >
               <i className="iconfont">&#xe718;</i>
             </div>
             <div className="icon i-right">

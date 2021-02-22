@@ -37,6 +37,7 @@ export default memo(function Player() {
     shallowEqual
   );
   const audioRef = useRef(null);
+  const [songReady, setSongReady] = useState(false);
   const currentSongPlayUrl = getSongPlayUrl(currentSong.id);
   const dispatch = useDispatch();
   const changeFullScreenDispatch = useCallback(
@@ -47,25 +48,52 @@ export default memo(function Player() {
   );
   const changePlayingStateDispatch = useCallback(
     (e, data) => {
-      e.stopPropagation();
+      if (!songReady) return;
+      e && e.stopPropagation();
+
       dispatch(changePlayingStateAction(data));
     },
-    [dispatch]
+    [dispatch, songReady]
   );
   const toggleNextSong = useCallback(() => {
+    if (!songReady) return;
     let index = currentIndex + 1;
     if (index === playList.length - 1) {
       index = 0;
     }
     dispatch(changeCurrentIndexAction(index));
-  }, [dispatch, currentIndex, playList]);
+    if (!playing) {
+      changePlayingStateDispatch(null, !playing);
+    }
+    setSongReady(false);
+  }, [
+    dispatch,
+    currentIndex,
+    playList,
+    playing,
+    songReady,
+    changePlayingStateDispatch,
+  ]);
   const togglePrevSong = useCallback(() => {
+    if (!songReady) return;
     let index = currentIndex - 1;
     if (index === -1) {
       index = playList.length - 1;
     }
     dispatch(changeCurrentIndexAction(index));
-  }, [dispatch, currentIndex, playList]);
+    if (!playing) {
+      dispatch(changePlayingStateAction(true));
+    }
+    setSongReady(false);
+  }, [dispatch, currentIndex, playList, playing, songReady]);
+  const handleCanPlay = () => {
+    setSongReady(true);
+  };
+  const handleError = () => {
+    // 如果发生错误  canPlay不能执行，就需要error来处理
+    setSongReady(true);
+  };
+
   useEffect(() => {
     if (currentSong && audioRef.current) {
       setTimeout(() => {
@@ -96,14 +124,23 @@ export default memo(function Player() {
             song={currentSong}
             fullScreen={fullScreen}
             playing={playing}
+            songReady={songReady}
             changeFullScreenDispatch={changeFullScreenDispatch}
             changePlayingStateDispatch={changePlayingStateDispatch}
             toggleNextSong={toggleNextSong}
             togglePrevSong={togglePrevSong}
+
           />
         </div>
       ) : null}
-      {currentSongPlayUrl && <audio ref={audioRef} src={currentSongPlayUrl} />}
+      {currentSongPlayUrl && (
+        <audio
+          ref={audioRef}
+          src={currentSongPlayUrl}
+          onCanPlay={handleCanPlay}
+          onError={handleError}
+        />
+      )}
     </div>
   );
 });
