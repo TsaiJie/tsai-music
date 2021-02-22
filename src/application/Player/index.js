@@ -46,7 +46,7 @@ export default memo(function Player() {
     <div>
       {playList.length > 0 ? (
         <div>
-          {!fullScreen && <MiniPlayer song={currentSong} fullScreen={fullScreen} />}
+          <MiniPlayer song={currentSong} fullScreen={fullScreen} />
           <NormalPlayer
             song={currentSong}
             fullScreen={fullScreen}

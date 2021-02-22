@@ -9,15 +9,16 @@ export default memo(function MiniPlayer(props) {
   console.log('mini', song);
   return (
     <CSSTransition
-      in={fullScreen}
+      in={!fullScreen}
       classNames="mini"
       timeout={400}
-      onEnter={() => {
-        miniPlayerRef.current.style.display = 'flex';
-      }}
-      onExited={() => {
-        miniPlayerRef.current.style.display = 'none';
-      }}
+      unmountOnExit
+      // onEnter={() => {
+      //   miniPlayerRef.current.style.display = 'flex';
+      // }}
+      // onExited={() => {
+      //   miniPlayerRef.current.style.display = 'none';
+      // }}
     >
       <MiniPlayerContainer ref={miniPlayerRef}>
         <div className="icon">
