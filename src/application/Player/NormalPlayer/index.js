@@ -2,6 +2,7 @@ import React, { memo, useRef } from 'react';
 import { CSSTransition } from 'react-transition-group';
 import animations from 'create-keyframe-animation';
 import { getName, prefixStyle } from '@/api/utils';
+
 import {
   NormalPlayerContainer,
   Top,
@@ -9,9 +10,11 @@ import {
   Bottom,
   Operators,
   CDWrapper,
+  ProgressWrapper,
 } from './style';
+import ProgressBar from '@/baseUI/ProgressBar';
 export default memo(function NormalPlayer(props) {
-  const { song, fullScreen, playing, songReady } = props;
+  const { song, fullScreen, playing, songReady, currentTime, duration } = props;
   const {
     changeFullScreenDispatch,
     changePlayingStateDispatch,
@@ -144,6 +147,13 @@ export default memo(function NormalPlayer(props) {
           </CDWrapper>
         </Middle>
         <Bottom className="bottom">
+          <ProgressWrapper>
+            <span className="time time-l">{currentTime}</span>
+            <div className="progress-bar-wrapper">
+              <ProgressBar />
+            </div>
+            <div className="time time-r">{duration}</div>
+          </ProgressWrapper>
           <Operators>
             <div className="icon i-left">
               <i className="iconfont">&#xe625;</i>

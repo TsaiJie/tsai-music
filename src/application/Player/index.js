@@ -40,6 +40,7 @@ export default memo(function Player() {
   const audioRef = useRef(null);
   const [songReady, setSongReady] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
   const currentSongPlayUrl = getSongPlayUrl(currentSong.id);
   const dispatch = useDispatch();
   const changeFullScreenDispatch = useCallback(
@@ -102,6 +103,7 @@ export default memo(function Player() {
 
   useEffect(() => {
     if (currentSong && audioRef.current) {
+      setDuration(currentSong.dt / 1000);
       setTimeout(() => {
         audioRef.current.play();
       }, 0);
@@ -130,6 +132,8 @@ export default memo(function Player() {
             fullScreen={fullScreen}
             playing={playing}
             songReady={songReady}
+            currentTime={formatTime(currentTime)}
+            duration={formatTime(duration)}
             changeFullScreenDispatch={changeFullScreenDispatch}
             changePlayingStateDispatch={changePlayingStateDispatch}
             toggleNextSong={toggleNextSong}

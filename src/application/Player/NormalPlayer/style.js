@@ -138,7 +138,29 @@ export const Bottom = styled.div`
   bottom: 50px;
   width: 100%;
 `;
-export const ProgressWrapper = styled.div``;
+export const ProgressWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  width: 80%;
+  margin: 0 auto;
+  padding: 10px 0;
+  .time {
+    color: ${style['color-text-l']};
+    font-size: ${style['font-size-medium']};
+    flex: 0 0 30px;
+    line-height: 30px;
+    width: 30px;
+    &.time-l {
+      text-align: left;
+    }
+    &.time-r {
+      text-align: right;
+    }
+  }
+  .progress-bar-wrapper {
+    flex: 1;
+  }
+`;
 export const Operators = styled.div`
   display: flex;
   align-items: center;
