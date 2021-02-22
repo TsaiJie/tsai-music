@@ -11,8 +11,8 @@ import {
   CDWrapper,
 } from './style';
 export default memo(function NormalPlayer(props) {
-  const { song, fullScreen } = props;
-  const { changeFullScreenDispatch } = props;
+  const { song, fullScreen, playing } = props;
+  const { changeFullScreenDispatch, changePlayingStateDispatch } = props;
   const normalPlayerRef = useRef();
   const cdWrapperRef = useRef();
   const transform = prefixStyle('transform');
@@ -39,7 +39,7 @@ export default memo(function NormalPlayer(props) {
     };
   };
 
-  // onEnter入场动画第一帧时执行 
+  // onEnter入场动画第一帧时执行
   // translate3d(0,0,0)是元素的当前位置
   const enter = () => {
     const { x, y, scale } = _getPosAndScale();
@@ -146,8 +146,16 @@ export default memo(function NormalPlayer(props) {
             <div className="icon i-left">
               <i className="iconfont">&#xe6e1;</i>
             </div>
-            <div className="icon i-center">
-              <i className="iconfont">&#xe723;</i>
+            <div
+              className="icon i-center"
+              onClick={() => changePlayingStateDispatch(!playing)}
+            >
+              <i
+                className="iconfont"
+                dangerouslySetInnerHTML={{
+                  __html: playing ? '&#xe723;' : '&#xe731;',
+                }}
+              />
             </div>
             <div className="icon i-right">
               <i className="iconfont">&#xe718;</i>
