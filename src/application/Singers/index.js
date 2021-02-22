@@ -33,6 +33,7 @@ export default memo(function Singers(props) {
     category,
     pullDownLoading,
     pullUpLoading,
+    playList,
   } = useSelector(
     (state) => ({
       category: state.singers.category,
@@ -41,6 +42,7 @@ export default memo(function Singers(props) {
       enterLoading: state.singers.enterLoading,
       pullUpLoading: state.singers.pullUpLoading,
       pullDownLoading: state.singers.pullDownLoading,
+      playList: state.player.playList,
     }),
     shallowEqual
   );
@@ -141,7 +143,7 @@ export default memo(function Singers(props) {
           value={alpha && alpha.key}
         />
       </NavContainer>
-      <ListWrapper>
+      <ListWrapper playList={playList.length}>
         <Scroll
           ref={scrollRef}
           pullDown={pullDownRefreshData}

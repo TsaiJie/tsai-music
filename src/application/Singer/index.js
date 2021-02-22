@@ -1,7 +1,7 @@
 import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { CSSTransition } from 'react-transition-group';
-import { getSingerInfoAction , changeEnterLoadingAction} from './store';
+import { getSingerInfoAction, changeEnterLoadingAction } from './store';
 import Header from '@/baseUI/Header';
 import Loading from '@/baseUI/Loading';
 import Scroll from '@/baseUI/Scroll';
@@ -29,17 +29,18 @@ export default memo(function Singer(props) {
   const HEADER_HEIGHT = 45;
   const [showStatus, setShowStatus] = useState(true);
   const { id } = props.match.params;
-  const { artist, songsOfArtist, loading } = useSelector(
+  const { artist, songsOfArtist, loading, playList } = useSelector(
     (state) => ({
       artist: state.singerInfo.artist,
       songsOfArtist: state.singerInfo.songsOfArtist,
       loading: state.singerInfo.loading,
+      playList: state.player.playList,
     }),
     shallowEqual
   );
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(changeEnterLoadingAction(true))
+    dispatch(changeEnterLoadingAction(true));
     dispatch(getSingerInfoAction(id));
   }, [dispatch, id]);
   // 获取图片的高度
@@ -107,7 +108,7 @@ export default memo(function Singer(props) {
       unmountOnExit
       onExited={() => props.history.goBack()}
     >
-      <Container>
+      <Container playList={playList.length}> 
         <Header
           ref={headerRef}
           handleClick={setShowStatusFalse}

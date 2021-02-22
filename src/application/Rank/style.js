@@ -3,7 +3,7 @@ import style from '@/assets/global-style';
 export const Container = styled.div`
   position: fixed;
   top: 90px;
-  bottom: 0;
+  bottom: ${(props) => (props.playList > 0 ? '55px' : '0px')};
   width: 100%;
   .official,
   .global {

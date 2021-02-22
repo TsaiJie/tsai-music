@@ -7,10 +7,11 @@ import { renderRoutes } from 'react-router-config';
 import { getRankListAction } from './store';
 import { List, ListItem, Container, SongList } from './style';
 export default memo(function Rank(props) {
-  const { rankList, loading } = useSelector(
+  const { rankList, loading ,playList} = useSelector(
     (state) => ({
       rankList: state.rank.rankList,
       loading: state.rank.loading,
+      playList: state.player.playList
     }),
     shallowEqual
   );
@@ -66,7 +67,7 @@ export default memo(function Rank(props) {
     ) : null;
   };
   return (
-    <Container>
+    <Container playList={playList.length}>
       <Scroll data={rankList}>
         <div>
           <h1 className="official" style={displayStyle}>

@@ -4,7 +4,7 @@ import style from '@/assets/global-style';
 export const Container = styled.div`
   position: fixed;
   top: 0;
-  bottom: 0;
+  bottom: ${(props) => (props.playList > 0 ? '55px' : '0px')};
   right: 0;
   left: 0;
   z-index: 100;

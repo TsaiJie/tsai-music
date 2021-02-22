@@ -7,6 +7,7 @@ export const Container = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
+  bottom: ${(props) => (props.playList > 0 ? '55px' : '0px')};
   z-index: 100;
   background: ${style['color-background']};
   transform-origin: right bottom;

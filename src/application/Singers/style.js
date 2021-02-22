@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import style from '@/assets/global-style'
+import style from '@/assets/global-style';
 export const NavContainer = styled.div`
   box-sizing: border-box;
   position: fixed;
@@ -12,7 +12,7 @@ export const ListWrapper = styled.div`
   position: fixed;
   top: 160px;
   left: 0;
-  bottom: 0;
+  bottom: ${(props) => (props.playList > 0 ? '55px' : '0px')};
   overflow: hidden;
   width: 100%;
 `;
@@ -49,4 +49,3 @@ export const ListItem = styled.div`
     font-weight: 500;
   }
 `;
-

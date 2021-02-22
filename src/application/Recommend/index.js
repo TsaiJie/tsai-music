@@ -14,15 +14,15 @@ import {
   getRecommendListAction,
 } from './store/actionCreators';
 import { renderRoutes } from 'react-router-config';
-
 export default memo(function Recommend(props) {
   //mock 数据
   const dispatch = useDispatch();
-  const { bannerList, recommendList, enterLoading } = useSelector(
+  const { bannerList, recommendList, enterLoading, playList } = useSelector(
     (state) => ({
       bannerList: state.recommend.bannerList,
       recommendList: state.recommend.recommendList,
       enterLoading: state.recommend.enterLoading,
+      playList: state.player.playList,
     }),
     shallowEqual
   );
@@ -38,11 +38,14 @@ export default memo(function Recommend(props) {
   }, [dispatch, bannerList, recommendList]);
 
   return (
-    <Content>
+    <Content playList={playList.length}>
       <Scroll data={recommendList} onScroll={forceCheck}>
         <div>
           <Slider bannerList={bannerList}></Slider>
-          <RecommendList history={props.history} recommendList={recommendList}></RecommendList>
+          <RecommendList
+            history={props.history}
+            recommendList={recommendList}
+          ></RecommendList>
         </div>
       </Scroll>
       {renderRoutes(props.route.routes)}

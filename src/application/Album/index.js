@@ -17,10 +17,11 @@ export default memo(function Album(props) {
   const headerRef = useRef();
   const dispatch = useDispatch();
   const id = props.match.params.id;
-  const { currentAlbum, enterLoading } = useSelector(
+  const { currentAlbum, enterLoading, playList } = useSelector(
     (state) => ({
       currentAlbum: state.album.currentAlbum,
       enterLoading: state.album.enterLoading,
+      playList: state.player.playList,
     }),
     shallowEqual
   );
@@ -110,7 +111,7 @@ export default memo(function Album(props) {
       unmountOnExit
       onExited={props.history.goBack}
     >
-      <Container>
+      <Container playList={playList.length}>
         <Header
           ref={headerRef}
           title={title}
