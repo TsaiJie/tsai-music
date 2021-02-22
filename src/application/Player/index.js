@@ -11,6 +11,7 @@ import {
 import MiniPlayer from './MiniPlayer';
 import NormalPlayer from './NormalPlayer';
 import { useCallback } from 'react';
+import { formatTime } from '@/api/utils';
 const getSongPlayUrl = (id) => {
   if (!id) return '';
   return `https://music.163.com/song/media/outer/url?id=${id}.mp3`;
@@ -38,6 +39,7 @@ export default memo(function Player() {
   );
   const audioRef = useRef(null);
   const [songReady, setSongReady] = useState(false);
+  const [currentTime, setCurrentTime] = useState(0);
   const currentSongPlayUrl = getSongPlayUrl(currentSong.id);
   const dispatch = useDispatch();
   const changeFullScreenDispatch = useCallback(
@@ -93,6 +95,10 @@ export default memo(function Player() {
     // 如果发生错误  canPlay不能执行，就需要error来处理
     setSongReady(true);
   };
+  const handleTimeUpdate = (e) => {
+    setCurrentTime(e.target.currentTime);
+    console.log(formatTime(currentTime), formatTime(currentSong.dt / 1000));
+  };
 
   useEffect(() => {
     if (currentSong && audioRef.current) {
@@ -108,7 +114,6 @@ export default memo(function Player() {
       }, 0);
     }
   }, [playing]);
-  console.log(playing);
   return (
     <div>
       {playList.length > 0 ? (
@@ -129,7 +134,6 @@ export default memo(function Player() {
             changePlayingStateDispatch={changePlayingStateDispatch}
             toggleNextSong={toggleNextSong}
             togglePrevSong={togglePrevSong}
-
           />
         </div>
       ) : null}
@@ -139,6 +143,7 @@ export default memo(function Player() {
           src={currentSongPlayUrl}
           onCanPlay={handleCanPlay}
           onError={handleError}
+          onTimeUpdate={handleTimeUpdate}
         />
       )}
     </div>

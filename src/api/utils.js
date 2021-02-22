@@ -1,3 +1,5 @@
+import { SET_PLAY_MODE } from '@/application/Player/store/constants';
+
 export const getCount = (count) => {
   if (count < 0) return;
   if (count < 10000) {
@@ -70,3 +72,18 @@ export function prefixStyle(style) {
   }
   return vendor + style.charAt(0).toUpperCase() + style.substr(1);
 }
+const _pad = (num, n = 2) => {
+  let len = num.toString().length;
+  while (len < n) {
+    num = '0' + num;
+    len++;
+  }
+  return num;
+};
+export const formatTime = (interval) => {
+  // 向下取整
+  interval = interval | 0;
+  const minute = (interval / 60) | 0;
+  const second = _pad(interval % 60);
+  return `${minute}:${second}`;
+};
