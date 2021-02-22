@@ -37,7 +37,6 @@ export default memo(function Player() {
   const dispatch = useDispatch();
   const changeFullScreenDispatch = useCallback(
     (data) => {
-      console.log(data);
       dispatch(changeFullScreenAction(data));
     },
     [dispatch]

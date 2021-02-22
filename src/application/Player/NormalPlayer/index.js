@@ -13,8 +13,6 @@ import { useRef } from 'react';
 export default memo(function NormalPlayer(props) {
   const { song, fullScreen } = props;
   const { changeFullScreenDispatch } = props;
-  console.log('normal', song);
-  console.log('normal', fullScreen);
   const normalPlayerRef = useRef();
   const cdWrapperRef = useRef();
   // onEnter入场动画第一帧时执行
@@ -28,14 +26,16 @@ export default memo(function NormalPlayer(props) {
       classNames="normal"
       in={fullScreen}
       timeout={400}
+      // 当mountOnEnter 为true时，会在第一次in属性为true时加载子组件
       mountOnEnter
       appear={true}
-      onExited={() => {
-        normalPlayerRef.current.style.display = 'none';
-      }}
-      onEnter={() => {
-        normalPlayerRef.current.style.display = 'block';
-      }}
+      unmountOnExit
+      // onExited={() => {
+      //   normalPlayerRef.current.style.display = 'none';
+      // }}
+      // onEnter={() => {
+      //   normalPlayerRef.current.style.display = 'block';
+      // }}
     >
       <NormalPlayerContainer ref={normalPlayerRef}>
         <div className="background">

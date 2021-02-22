@@ -6,7 +6,6 @@ import { MiniPlayerContainer } from './style';
 export default memo(function MiniPlayer(props) {
   const { song, fullScreen, changeFullScreenDispatch } = props;
   const miniPlayerRef = useRef();
-  console.log('mini', song);
   return (
     <CSSTransition
       in={!fullScreen}
