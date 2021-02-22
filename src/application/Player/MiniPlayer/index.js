@@ -4,7 +4,7 @@ import { useRef } from 'react';
 import { CSSTransition } from 'react-transition-group';
 import { MiniPlayerContainer } from './style';
 export default memo(function MiniPlayer(props) {
-  const { song, fullScreen } = props;
+  const { song, fullScreen, changeFullScreenDispatch } = props;
   const miniPlayerRef = useRef();
   console.log('mini', song);
   return (
@@ -20,7 +20,10 @@ export default memo(function MiniPlayer(props) {
       //   miniPlayerRef.current.style.display = 'none';
       // }}
     >
-      <MiniPlayerContainer ref={miniPlayerRef}>
+      <MiniPlayerContainer
+        ref={miniPlayerRef}
+        onClick={(e) => changeFullScreenDispatch(true)}
+      >
         <div className="icon">
           <div className="imgWrapper">
             <img

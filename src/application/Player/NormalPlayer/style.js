@@ -18,7 +18,9 @@ export const NormalPlayerContainer = styled.div`
   z-index: 150;
   background: ${style['color-background']};
   &.normal-enter,
+  &.normal-appear,
   &.normal-exit-done {
+    opacity: 0;
     .top {
       transform: translate3d(0, -100px, 0);
     }
@@ -27,7 +29,8 @@ export const NormalPlayerContainer = styled.div`
     }
   }
   &.normal-enter-active,
-  &.normal-exit-active {
+  &.normal-exit-active,
+  &.normal-appear-active {
     .top,
     .bottom {
       transform: translate3d(0, 0, 0);

@@ -17,17 +17,19 @@ export default memo(function NormalPlayer(props) {
   console.log('normal', fullScreen);
   const normalPlayerRef = useRef();
   const cdWrapperRef = useRef();
+  // onEnter入场动画第一帧时执行
+  // onEntering当入场动画执行到第二帧时执行
+  // onEntered 入场动画结束时触发的钩子
+  // onExit出场动画第一帧时执行
+  // onExiting出场动画第二帧时执行
+  // onExited整个动画出场结束时执行
   return (
-    // onEnter入场动画第一帧时执行
-    // onEntering当入场动画执行到第二帧时执行
-    // onEntered 入场动画结束时触发的钩子
-    // onExit出场动画第一帧时执行
-    // onExiting出场动画第二帧时执行
-    // onExited整个动画出场结束时执行
     <CSSTransition
       classNames="normal"
       in={fullScreen}
       timeout={400}
+      mountOnEnter
+      appear={true}
       onExited={() => {
         normalPlayerRef.current.style.display = 'none';
       }}
