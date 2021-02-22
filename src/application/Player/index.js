@@ -52,6 +52,20 @@ export default memo(function Player() {
     },
     [dispatch]
   );
+  const toggleNextSong = useCallback(() => {
+    let index = currentIndex + 1;
+    if (index === playList.length - 1) {
+      index = 0;
+    }
+    dispatch(changeCurrentIndexAction(index));
+  }, [dispatch, currentIndex, playList]);
+  const togglePrevSong = useCallback(() => {
+    let index = currentIndex - 1;
+    if (index === -1) {
+      index = playList.length - 1;
+    }
+    dispatch(changeCurrentIndexAction(index));
+  }, [dispatch, currentIndex, playList]);
   useEffect(() => {
     if (currentSong && audioRef.current) {
       setTimeout(() => {
@@ -84,6 +98,8 @@ export default memo(function Player() {
             playing={playing}
             changeFullScreenDispatch={changeFullScreenDispatch}
             changePlayingStateDispatch={changePlayingStateDispatch}
+            toggleNextSong={toggleNextSong}
+            togglePrevSong={togglePrevSong}
           />
         </div>
       ) : null}

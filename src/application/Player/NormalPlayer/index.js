@@ -12,7 +12,12 @@ import {
 } from './style';
 export default memo(function NormalPlayer(props) {
   const { song, fullScreen, playing } = props;
-  const { changeFullScreenDispatch, changePlayingStateDispatch } = props;
+  const {
+    changeFullScreenDispatch,
+    changePlayingStateDispatch,
+    togglePrevSong,
+    toggleNextSong,
+  } = props;
   const normalPlayerRef = useRef();
   const cdWrapperRef = useRef();
   const transform = prefixStyle('transform');
@@ -143,7 +148,7 @@ export default memo(function NormalPlayer(props) {
             <div className="icon i-left">
               <i className="iconfont">&#xe625;</i>
             </div>
-            <div className="icon i-left">
+            <div className="icon i-left" onClick={() => togglePrevSong()}>
               <i className="iconfont">&#xe6e1;</i>
             </div>
             <div
@@ -157,7 +162,7 @@ export default memo(function NormalPlayer(props) {
                 }}
               />
             </div>
-            <div className="icon i-right">
+            <div className="icon i-right" onClick={() => toggleNextSong()}>
               <i className="iconfont">&#xe718;</i>
             </div>
             <div className="icon i-right">
