@@ -107,7 +107,7 @@ export const CDWrapper = styled.div`
   top: 10%;
   left: 0;
   right: 0;
-  width: 80%;
+  width: 80vw;
   box-sizing: border-box;
   height: 80vw;
   .cd {
@@ -122,6 +122,7 @@ export const CDWrapper = styled.div`
       height: 100%;
       -webkit-transform: rotate(0deg);
       border-radius: 50%;
+      box-sizing: border-box;
       border: 10px solid rgba(255, 255, 255, 0.1);
     }
     .play {

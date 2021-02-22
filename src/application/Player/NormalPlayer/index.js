@@ -1,4 +1,6 @@
-import React, { memo } from 'react';
+import React, { memo, useRef } from 'react';
+import { CSSTransition } from 'react-transition-group';
+import animations from 'create-keyframe-animation';
 import { getName } from '@/api/utils';
 import {
   NormalPlayerContainer,
@@ -8,19 +10,75 @@ import {
   Operators,
   CDWrapper,
 } from './style';
-import { CSSTransition } from 'react-transition-group';
-import { useRef } from 'react';
 export default memo(function NormalPlayer(props) {
   const { song, fullScreen } = props;
   const { changeFullScreenDispatch } = props;
   const normalPlayerRef = useRef();
   const cdWrapperRef = useRef();
+
+  const _getPosAndScale = () => {
+    const miniPlayerImgWidth = 40;
+    // miniPlayerImg中心到屏幕左边的距离
+    const paddingLeft = 40;
+    // miniPlayerImg中心到屏幕下边的距离
+    const paddingBottom = 30;
+    // cd上边距离屏幕上边的距离
+    const paddingTop = 125;
+    // cd的宽度
+    const cdWidth = window.innerWidth * 0.8;
+    // 初始的缩放比例
+    const scale = miniPlayerImgWidth / cdWidth;
+    // 横向需要移动的距离
+    const x = -(window.innerWidth / 2 - paddingLeft);
+    // 纵向需要移动的距离
+    const y = window.innerHeight - paddingTop - cdWidth / 2 - paddingBottom;
+    return {
+      x,
+      y,
+      scale,
+    };
+  };
+
   // onEnter入场动画第一帧时执行
+  const enter = () => {
+    const { x, y, scale } = _getPosAndScale();
+    console.log(x, y, scale);
+    // 定义动画
+    const animation = {
+      0: {
+        transform: `translate3d(${x}px,${y}px,0) scale(${scale})`,
+      },
+      60: {
+        transform: `translate3d(0,0,0) scale(1.1)`,
+      },
+      100: {
+        transform: `translate3d(0,0,0) scale(1)`,
+      },
+    };
+    // 注册动画
+    animations.registerAnimation({
+      name: 'move',
+      animation,
+      presets: {
+        duration: 400,
+        easing: 'linear',
+      },
+    });
+    // 运行动画
+    animations.runAnimation(cdWrapperRef.current, 'move');
+  };
   // onEntering当入场动画执行到第二帧时执行
   // onEntered 入场动画结束时触发的钩子
+  const afterEnter = () => {
+    animations.unregisterAnimation('move');
+    cdWrapperRef.current.style.animation = '';
+  };
   // onExit出场动画第一帧时执行
+  const leave = () => {};
   // onExiting出场动画第二帧时执行
   // onExited整个动画出场结束时执行
+  const afterLeave = () => {};
+
   return (
     <CSSTransition
       classNames="normal"
@@ -30,12 +88,10 @@ export default memo(function NormalPlayer(props) {
       mountOnEnter
       appear={true}
       unmountOnExit
-      // onExited={() => {
-      //   normalPlayerRef.current.style.display = 'none';
-      // }}
-      // onEnter={() => {
-      //   normalPlayerRef.current.style.display = 'block';
-      // }}
+      onEnter={enter}
+      onEntered={afterEnter}
+      onExit={leave}
+      onExited={afterLeave}
     >
       <NormalPlayerContainer ref={normalPlayerRef}>
         <div className="background">
