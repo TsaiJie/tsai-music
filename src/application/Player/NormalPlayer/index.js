@@ -131,7 +131,7 @@ export default memo(function NormalPlayer(props) {
           <CDWrapper>
             <div className="cd">
               <img
-                className="image play"
+                className={playing ? 'image play' : 'image play pause'}
                 src={song.al.picUrl + '?param=400x400'}
                 alt=""
               />
@@ -148,7 +148,7 @@ export default memo(function NormalPlayer(props) {
             </div>
             <div
               className="icon i-center"
-              onClick={() => changePlayingStateDispatch(!playing)}
+              onClick={(e) => changePlayingStateDispatch(e, !playing)}
             >
               <i
                 className="iconfont"

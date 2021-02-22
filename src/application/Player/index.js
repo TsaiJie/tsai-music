@@ -46,7 +46,8 @@ export default memo(function Player() {
     [dispatch]
   );
   const changePlayingStateDispatch = useCallback(
-    (data) => {
+    (e, data) => {
+      e.stopPropagation();
       dispatch(changePlayingStateAction(data));
     },
     [dispatch]
