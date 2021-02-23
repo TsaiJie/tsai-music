@@ -7,18 +7,29 @@ import {
   changePlayListAction,
   changePlayingStateAction,
   changeSequenceListAction,
+  changePlayModeAction,
 } from '@/application/Player/store';
 import { useDispatch } from 'react-redux';
+import { playMode } from '@/api/config';
 export default memo(
   forwardRef(function SongsList(props, refs) {
     const { songList, subscribedCount, showCollect } = props;
     const dispatch = useDispatch();
-    const selectItem = (item, index) => {
+
+    const play = () => {
       dispatch(changeSequenceListAction(songList));
       dispatch(changePlayListAction(songList));
-      dispatch(changeCurrentIndexAction(index));
       dispatch(changeFullScreenAction(true));
       dispatch(changePlayingStateAction(true));
+      dispatch(changePlayModeAction(playMode.sequence));
+    };
+    const selectItem = (item, index) => {
+      play();
+      dispatch(changeCurrentIndexAction(index));
+    };
+    const playAll = () => {
+      play();
+      dispatch(changeCurrentIndexAction(0));
     };
     const collect = (count) => {
       return (
@@ -29,11 +40,12 @@ export default memo(
       );
     };
     const totalCount = songList.length;
+
     const renderSongList = (songList) => {
       return (
         <SongList>
           <div className="first_line">
-            <div className="play_all">
+            <div className="play_all" onClick={playAll}>
               <i className="iconfont">&#xe6e3;</i>
               <span>
                 播放全部
