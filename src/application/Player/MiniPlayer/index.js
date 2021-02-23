@@ -2,9 +2,10 @@ import { getName } from '@/api/utils';
 import React, { memo } from 'react';
 import { useRef } from 'react';
 import { CSSTransition } from 'react-transition-group';
-import { MiniPlayerContainer, ProgressCircle } from './style';
+import { MiniPlayerContainer } from './style';
+import ProgressCircle from '@/baseUI/ProgressCircle';
 export default memo(function MiniPlayer(props) {
-  const { song, fullScreen, playing } = props;
+  const { song, fullScreen, playing, percent } = props;
   const { changeFullScreenDispatch, changePlayingStateDispatch } = props;
   const miniPlayerRef = useRef();
   return (
@@ -13,12 +14,6 @@ export default memo(function MiniPlayer(props) {
       classNames="mini"
       timeout={400}
       unmountOnExit
-      // onEnter={() => {
-      //   miniPlayerRef.current.style.display = 'flex';
-      // }}
-      // onExited={() => {
-      //   miniPlayerRef.current.style.display = 'none';
-      // }}
     >
       <MiniPlayerContainer
         ref={miniPlayerRef}
@@ -39,8 +34,8 @@ export default memo(function MiniPlayer(props) {
           <h2 className="name">{song.name}</h2>
           <p className="desc">{getName(song.ar)}</p>
         </div>
-        <ProgressCircle>
-          <div className="control">
+        <div className="control">
+          <ProgressCircle radius={32} percent={percent}>
             {playing ? (
               <i
                 className="icon-mini iconfont icon-pause"
@@ -56,8 +51,8 @@ export default memo(function MiniPlayer(props) {
                 &#xe61e;
               </i>
             )}
-          </div>
-        </ProgressCircle>
+          </ProgressCircle>
+        </div>
 
         <div className="control">
           <i className="iconfont">&#xe640;</i>

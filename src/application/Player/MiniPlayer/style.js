@@ -87,9 +87,3 @@ export const MiniPlayerContainer = styled.div`
     }
   }
 `;
-export const ProgressCircle = styled.div`
-  position: relative;
-  height: 40px;
-  width: 40px;
-  margin: auto;
-`
