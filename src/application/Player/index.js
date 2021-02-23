@@ -134,7 +134,17 @@ export default memo(function Player() {
     dispatch(changePlayListAction(list));
     resetCurrentIndex(list);
   }, [dispatch, mode, sequenceList, resetCurrentIndex]);
-
+  const toggleLoop = () => {
+    audioRef.current.currentTime = 0;
+    audioRef.current.play();
+  }
+  const handleEnd = () => {
+    if (mode===playMode.loop) {
+      toggleLoop()
+    }else {
+      toggleNextSong()
+    }
+  }
   useEffect(() => {
     if (currentSong && audioRef.current) {
       setDuration(currentSong.dt / 1000);
@@ -187,6 +197,7 @@ export default memo(function Player() {
           onCanPlay={handleCanPlay}
           onError={handleError}
           onTimeUpdate={handleTimeUpdate}
+          onEnded={handleEnd}
         />
       )}
     </div>
