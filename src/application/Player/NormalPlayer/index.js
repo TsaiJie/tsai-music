@@ -2,7 +2,7 @@ import React, { memo, useRef } from 'react';
 import { CSSTransition } from 'react-transition-group';
 import animations from 'create-keyframe-animation';
 import { getName, prefixStyle } from '@/api/utils';
-
+import { playMode } from '@/api/config';
 import {
   NormalPlayerContainer,
   Top,
@@ -22,13 +22,15 @@ export default memo(function NormalPlayer(props) {
     currentTime,
     duration,
     percent,
+    mode,
   } = props;
   const {
+    handleChangeMode,
     changeFullScreenDispatch,
     changePlayingStateDispatch,
     togglePrevSong,
     toggleNextSong,
-    triggerTouchPercentChange
+    triggerTouchPercentChange,
   } = props;
   const normalPlayerRef = useRef();
   const cdWrapperRef = useRef();
@@ -107,7 +109,17 @@ export default memo(function NormalPlayer(props) {
     cdWrapperRef.current.style.transition = '';
     cdWrapperRef.current.style[transform] = '';
   };
-
+  const getPlayMode = () => {
+    let content;
+    if (mode === playMode.sequence) {
+      content = '&#xe625;';
+    } else if (mode === playMode.loop) {
+      content = '&#xe653;';
+    } else {
+      content = '&#xe61b;';
+    }
+    return content;
+  };
   return (
     <CSSTransition
       classNames="normal"
@@ -167,8 +179,16 @@ export default memo(function NormalPlayer(props) {
             <div className="time time-r">{duration}</div>
           </ProgressWrapper>
           <Operators>
-            <div className="icon i-left">
-              <i className="iconfont">&#xe625;</i>
+            <div
+              className="icon i-left"
+              onClick={() => {
+                handleChangeMode();
+              }}
+            >
+              <i
+                className="iconfont"
+                dangerouslySetInnerHTML={{ __html: getPlayMode() }}
+              ></i>
             </div>
             <div
               className={songReady ? 'icon i-left' : 'icon i-left disable'}

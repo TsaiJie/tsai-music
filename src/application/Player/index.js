@@ -111,6 +111,10 @@ export default memo(function Player() {
     },
     [duration, playing, changePlayingStateDispatch]
   );
+  const handleChangeMode = useCallback(() => {
+    const newMode = (mode + 1) % 3;
+    dispatch(changePlayModeAction(newMode));
+  }, [dispatch, mode]);
   useEffect(() => {
     if (currentSong && audioRef.current) {
       setDuration(currentSong.dt / 1000);
@@ -139,6 +143,7 @@ export default memo(function Player() {
             changePlayingStateDispatch={changePlayingStateDispatch}
           />
           <NormalPlayer
+            mode={mode}
             song={currentSong}
             percent={percent}
             fullScreen={fullScreen}
@@ -146,6 +151,7 @@ export default memo(function Player() {
             songReady={songReady}
             currentTime={formatTime(currentTime)}
             duration={formatTime(duration)}
+            handleChangeMode={handleChangeMode}
             changeFullScreenDispatch={changeFullScreenDispatch}
             changePlayingStateDispatch={changePlayingStateDispatch}
             toggleNextSong={toggleNextSong}
