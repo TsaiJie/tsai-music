@@ -101,13 +101,16 @@ export default memo(function Player() {
   const handleTimeUpdate = (e) => {
     setCurrentTime(e.target.currentTime);
     setPercent(e.target.currentTime / duration);
-    console.log(
-      formatTime(currentTime),
-      formatTime(currentSong.dt / 1000),
-      percent
-    );
   };
-
+  const triggerTouchPercentChange = useCallback(
+    (percent) => {
+      audioRef.current.currentTime = duration * percent;
+      if (!playing) {
+        changePlayingStateDispatch(null, !playing);
+      }
+    },
+    [duration, playing, changePlayingStateDispatch]
+  );
   useEffect(() => {
     if (currentSong && audioRef.current) {
       setDuration(currentSong.dt / 1000);
@@ -147,6 +150,7 @@ export default memo(function Player() {
             changePlayingStateDispatch={changePlayingStateDispatch}
             toggleNextSong={toggleNextSong}
             togglePrevSong={togglePrevSong}
+            triggerTouchPercentChange={triggerTouchPercentChange}
           />
         </div>
       ) : null}

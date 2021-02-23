@@ -28,6 +28,7 @@ export default memo(function NormalPlayer(props) {
     changePlayingStateDispatch,
     togglePrevSong,
     toggleNextSong,
+    triggerTouchPercentChange
   } = props;
   const normalPlayerRef = useRef();
   const cdWrapperRef = useRef();
@@ -158,7 +159,10 @@ export default memo(function NormalPlayer(props) {
           <ProgressWrapper>
             <span className="time time-l">{currentTime}</span>
             <div className="progress-bar-wrapper">
-              <ProgressBar percent={percent} />
+              <ProgressBar
+                percent={percent}
+                triggerTouchPercentChange={triggerTouchPercentChange}
+              />
             </div>
             <div className="time time-r">{duration}</div>
           </ProgressWrapper>
