@@ -14,7 +14,15 @@ import {
 } from './style';
 import ProgressBar from '@/baseUI/ProgressBar';
 export default memo(function NormalPlayer(props) {
-  const { song, fullScreen, playing, songReady, currentTime, duration } = props;
+  const {
+    song,
+    fullScreen,
+    playing,
+    songReady,
+    currentTime,
+    duration,
+    percent,
+  } = props;
   const {
     changeFullScreenDispatch,
     changePlayingStateDispatch,
@@ -150,7 +158,7 @@ export default memo(function NormalPlayer(props) {
           <ProgressWrapper>
             <span className="time time-l">{currentTime}</span>
             <div className="progress-bar-wrapper">
-              <ProgressBar />
+              <ProgressBar percent={percent} />
             </div>
             <div className="time time-r">{duration}</div>
           </ProgressWrapper>

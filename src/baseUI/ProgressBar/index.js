@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import style from '@/assets/global-style';
 import { prefixStyle } from '@/api/utils';
@@ -10,11 +10,11 @@ const ProgressBarWrapper = styled.div`
     height: 4px;
     -webkit-transform: rotate(0deg);
     border-radius: 2px;
-    background: ${style['color-theme-d']};
+    background: rgba(0, 0, 0, 0.3);
     .progress {
       position: absolute;
       height: 100%;
-      background: ${style['color-theme']};
+      background: ${style['color-theme-d']};
     }
   }
   .progress-btn-wrapper {
@@ -37,12 +37,28 @@ const ProgressBarWrapper = styled.div`
     }
   }
 `;
-export default memo(function ProgressBar() {
+export default memo(function ProgressBar(props) {
+  const { percent = 0 } = props;
+  const progressBarRef = useRef(null);
+  const progressRef = useRef(null);
+  const progressBtnRef = useRef(null);
+  const progressBtnWidth = 16;
+  const transform = prefixStyle('transform');
+  useEffect(() => {
+    if (percent >= 0) {
+      const barWidth = progressBarRef.current.clientWidth - progressBtnWidth;
+      const offsetWidth = percent * barWidth;
+      progressRef.current.style.width = `${offsetWidth}px`;
+      progressBtnRef.current.style[
+        transform
+      ] = `translate3d(${offsetWidth}px, 0,0)`;
+    }
+  }, [percent, transform]);
   return (
     <ProgressBarWrapper>
-      <div className="bar-inner">
-        <div className="progress"></div>
-        <div className="progress-btn-wrapper">
+      <div className="bar-inner" ref={progressBarRef}>
+        <div className="progress" ref={progressRef}></div>
+        <div className="progress-btn-wrapper" ref={progressBtnRef}>
           <div className="progress-btn"></div>
         </div>
       </div>

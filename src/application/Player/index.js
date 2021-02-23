@@ -41,8 +41,10 @@ export default memo(function Player() {
   const [songReady, setSongReady] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
+  const [percent, setPercent] = useState(0);
   const currentSongPlayUrl = getSongPlayUrl(currentSong.id);
   const dispatch = useDispatch();
+
   const changeFullScreenDispatch = useCallback(
     (data) => {
       dispatch(changeFullScreenAction(data));
@@ -98,7 +100,12 @@ export default memo(function Player() {
   };
   const handleTimeUpdate = (e) => {
     setCurrentTime(e.target.currentTime);
-    console.log(formatTime(currentTime), formatTime(currentSong.dt / 1000));
+    setPercent(e.target.currentTime / duration);
+    console.log(
+      formatTime(currentTime),
+      formatTime(currentSong.dt / 1000),
+      percent
+    );
   };
 
   useEffect(() => {
@@ -122,6 +129,7 @@ export default memo(function Player() {
         <div>
           <MiniPlayer
             song={currentSong}
+            percent={percent}
             fullScreen={fullScreen}
             playing={playing}
             changeFullScreenDispatch={changeFullScreenDispatch}
@@ -129,6 +137,7 @@ export default memo(function Player() {
           />
           <NormalPlayer
             song={currentSong}
+            percent={percent}
             fullScreen={fullScreen}
             playing={playing}
             songReady={songReady}
