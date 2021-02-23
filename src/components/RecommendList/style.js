@@ -11,7 +11,7 @@ export const RecommendListWrapper = styled.div`
     color: ${style['color-theme']};
   }
 `;
-export const RecommendList = styled.div`
+export const RecommendListContainer = styled.div`
   width: 100%;
   display: flex;
   flex-direction: row;

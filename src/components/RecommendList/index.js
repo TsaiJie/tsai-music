@@ -2,11 +2,11 @@ import React, { memo } from 'react';
 import LazyLoad from 'react-lazyload';
 import { getCount } from '@/api/utils';
 import {
-  RecommendList,
+  RecommendListContainer,
   RecommendListItem,
   RecommendListWrapper,
 } from './style';
-export default memo(function RecommnedList(props) {
+export default memo(function RecommendList(props) {
   const { recommendList, history } = props;
   const enterDetail = (item) => {
     history.push(`/recommend/${item.id}`);
@@ -14,7 +14,7 @@ export default memo(function RecommnedList(props) {
   return (
     <RecommendListWrapper>
       <h1 className="title">推荐歌单</h1>
-      <RecommendList>
+      <RecommendListContainer>
         {recommendList.map((item, index) => {
           return (
             <RecommendListItem key={item.id} onClick={() => enterDetail(item)}>
@@ -47,7 +47,7 @@ export default memo(function RecommnedList(props) {
             </RecommendListItem>
           );
         })}
-      </RecommendList>
+      </RecommendListContainer>
     </RecommendListWrapper>
   );
 });

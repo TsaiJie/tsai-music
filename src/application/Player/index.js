@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useRef, useState } from 'react';
+import React, { memo, useEffect, useRef, useState, useCallback } from 'react';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import {
   changeCurrentIndexAction,
@@ -6,13 +6,13 @@ import {
   changePlayListAction,
   changePlayModeAction,
   changePlayingStateAction,
-  changeSequenceListAction,
 } from './store';
+import Lyric from 'lyric-parser';
 import MiniPlayer from './MiniPlayer';
 import NormalPlayer from './NormalPlayer';
-import { useCallback } from 'react';
 import { formatTime, shuffle } from '@/api/utils';
 import { playMode } from '@/api/config';
+import { getLyricRequest } from '@/api/lyric';
 const getSongPlayUrl = (id) => {
   if (!id) return '';
   return `https://music.163.com/song/media/outer/url?id=${id}.mp3`;
@@ -43,6 +43,7 @@ export default memo(function Player() {
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [percent, setPercent] = useState(0);
+  const [currentLyric, setCurrentLyric] = useState(null);
   const currentSongPlayUrl = getSongPlayUrl(currentSong.id);
   const dispatch = useDispatch();
 
@@ -137,18 +138,26 @@ export default memo(function Player() {
   const toggleLoop = () => {
     audioRef.current.currentTime = 0;
     audioRef.current.play();
-  }
+  };
   const handleEnd = () => {
-    if (mode===playMode.loop) {
-      toggleLoop()
-    }else {
-      toggleNextSong()
+    if (mode === playMode.loop) {
+      toggleLoop();
+    } else {
+      toggleNextSong();
     }
-  }
+  };
+  const getLyric = async (id) => {
+    // res.lrc.lyric
+    const res = await getLyricRequest(id);
+    const lyric = res.lrc.lyric;
+    const currentLyric = new Lyric(lyric);
+    setCurrentLyric(currentLyric)
+  };
   useEffect(() => {
     if (currentSong && audioRef.current) {
       setDuration(currentSong.dt / 1000);
       setTimeout(() => {
+        getLyric(currentSong.id);
         audioRef.current.play();
       }, 0);
     }
@@ -160,6 +169,7 @@ export default memo(function Player() {
       }, 0);
     }
   }, [playing]);
+  console.log(currentLyric);
   return (
     <div>
       {playList.length > 0 ? (
