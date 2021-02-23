@@ -194,6 +194,7 @@ export default memo(function NormalPlayer(props) {
     );
   };
   useEffect(() => {
+    console.log('currentLineNum', currentLineNum);
     if (!lyricScrollRef.current) return;
     let bScroll = lyricScrollRef.current.getBScroll();
     if (!bScroll) return;
@@ -260,6 +261,7 @@ export default memo(function NormalPlayer(props) {
                   alt=""
                 />
               </div>
+              <p className="playing_lyric">{currentPlayingLyric}</p>
             </CDWrapper>
           </CSSTransition>
           <CSSTransition
@@ -268,7 +270,10 @@ export default memo(function NormalPlayer(props) {
             in={currentState === 'lyric'}
           >
             <LyricWrapper>
-              <Scroll ref={lyricScrollRef} data={currentLyric && currentLyric.lines}>
+              <Scroll
+                ref={lyricScrollRef}
+                data={currentLyric && currentLyric.lines}
+              >
                 <LyricContainer
                   style={{
                     visibility: currentState === 'lyric' ? 'visible' : 'hidden',

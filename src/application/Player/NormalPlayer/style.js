@@ -132,6 +132,17 @@ export const CDWrapper = styled.div`
       }
     }
   }
+  .playing_lyric {
+    position: absolute;
+    width: 100%;
+    top: 95vw;
+    margin: auto;
+    line-height: 20px;
+    text-align: center;
+    white-space: normal;
+    font-size: ${style['font-size-medium']};
+    color: ${style['color-theme']};
+  }
 `;
 export const Bottom = styled.div`
   position: absolute;
@@ -215,7 +226,7 @@ export const LyricContainer = styled.div`
     white-space: normal;
     font-size: ${style['font-size-large']};
     &.current {
-      color:${style['color-theme']};
+      color: ${style['color-theme']};
     }
     &.pure {
       position: relative;

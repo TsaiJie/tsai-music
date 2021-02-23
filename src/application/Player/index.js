@@ -167,6 +167,10 @@ export default memo(function Player() {
         currentLyric.current = null;
         return;
       }
+      if (currentLyric.current) {
+        currentLyric.current.stop();
+        currentLyric.current = null;
+      }
       currentLyric.current = new Lyric(lyric, handleLyric);
       currentLyric.current.play();
       currentLineNum.current = 0;
