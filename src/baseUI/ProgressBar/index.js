@@ -19,7 +19,7 @@ const ProgressBarWrapper = styled.div`
   }
   .progress-btn-wrapper {
     position: absolute;
-    left: -8px;
+    left: -15px;
     top: -13px;
     width: 30px;
     height: 30px;
