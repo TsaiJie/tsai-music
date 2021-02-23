@@ -11,7 +11,8 @@ import {
 import MiniPlayer from './MiniPlayer';
 import NormalPlayer from './NormalPlayer';
 import { useCallback } from 'react';
-import { formatTime } from '@/api/utils';
+import { formatTime, shuffle } from '@/api/utils';
+import { playMode } from '@/api/config';
 const getSongPlayUrl = (id) => {
   if (!id) return '';
   return `https://music.163.com/song/media/outer/url?id=${id}.mp3`;
@@ -111,10 +112,29 @@ export default memo(function Player() {
     },
     [duration, playing, changePlayingStateDispatch]
   );
+  const resetCurrentIndex = useCallback(
+    (list) => {
+      let index = list.findIndex((item) => {
+        return item.id === currentSong.id;
+      });
+      dispatch(changeCurrentIndexAction(index));
+    },
+    [dispatch, currentSong]
+  );
   const handleChangeMode = useCallback(() => {
     const newMode = (mode + 1) % 3;
     dispatch(changePlayModeAction(newMode));
-  }, [dispatch, mode]);
+    let list = null;
+
+    if (mode === playMode.random) {
+      list = shuffle(sequenceList);
+    } else {
+      list = sequenceList;
+    }
+    dispatch(changePlayListAction(list));
+    resetCurrentIndex(list);
+  }, [dispatch, mode, sequenceList, resetCurrentIndex]);
+
   useEffect(() => {
     if (currentSong && audioRef.current) {
       setDuration(currentSong.dt / 1000);

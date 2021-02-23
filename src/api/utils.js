@@ -1,5 +1,3 @@
-import { SET_PLAY_MODE } from '@/application/Player/store/constants';
-
 export const getCount = (count) => {
   if (count < 0) return;
   if (count < 10000) {
@@ -86,4 +84,22 @@ export const formatTime = (interval) => {
   const minute = (interval / 60) | 0;
   const second = _pad(interval % 60);
   return `${minute}:${second}`;
+};
+const getRandomInt = (min, max) => {
+  // Math.random() * (max - min + 1) (min, max]
+  // Math.random() * (max - min + 1) + min [min, max]
+  return Math.floor(Math.random() * (max - min + 1) + min);
+};
+export const shuffle = (arr) => {
+  const new_arr = [];
+  arr.forEach((item) => {
+    new_arr.push(item);
+  });
+  for (let i = 0; i < new_arr.length; i++) {
+    let j = getRandomInt(0, i);
+    let t = new_arr[i];
+    new_arr[i] = new_arr[j];
+    new_arr[j] = t;
+  }
+  return new_arr;
 };
