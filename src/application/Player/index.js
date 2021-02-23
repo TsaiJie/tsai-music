@@ -151,7 +151,7 @@ export default memo(function Player() {
     const res = await getLyricRequest(id);
     const lyric = res.lrc.lyric;
     const currentLyric = new Lyric(lyric);
-    setCurrentLyric(currentLyric)
+    setCurrentLyric(currentLyric);
   };
   useEffect(() => {
     if (currentSong && audioRef.current) {
@@ -197,6 +197,7 @@ export default memo(function Player() {
             toggleNextSong={toggleNextSong}
             togglePrevSong={togglePrevSong}
             triggerTouchPercentChange={triggerTouchPercentChange}
+            currentLyric={currentLyric}
           />
         </div>
       ) : null}

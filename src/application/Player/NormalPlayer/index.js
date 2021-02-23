@@ -1,4 +1,4 @@
-import React, { memo, useRef } from 'react';
+import React, { memo, useRef, useState } from 'react';
 import { CSSTransition } from 'react-transition-group';
 import animations from 'create-keyframe-animation';
 import { getName, prefixStyle } from '@/api/utils';
@@ -11,8 +11,11 @@ import {
   Operators,
   CDWrapper,
   ProgressWrapper,
+  LyricWrapper,
+  LyricContainer,
 } from './style';
 import ProgressBar from '@/baseUI/ProgressBar';
+import Scroll from '@/baseUI/Scroll';
 export default memo(function NormalPlayer(props) {
   const {
     song,
@@ -23,6 +26,7 @@ export default memo(function NormalPlayer(props) {
     duration,
     percent,
     mode,
+    currentLyric,
   } = props;
   const {
     handleChangeMode,
@@ -34,7 +38,10 @@ export default memo(function NormalPlayer(props) {
   } = props;
   const normalPlayerRef = useRef();
   const cdWrapperRef = useRef();
+  const lyricScrollRef = useRef();
+  const [currentState, setCurrentState] = useState('');
   const transform = prefixStyle('transform');
+
   const _getPosAndScale = () => {
     const miniPlayerImgWidth = 40;
     // miniPlayerImg中心到屏幕左边的距离
@@ -120,6 +127,69 @@ export default memo(function NormalPlayer(props) {
     }
     return content;
   };
+  const toggleCurrentState = () => {
+    if (currentState !== 'lyric') {
+      setCurrentState('lyric');
+    } else {
+      setCurrentState('');
+    }
+  };
+  const renderBottom = () => {
+    return (
+      <Bottom className="bottom">
+        <ProgressWrapper>
+          <span className="time time-l">{currentTime}</span>
+          <div className="progress-bar-wrapper">
+            <ProgressBar
+              percent={percent}
+              triggerTouchPercentChange={triggerTouchPercentChange}
+            />
+          </div>
+          <div className="time time-r">{duration}</div>
+        </ProgressWrapper>
+        <Operators>
+          <div
+            className="icon i-left"
+            onClick={() => {
+              handleChangeMode();
+            }}
+          >
+            <i
+              className="iconfont"
+              dangerouslySetInnerHTML={{ __html: getPlayMode() }}
+            ></i>
+          </div>
+          <div
+            className={songReady ? 'icon i-left' : 'icon i-left disable'}
+            onClick={() => togglePrevSong()}
+          >
+            <i className="iconfont">&#xe6e1;</i>
+          </div>
+          <div
+            className={songReady ? 'icon i-center' : 'icon i-center disable'}
+            onClick={(e) => changePlayingStateDispatch(e, !playing)}
+          >
+            <i
+              className="iconfont"
+              dangerouslySetInnerHTML={{
+                __html: playing ? '&#xe723;' : '&#xe731;',
+              }}
+            />
+          </div>
+          <div
+            className={songReady ? 'icon i-right' : 'icon i-right disable'}
+            onClick={() => toggleNextSong()}
+          >
+            <i className="iconfont">&#xe718;</i>
+          </div>
+          <div className="icon i-right">
+            <i className="iconfont">&#xe640;</i>
+          </div>
+        </Operators>
+      </Bottom>
+    );
+  };
+  console.log('currentState', currentState);
   return (
     <CSSTransition
       classNames="normal"
@@ -156,68 +226,52 @@ export default memo(function NormalPlayer(props) {
           <h1 className="title">{song.name}</h1>
           <h1 className="subtitle">{getName(song.ar)}</h1>
         </Top>
-        <Middle ref={cdWrapperRef}>
-          <CDWrapper>
-            <div className="cd">
-              <img
-                className={playing ? 'image play' : 'image play pause'}
-                src={song.al.picUrl + '?param=400x400'}
-                alt=""
-              />
-            </div>
-          </CDWrapper>
-        </Middle>
-        <Bottom className="bottom">
-          <ProgressWrapper>
-            <span className="time time-l">{currentTime}</span>
-            <div className="progress-bar-wrapper">
-              <ProgressBar
-                percent={percent}
-                triggerTouchPercentChange={triggerTouchPercentChange}
-              />
-            </div>
-            <div className="time time-r">{duration}</div>
-          </ProgressWrapper>
-          <Operators>
-            <div
-              className="icon i-left"
-              onClick={() => {
-                handleChangeMode();
+        <Middle ref={cdWrapperRef} onClick={toggleCurrentState}>
+          <CSSTransition
+            timeout={400}
+            classNames="fade"
+            in={currentState !== 'lyric'}
+          >
+            <CDWrapper
+              style={{
+                visibility: currentState !== 'lyric' ? 'visible' : 'hidden',
               }}
             >
-              <i
-                className="iconfont"
-                dangerouslySetInnerHTML={{ __html: getPlayMode() }}
-              ></i>
-            </div>
-            <div
-              className={songReady ? 'icon i-left' : 'icon i-left disable'}
-              onClick={() => togglePrevSong()}
-            >
-              <i className="iconfont">&#xe6e1;</i>
-            </div>
-            <div
-              className={songReady ? 'icon i-center' : 'icon i-center disable'}
-              onClick={(e) => changePlayingStateDispatch(e, !playing)}
-            >
-              <i
-                className="iconfont"
-                dangerouslySetInnerHTML={{
-                  __html: playing ? '&#xe723;' : '&#xe731;',
-                }}
-              />
-            </div>
-            <div
-              className={songReady ? 'icon i-right' : 'icon i-right disable'}
-              onClick={() => toggleNextSong()}
-            >
-              <i className="iconfont">&#xe718;</i>
-            </div>
-            <div className="icon i-right">
-              <i className="iconfont">&#xe640;</i>
-            </div>
-          </Operators>
-        </Bottom>
+              <div className="cd">
+                <img
+                  className={playing ? 'image play' : 'image play pause'}
+                  src={song.al.picUrl + '?param=400x400'}
+                  alt=""
+                />
+              </div>
+            </CDWrapper>
+          </CSSTransition>
+          <CSSTransition
+            timeout={400}
+            classNames="fade"
+            in={currentState === 'lyric'}
+          >
+            <LyricWrapper>
+              <Scroll ref={lyricScrollRef}>
+                <LyricContainer
+                  style={{
+                    visibility: currentState === 'lyric' ? 'visible' : 'hidden',
+                  }}
+                  className="lyric_container"
+                >
+                  {currentLyric ? (
+                    currentLyric.lines.map((item, index) => {
+                      return <p key={item + index}>{item.txt}</p>;
+                    })
+                  ) : (
+                    <p className="text pure"> 纯音乐，请欣赏。</p>
+                  )}
+                </LyricContainer>
+              </Scroll>
+            </LyricWrapper>
+          </CSSTransition>
+        </Middle>
+        {renderBottom()}
       </NormalPlayerContainer>
     </CSSTransition>
   );
