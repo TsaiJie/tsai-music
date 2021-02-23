@@ -1,4 +1,4 @@
-import React, { memo, useRef, useState } from 'react';
+import React, { memo, useEffect, useRef, useState } from 'react';
 import { CSSTransition } from 'react-transition-group';
 import animations from 'create-keyframe-animation';
 import { getName, prefixStyle } from '@/api/utils';
@@ -27,6 +27,8 @@ export default memo(function NormalPlayer(props) {
     percent,
     mode,
     currentLyric,
+    currentPlayingLyric,
+    currentLineNum,
   } = props;
   const {
     handleChangeMode,
@@ -38,8 +40,10 @@ export default memo(function NormalPlayer(props) {
   } = props;
   const normalPlayerRef = useRef();
   const cdWrapperRef = useRef();
-  const lyricScrollRef = useRef();
   const [currentState, setCurrentState] = useState('');
+
+  const lyricScrollRef = useRef();
+  const lyricLineRefs = useRef([]);
   const transform = prefixStyle('transform');
 
   const _getPosAndScale = () => {
@@ -189,7 +193,19 @@ export default memo(function NormalPlayer(props) {
       </Bottom>
     );
   };
-  console.log('currentState', currentState);
+  useEffect(() => {
+    if (!lyricScrollRef.current) return;
+    let bScroll = lyricScrollRef.current.getBScroll();
+    if (!bScroll) return;
+    if (currentLineNum > 5) {
+      // 保持当前歌词在第 5 条的位置
+      let lineEl = lyricLineRefs.current[currentLineNum - 5].current;
+      bScroll.scrollToElement(lineEl, 1000);
+    } else {
+      // 当前歌词行数 <=5, 直接滚动到最顶端
+      bScroll.scrollTo(0, 0, 1000);
+    }
+  }, [currentLineNum]);
   return (
     <CSSTransition
       classNames="normal"
@@ -252,7 +268,7 @@ export default memo(function NormalPlayer(props) {
             in={currentState === 'lyric'}
           >
             <LyricWrapper>
-              <Scroll ref={lyricScrollRef}>
+              <Scroll ref={lyricScrollRef} data={currentLyric && currentLyric.lines}>
                 <LyricContainer
                   style={{
                     visibility: currentState === 'lyric' ? 'visible' : 'hidden',
@@ -261,7 +277,19 @@ export default memo(function NormalPlayer(props) {
                 >
                   {currentLyric ? (
                     currentLyric.lines.map((item, index) => {
-                      return <p key={item + index}>{item.txt}</p>;
+                      // 每一个current也是 ref
+                      lyricLineRefs.current[index] = React.createRef();
+                      return (
+                        <p
+                          ref={lyricLineRefs.current[index]}
+                          className={`text ${
+                            currentLineNum === index ? 'current' : ''
+                          }`}
+                          key={item + index}
+                        >
+                          {item.txt}
+                        </p>
+                      );
                     })
                   ) : (
                     <p className="text pure"> 纯音乐，请欣赏。</p>

@@ -7,7 +7,7 @@ import {
   changePlayModeAction,
   changePlayingStateAction,
 } from './store';
-import Lyric from 'lyric-parser';
+import Lyric from '@/api/lyric-parser';
 import MiniPlayer from './MiniPlayer';
 import NormalPlayer from './NormalPlayer';
 import { formatTime, shuffle } from '@/api/utils';
@@ -43,7 +43,9 @@ export default memo(function Player() {
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [percent, setPercent] = useState(0);
-  const [currentLyric, setCurrentLyric] = useState(null);
+  const currentLyric = useRef(null);
+  const currentLineNum = useRef(0);
+  const [currentPlayingLyric, setPlayingLyric] = useState('');
   const currentSongPlayUrl = getSongPlayUrl(currentSong.id);
   const dispatch = useDispatch();
 
@@ -57,10 +59,12 @@ export default memo(function Player() {
     (e, data) => {
       if (!songReady) return;
       e && e.stopPropagation();
-
+      if (currentLyric.current) {
+        currentLyric.current.togglePlay(currentTime * 1000);
+      }
       dispatch(changePlayingStateAction(data));
     },
-    [dispatch, songReady]
+    [dispatch, songReady, currentTime]
   );
   const toggleNextSong = useCallback(() => {
     if (!songReady) return;
@@ -110,6 +114,9 @@ export default memo(function Player() {
       if (!playing) {
         changePlayingStateDispatch(null, !playing);
       }
+      if (currentLyric.current) {
+        currentLyric.current.seek(duration * percent * 1000);
+      }
     },
     [duration, playing, changePlayingStateDispatch]
   );
@@ -146,12 +153,28 @@ export default memo(function Player() {
       toggleNextSong();
     }
   };
+  const handleLyric = ({ lineNum, txt }) => {
+    if (!currentLyric.current) return;
+    currentLineNum.current = lineNum;
+    setPlayingLyric(txt);
+  };
   const getLyric = async (id) => {
-    // res.lrc.lyric
-    const res = await getLyricRequest(id);
-    const lyric = res.lrc.lyric;
-    const currentLyric = new Lyric(lyric);
-    setCurrentLyric(currentLyric);
+    try {
+      // res.lrc.lyric
+      const res = await getLyricRequest(id);
+      const lyric = res.lrc.lyric;
+      if (!lyric) {
+        currentLyric.current = null;
+        return;
+      }
+      currentLyric.current = new Lyric(lyric, handleLyric);
+      currentLyric.current.play();
+      currentLineNum.current = 0;
+      currentLyric.current.seek(0);
+    } catch (error) {
+      setSongReady(true);
+      audioRef.current.play();
+    }
   };
   useEffect(() => {
     if (currentSong && audioRef.current) {
@@ -169,7 +192,6 @@ export default memo(function Player() {
       }, 0);
     }
   }, [playing]);
-  console.log(currentLyric);
   return (
     <div>
       {playList.length > 0 ? (
@@ -197,7 +219,9 @@ export default memo(function Player() {
             toggleNextSong={toggleNextSong}
             togglePrevSong={togglePrevSong}
             triggerTouchPercentChange={triggerTouchPercentChange}
-            currentLyric={currentLyric}
+            currentLyric={currentLyric.current}
+            currentPlayingLyric={currentPlayingLyric}
+            currentLineNum={currentLineNum.current}
           />
         </div>
       ) : null}
