@@ -79,6 +79,11 @@ export default memo(function PlayList(props) {
     },
     [dispatch]
   );
+  const handleChangeCurrentIndex = (e, index) => {
+    e.stopPropagation();
+    if (currentIndex === index) return;
+    changeCurrentIndexDispatch(index);
+  };
   const changeMode = (e) => {
     let newMode = (mode + 1) % 3;
     // 具体逻辑比较复杂 后面来实现
@@ -143,7 +148,11 @@ export default memo(function PlayList(props) {
               <ListContent>
                 {playList.map((item, index) => {
                   return (
-                    <li className="item" key={item.id}>
+                    <li
+                      className="item"
+                      key={item.id}
+                      onClick={(e) => handleChangeCurrentIndex(e, index)}
+                    >
                       {getCurrentIcon(item)}
                       <span className="text">
                         {item.name} - {getName(item.ar)}
