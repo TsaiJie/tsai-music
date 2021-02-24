@@ -15,6 +15,7 @@ import {
 } from '../store';
 import Scroll from '@/baseUI/Scroll';
 import { getName, prefixStyle } from '@/api/utils';
+import { playMode } from '@/api/config';
 export default memo(function PlayList(props) {
   const playListRef = useRef();
   const listWrapperRef = useRef();
@@ -57,7 +58,62 @@ export default memo(function PlayList(props) {
   const changeShowPlayListDispatch = useCallback(() => {
     dispatch(changeShowPlayListAction(false));
   }, [dispatch]);
-
+  // 修改当前歌曲在列表中的 index，也就是切歌
+  const changeCurrentIndexDispatch = useCallback(
+    (data) => {
+      dispatch(changeCurrentIndexAction(data));
+    },
+    [dispatch]
+  );
+  // 修改当前的播放模式
+  const changeModeDispatch = useCallback(
+    (data) => {
+      dispatch(changePlayModeAction(data));
+    },
+    [dispatch]
+  );
+  // 修改当前的歌曲列表
+  const changePlayListDispatch = useCallback(
+    (data) => {
+      dispatch(changePlayListAction(data));
+    },
+    [dispatch]
+  );
+  const changeMode = (e) => {
+    let newMode = (mode + 1) % 3;
+    // 具体逻辑比较复杂 后面来实现
+  };
+  const getPlayMode = () => {
+    let content, text;
+    if (mode === playMode.sequence) {
+      content = '&#xe625;';
+      text = '顺序播放';
+    } else if (mode === playMode.loop) {
+      content = '&#xe653;';
+      text = '单曲循环';
+    } else {
+      content = '&#xe61b;';
+      text = '随机播放';
+    }
+    return (
+      <div>
+        <i className="iconfont" dangerouslySetInnerHTML={{ __html: content }} />
+        <span className="text">{text}</span>
+      </div>
+    );
+  };
+  const getCurrentIcon = (item) => {
+    // 是不是当前正在播放的歌曲
+    const current = currentSong.id === item.id;
+    const className = current ? 'icon-play' : '';
+    const content = current ? '&#xe6e3;' : '';
+    return (
+      <i
+        className={`current iconfont ${className}`}
+        dangerouslySetInnerHTML={{ __html: content }}
+      ></i>
+    );
+  };
   return (
     <CSSTransition
       in={showPlayList}
@@ -78,10 +134,7 @@ export default memo(function PlayList(props) {
         <div className="list_wrapper" ref={listWrapperRef}>
           <ListHeader>
             <h1 className="title">
-              <div>
-                <i className="iconfont">iconfont</i>
-                <span className="text">text</span>
-              </div>
+              {getPlayMode()}
               <span className="iconfont clear">&#xe63d;</span>
             </h1>
           </ListHeader>
@@ -91,6 +144,7 @@ export default memo(function PlayList(props) {
                 {playList.map((item, index) => {
                   return (
                     <li className="item" key={item.id}>
+                      {getCurrentIcon(item)}
                       <span className="text">
                         {item.name} - {getName(item.ar)}
                       </span>
