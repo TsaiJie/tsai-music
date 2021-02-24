@@ -9,6 +9,22 @@ export const PlayListWrapper = styled.div`
   bottom: 0;
   z-index: 1000;
   background: ${style['color-background-d']};
+  &.list-fade-appear,
+  &.list-fade-enter {
+    opacity: 0;
+  }
+  &.list-fade-appear-active,
+  &.list-fade-enter-active{
+    opacity: 1;
+    transition: all 0.3s;
+  }
+  &.list-fade-exit{
+    opacity: 1;
+  }
+  &.list-fade-exit-active {
+    opacity: 0;
+    transition: all 0.3s;
+  }
   .list_wrapper {
     position: absolute;
     left: 0;

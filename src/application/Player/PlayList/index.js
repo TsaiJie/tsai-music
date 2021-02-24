@@ -43,6 +43,7 @@ export default memo(function PlayList(props) {
       in={showPlayList}
       timeout={300}
       classNames="list-fade"
+      appear={true}
       mountOnEnter
       unmountOnExit
     >
