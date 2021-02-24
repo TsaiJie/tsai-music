@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useRef } from 'react';
+import React, { memo, useCallback, useEffect, useRef } from 'react';
 import { useSelector, shallowEqual, useDispatch } from 'react-redux';
 import { CSSTransition } from 'react-transition-group';
 import {
@@ -15,12 +15,14 @@ import {
   changePlayingStateAction,
 } from '../store';
 import Scroll from '@/baseUI/Scroll';
-import { debounce, getName, prefixStyle } from '@/api/utils';
+import { getName, prefixStyle } from '@/api/utils';
 import { playMode } from '@/api/config';
 export default memo(function PlayList(props) {
   const { songReady, setSongReady } = props;
   const playListRef = useRef();
   const listWrapperRef = useRef();
+  const listScrollRef = useRef();
+  const lisRef = useRef([]);
   const {
     playList,
     sequenceList,
@@ -127,7 +129,22 @@ export default memo(function PlayList(props) {
       ></i>
     );
   };
-  
+  const scrollToCurrentSong = (current) => {
+    const index = playList.findIndex((song) => {
+      return current.id === song.id;
+    });
+    const bScroll = listScrollRef.current.getBScroll();
+    const liEl = lisRef.current[index].current;
+    console.log(bScroll,"执行啦");
+    bScroll && bScroll.scrollToElement(liEl, 300);
+  };
+  useEffect(() => {
+    
+    if (!showPlayList) return;
+    scrollToCurrentSong(currentSong);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentSong, showPlayList]);
+
   return (
     <CSSTransition
       in={showPlayList}
@@ -157,11 +174,13 @@ export default memo(function PlayList(props) {
             </h1>
           </ListHeader>
           <ScrollWrapper>
-            <Scroll>
+            <Scroll ref={listScrollRef} >
               <ListContent>
                 {playList.map((item, index) => {
+                  lisRef.current[index] = React.createRef();
                   return (
                     <li
+                      ref={lisRef.current[index]}
                       className="item"
                       key={item.id}
                       onClick={(e) => handleChangeCurrentIndex(index)}

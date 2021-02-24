@@ -54,6 +54,7 @@ export default memo(function Player() {
   const toastRef = useRef();
   const currentSongPlayUrl = getSongPlayUrl(currentSong.id);
   const dispatch = useDispatch();
+  const [preSong, setPreSong] = useState({});
   const changeShowPlayListDispatch = useCallback(
     (data) => {
       dispatch(changeShowPlayListAction(data));
@@ -144,16 +145,14 @@ export default memo(function Player() {
   const handleChangeMode = useCallback(() => {
     const newMode = (mode + 1) % 3;
     let list = null;
-    if (mode === playMode.random) {
+    if (newMode === playMode.random) {
       setModeText('随机播放');
       list = shuffle(sequenceList);
-    } else {
-      if (mode === playMode.sequence) {
-        setModeText('顺序播放');
-      }
-      if (mode === playMode.loop) {
-        setModeText('单曲循环');
-      }
+    } else if (newMode === playMode.sequence) {
+      setModeText('顺序播放');
+      list = sequenceList;
+    } else if (newMode === playMode.loop) {
+      setModeText('单曲循环');
       list = sequenceList;
     }
     dispatch(changePlayModeAction(newMode));
@@ -202,6 +201,7 @@ export default memo(function Player() {
   useEffect(() => {
     if (currentSong && audioRef.current) {
       setDuration(currentSong.dt / 1000);
+      setPreSong(currentSong);
       setTimeout(() => {
         getLyric(currentSong.id);
         audioRef.current.play().catch((err) => {});
@@ -257,7 +257,11 @@ export default memo(function Player() {
           />
         </div>
       ) : null}
-      <PlayList songReady={songReady} setSongReady={setSongReady}></PlayList>
+      <PlayList
+        songReady={songReady}
+        setSongReady={setSongReady}
+        preSong={preSong}
+      ></PlayList>
       {currentSongPlayUrl && (
         <audio
           ref={audioRef}

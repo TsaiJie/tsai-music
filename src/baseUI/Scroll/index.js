@@ -52,7 +52,8 @@ const Scroll = forwardRef((props, ref) => {
   } = props;
   const { pullUp, pullDown, onScroll } = props;
   //better-scroll 实例对象
-  const [bScroll, setBScroll] = useState(null);
+  const bScroll = useRef(null);
+
   //current 指向初始化 bs 实例需要的 DOM 元素
   const scrollContainerRef = useRef(null);
   const pullUpDebounce = useMemo(() => {
@@ -64,38 +65,38 @@ const Scroll = forwardRef((props, ref) => {
   useEffect(() => {
     _initScroll();
     return () => {
-      setBScroll(null);
+      bScroll.current = null;
     };
     //eslint-disable-next-line
   }, []);
   // 如果bScroll实例不为空且传入onScroll 为bScroll绑定事件
   useEffect(() => {
-    if (!bScroll || !onScroll) return;
-    bScroll.on('scroll', (scroll) => {
+    if (!bScroll.current || !onScroll) return;
+    bScroll.current.on('scroll', (scroll) => {
       onScroll(scroll);
     });
     return () => {
-      bScroll.off('scroll');
+      bScroll.current && bScroll.current.off('scroll');
     };
   }, [onScroll, bScroll]);
   // 如果bScroll实例不为空且传入pullUp 为bScroll绑定事件
   useEffect(() => {
-    if (!bScroll || !pullUp) return;
-    bScroll.on('scrollEnd', () => {
+    if (!bScroll.current || !pullUp) return;
+    bScroll.current.on('scrollEnd', () => {
       // 判断是否滑动到了底部
-      if (bScroll.y <= bScroll.maxScrollY + 100) {
+      if (bScroll.current.y <= bScroll.current.maxScrollY + 100) {
         // pullUp();
         pullUpDebounce();
       }
     });
     return () => {
-      bScroll.off('scrollEnd');
+      bScroll.current && bScroll.current.off('scrollEnd');
     };
   }, [pullUp, bScroll, pullUpDebounce]);
   // 如果bScroll实例不为空且传入pullDown 为bScroll绑定事件
   useEffect(() => {
-    if (!bScroll || !pullDown) return;
-    bScroll.on('touchEnd', (pos) => {
+    if (!bScroll.current || !pullDown) return;
+    bScroll.current.on('touchEnd', (pos) => {
       // 判断用户的下拉动作
       if (pos.y > 50) {
         // pullDown();
@@ -103,29 +104,29 @@ const Scroll = forwardRef((props, ref) => {
       }
     });
     return () => {
-      bScroll.off('touchEnd');
+      bScroll.current && bScroll.current.off('touchEnd');
     };
   }, [pullDown, bScroll, pullDownDebounce]);
   // 每次重新渲染都要刷新实例，防止无法滑动:
   useEffect(() => {
-    if (refresh && bScroll) {
-      bScroll.refresh();
+    if (refresh && bScroll.current) {
+      bScroll.current.refresh();
     }
   });
   // 如果数据变化，则刷新bScroll
   useEffect(() => {
-    bScroll && bScroll.refresh();
+    bScroll.current && bScroll.current.refresh();
   }, [data, bScroll]);
   useImperativeHandle(ref, () => ({
     refresh() {
-      if (bScroll) {
-        bScroll.refresh();
-        bScroll.scrollTo(0, 0);
+      if (bScroll.current) {
+        bScroll.current.refresh();
+        bScroll.current.scrollTo(0, 0);
       }
     },
     getBScroll() {
-      if (bScroll) {
-        return bScroll;
+      if (bScroll.current) {
+        return bScroll.current;
       }
     },
   }));
@@ -140,7 +141,8 @@ const Scroll = forwardRef((props, ref) => {
         bottom: bounceBottom,
       },
     });
-    setBScroll(scroll);
+    bScroll.current = scroll;
+    // setBScroll(scroll);
   };
   const PullUpDisplayStyle = pullUpLoading
     ? { display: '' }

@@ -36,6 +36,7 @@ const Horizon = (props) => {
   const { list, value, title } = props;
   const { handleClick } = props;
   const categoryRef = useRef(null);
+  const scrollRef = useRef(null)
   useEffect(() => {
     let categoryDOM = categoryRef.current;
     let tagElems = categoryDOM.querySelectorAll('span');
@@ -44,11 +45,12 @@ const Horizon = (props) => {
       totalWidth += ele.offsetWidth;
     });
     categoryDOM.style.width = `${totalWidth}px`;
+    scrollRef.current.refresh();
   }, []);
 
   return (
-    <Scroll direction={'horizontal'} data={list}>
-      <div ref={categoryRef}>
+    <Scroll direction={'horizontal'} data={list} ref={scrollRef}>
+      <div ref={categoryRef} >
         <List>
           <span>{title}</span>
           {list.map((item) => {
