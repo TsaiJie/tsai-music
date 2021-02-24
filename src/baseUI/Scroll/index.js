@@ -11,7 +11,7 @@ import PropTypes from 'prop-types';
 import BScroll from '@better-scroll/core';
 import styled from 'styled-components';
 import Loading from '../Loading';
-import Loadingv2 from '../Loadingv2';
+import LoadingV2 from '../LoadingV2';
 import { useMemo } from 'react';
 const ScrollContainer = styled.div`
   width: 100%;
@@ -54,7 +54,7 @@ const Scroll = forwardRef((props, ref) => {
   //better-scroll 实例对象
   const [bScroll, setBScroll] = useState(null);
   //current 指向初始化 bs 实例需要的 DOM 元素
-  const scrollContaninerRef = useRef(null);
+  const scrollContainerRef = useRef(null);
   const pullUpDebounce = useMemo(() => {
     return debounce(pullUp, 300);
   }, [pullUp]);
@@ -130,7 +130,7 @@ const Scroll = forwardRef((props, ref) => {
     },
   }));
   const _initScroll = () => {
-    const scroll = new BScroll(scrollContaninerRef.current, {
+    const scroll = new BScroll(scrollContainerRef.current, {
       scrollX: direction === 'horizontal',
       scrollY: direction === 'vertical',
       probeType: 3,
@@ -142,21 +142,21 @@ const Scroll = forwardRef((props, ref) => {
     });
     setBScroll(scroll);
   };
-  const PullUpdisplayStyle = pullUpLoading
+  const PullUpDisplayStyle = pullUpLoading
     ? { display: '' }
     : { display: 'none' };
-  const PullDowndisplayStyle = pullDownLoading
+  const PullDownDisplayStyle = pullDownLoading
     ? { display: '' }
     : { display: 'none' };
   return (
-    <ScrollContainer className="scroll" ref={scrollContaninerRef}>
+    <ScrollContainer className="scroll" ref={scrollContainerRef}>
       {props.children}
       {/* 滑到底部加载动画 */}
-      <PullUpLoading style={PullUpdisplayStyle}>
+      <PullUpLoading style={PullUpDisplayStyle}>
         <Loading></Loading>
       </PullUpLoading>
-      <PullDownLoading style={PullDowndisplayStyle}>
-        <Loadingv2></Loadingv2>
+      <PullDownLoading style={PullDownDisplayStyle}>
+        <LoadingV2></LoadingV2>
       </PullDownLoading>
     </ScrollContainer>
   );
@@ -172,7 +172,7 @@ Scroll.defaultProps = {
   bounceBottom: true,
   onScroll: null,
   pullUp: null,
-  pulllDown: null,
+  pullDown: null,
   data: null,
 };
 
