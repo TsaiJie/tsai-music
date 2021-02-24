@@ -11,3 +11,5 @@ export const PlayListWrapper = styled.div`
   background: ${style['color-background-d']};
 `;
 export const ScrollWrapper = styled.div``;
+export const ListHeader = styled.div``;
+export const ListContent = styled.div``;

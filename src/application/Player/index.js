@@ -28,7 +28,6 @@ export default memo(function Player() {
     mode,
     currentIndex,
     currentSong,
-    showPlayList,
   } = useSelector(
     (state) => ({
       playing: state.player.playing,
@@ -240,10 +239,7 @@ export default memo(function Player() {
           />
         </div>
       ) : null}
-      <PlayList
-        showPlayList={showPlayList}
-        changeShowPlayListDispatch={changeShowPlayListDispatch}
-      ></PlayList>
+      <PlayList></PlayList>
       {currentSongPlayUrl && (
         <audio
           ref={audioRef}
