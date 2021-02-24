@@ -53,4 +53,38 @@ export const ListHeader = styled.div`
     }
   }
 `;
-export const ListContent = styled.ul``;
+export const ListContent = styled.ul`
+  .item {
+    display: flex;
+    align-items: center;
+    height: 40px;
+    padding: 0 30px 0 20px;
+    overflow: hidden;
+    .current {
+      flex: 0 0 20px;
+      width: 20px;
+      font-size: ${style['font-size-medium']};
+      color: ${style['color-theme']};
+    }
+    .text {
+      flex: 1;
+      ${style.noWrap()}
+      font-size: ${style['font-size-medium']};
+      color: ${style['color-text-ll']};
+      .icon-favorite {
+        color: ${style['color-theme']};
+      }
+    }
+    .like {
+      ${style.extendClick()}
+      margin-right: 15px;
+      font-size: ${style['font-size-medium']};
+      color: ${style['color-theme']};
+    }
+    .delete {
+      ${style.extendClick()}
+      font-size: ${style['font-size-medium']};
+      color: ${style['color-theme']};
+    }
+  }
+`;
