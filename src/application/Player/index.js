@@ -15,6 +15,7 @@ import { formatTime, shuffle } from '@/api/utils';
 import { playMode } from '@/api/config';
 import { getLyricRequest } from '@/api/lyric';
 import PlayList from './PlayList';
+import Toast from '@/baseUI/Toast';
 const getSongPlayUrl = (id) => {
   if (!id) return '';
   return `https://music.163.com/song/media/outer/url?id=${id}.mp3`;
@@ -49,6 +50,8 @@ export default memo(function Player() {
   const currentLyric = useRef(null);
   const currentLineNum = useRef(0);
   const [currentPlayingLyric, setPlayingLyric] = useState('');
+  const [modeText, setModeText] = useState('');
+  const toastRef = useRef();
   const currentSongPlayUrl = getSongPlayUrl(currentSong.id);
   const dispatch = useDispatch();
   const changeShowPlayListDispatch = useCallback(
@@ -140,16 +143,23 @@ export default memo(function Player() {
   );
   const handleChangeMode = useCallback(() => {
     const newMode = (mode + 1) % 3;
-    dispatch(changePlayModeAction(newMode));
     let list = null;
-
     if (mode === playMode.random) {
+      setModeText('随机播放');
       list = shuffle(sequenceList);
     } else {
+      if (mode === playMode.sequence) {
+        setModeText('顺序播放');
+      }
+      if (mode === playMode.loop) {
+        setModeText('单曲循环');
+      }
       list = sequenceList;
     }
+    dispatch(changePlayModeAction(newMode));
     dispatch(changePlayListAction(list));
     resetCurrentIndex(list);
+    toastRef.current.show();
   }, [dispatch, mode, sequenceList, resetCurrentIndex]);
   const toggleLoop = () => {
     audioRef.current.currentTime = 0;
@@ -258,6 +268,7 @@ export default memo(function Player() {
           onEnded={handleEnd}
         />
       )}
+      <Toast text={modeText} ref={toastRef} />
     </div>
   );
 });
