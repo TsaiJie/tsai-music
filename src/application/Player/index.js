@@ -240,7 +240,10 @@ export default memo(function Player() {
           />
         </div>
       ) : null}
-      <PlayList showPlayList={showPlayList}></PlayList>
+      <PlayList
+        showPlayList={showPlayList}
+        changeShowPlayListDispatch={changeShowPlayListDispatch}
+      ></PlayList>
       {currentSongPlayUrl && (
         <audio
           ref={audioRef}
