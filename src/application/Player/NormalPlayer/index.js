@@ -16,6 +16,7 @@ import {
 } from './style';
 import ProgressBar from '@/baseUI/ProgressBar';
 import Scroll from '@/baseUI/Scroll';
+
 export default memo(function NormalPlayer(props) {
   const {
     song,

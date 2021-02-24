@@ -105,10 +105,11 @@ export default memo(function Player() {
     }
     setSongReady(false);
   }, [dispatch, currentIndex, playList, playing, songReady]);
-  const handleCanPlay = () => {
+  const handleCanPlay = (e) => {
     setSongReady(true);
   };
   const handleError = () => {
+    alert('报错');
     // 如果发生错误  canPlay不能执行，就需要error来处理
     setSongReady(true);
   };
@@ -152,7 +153,7 @@ export default memo(function Player() {
   }, [dispatch, mode, sequenceList, resetCurrentIndex]);
   const toggleLoop = () => {
     audioRef.current.currentTime = 0;
-    audioRef.current.play();
+    audioRef.current.play().catch((err) => {});
   };
   const handleEnd = () => {
     if (mode === playMode.loop) {
@@ -185,7 +186,7 @@ export default memo(function Player() {
       currentLyric.current.seek(0);
     } catch (error) {
       setSongReady(true);
-      audioRef.current.play();
+      audioRef.current.play().catch((err) => {});
     }
   };
   useEffect(() => {
@@ -193,17 +194,24 @@ export default memo(function Player() {
       setDuration(currentSong.dt / 1000);
       setTimeout(() => {
         getLyric(currentSong.id);
-        audioRef.current.play();
+        audioRef.current.play().catch((err) => {});
       }, 0);
     }
   }, [currentSong]);
   useEffect(() => {
     if (audioRef.current) {
       setTimeout(() => {
-        playing ? audioRef.current.play() : audioRef.current.pause();
+        if (playing) {
+          audioRef.current.play().catch((err) => {});
+          currentLyric.current &&
+            currentLyric.current.togglePlay(currentTime * 1000);
+        } else {
+          audioRef.current.pause();
+          currentLyric.current && currentLyric.current.stop();
+        }
       }, 0);
     }
-  }, [playing]);
+  }, [playing, currentTime]);
   return (
     <div>
       {playList.length > 0 ? (
@@ -239,7 +247,7 @@ export default memo(function Player() {
           />
         </div>
       ) : null}
-      <PlayList></PlayList>
+      <PlayList songReady={songReady} setSongReady={setSongReady}></PlayList>
       {currentSongPlayUrl && (
         <audio
           ref={audioRef}

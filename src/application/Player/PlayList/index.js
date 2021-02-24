@@ -12,14 +12,15 @@ import {
   changePlayListAction,
   changePlayModeAction,
   changeShowPlayListAction,
+  changePlayingStateAction,
 } from '../store';
 import Scroll from '@/baseUI/Scroll';
-import { getName, prefixStyle } from '@/api/utils';
+import { debounce, getName, prefixStyle } from '@/api/utils';
 import { playMode } from '@/api/config';
 export default memo(function PlayList(props) {
+  const { songReady, setSongReady } = props;
   const playListRef = useRef();
   const listWrapperRef = useRef();
-
   const {
     playList,
     sequenceList,
@@ -27,6 +28,7 @@ export default memo(function PlayList(props) {
     currentIndex,
     currentSong,
     showPlayList,
+    playing,
   } = useSelector(
     (state) => ({
       playList: state.player.playList,
@@ -35,6 +37,7 @@ export default memo(function PlayList(props) {
       currentIndex: state.player.currentIndex,
       currentSong: state.player.playList[state.player.currentIndex] || {},
       showPlayList: state.player.showPlayList,
+      playing: state.player.playing,
     }),
     shallowEqual
   );
@@ -79,10 +82,15 @@ export default memo(function PlayList(props) {
     },
     [dispatch]
   );
-  const handleChangeCurrentIndex = (e, index) => {
-    e.stopPropagation();
+  const changePlayingStateDispatch = useCallback(() => {
+    dispatch(changePlayingStateAction(true));
+  }, [dispatch]);
+  const handleChangeCurrentIndex = (index) => {
+    if (!songReady) return;
     if (currentIndex === index) return;
     changeCurrentIndexDispatch(index);
+    changePlayingStateDispatch();
+    setSongReady(false);
   };
   const changeMode = (e) => {
     let newMode = (mode + 1) % 3;
@@ -119,6 +127,7 @@ export default memo(function PlayList(props) {
       ></i>
     );
   };
+  
   return (
     <CSSTransition
       in={showPlayList}
@@ -136,7 +145,11 @@ export default memo(function PlayList(props) {
         ref={playListRef}
         onClick={() => changeShowPlayListDispatch()}
       >
-        <div className="list_wrapper" ref={listWrapperRef}>
+        <div
+          className="list_wrapper"
+          ref={listWrapperRef}
+          onClick={(e) => e.stopPropagation()}
+        >
           <ListHeader>
             <h1 className="title">
               {getPlayMode()}
@@ -151,7 +164,7 @@ export default memo(function PlayList(props) {
                     <li
                       className="item"
                       key={item.id}
-                      onClick={(e) => handleChangeCurrentIndex(e, index)}
+                      onClick={(e) => handleChangeCurrentIndex(index)}
                     >
                       {getCurrentIcon(item)}
                       <span className="text">
