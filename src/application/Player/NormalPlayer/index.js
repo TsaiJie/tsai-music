@@ -138,6 +138,112 @@ export default memo(function NormalPlayer(props) {
       setCurrentState('');
     }
   };
+
+  useEffect(() => {
+    if (!lyricScrollRef.current) return;
+    let bScroll = lyricScrollRef.current.getBScroll();
+    if (!bScroll) return;
+    if (currentLineNum > 5) {
+      // 保持当前歌词在第 5 条的位置
+      let lineEl = lyricLineRefs.current[currentLineNum - 5].current;
+      bScroll.scrollToElement(lineEl, 1000);
+    } else {
+      // 当前歌词行数 <=5, 直接滚动到最顶端
+      bScroll.scrollTo(0, 0, 1000);
+    }
+  }, [currentLineNum]);
+  const renderTop = () => {
+    return (
+      <>
+        <div className="background">
+          <img
+            src={song.al.picUrl + '?param=300x300'}
+            width="100%"
+            height="100%"
+            alt="歌曲图片"
+          />
+        </div>
+        <div className="background layer"></div>
+        <Top className="top">
+          <div
+            className="back"
+            onClick={() => {
+              changeFullScreenDispatch(false);
+            }}
+          >
+            <i className="iconfont icon-back">&#xe662;</i>
+          </div>
+          <h1 className="title">{song.name}</h1>
+          <h1 className="subtitle">{getName(song.ar)}</h1>
+        </Top>
+      </>
+    );
+  };
+  const renderMiddle = () => {
+    return (
+      <Middle ref={cdWrapperRef} onClick={toggleCurrentState}>
+        <CSSTransition
+          timeout={400}
+          classNames="fade"
+          in={currentState !== 'lyric'}
+        >
+          <CDWrapper
+            style={{
+              visibility: currentState !== 'lyric' ? 'visible' : 'hidden',
+            }}
+          >
+            <div className="cd">
+              <img
+                className={playing ? 'image play' : 'image play pause'}
+                src={song.al.picUrl + '?param=400x400'}
+                alt=""
+              />
+            </div>
+            <p className="playing_lyric">{currentPlayingLyric}</p>
+          </CDWrapper>
+        </CSSTransition>
+        <CSSTransition
+          timeout={400}
+          classNames="fade"
+          in={currentState === 'lyric'}
+        >
+          <LyricWrapper>
+            <Scroll
+              ref={lyricScrollRef}
+              data={currentLyric && currentLyric.lines}
+            >
+              <LyricContainer
+                style={{
+                  visibility: currentState === 'lyric' ? 'visible' : 'hidden',
+                }}
+                className="lyric_container"
+              >
+                {currentLyric ? (
+                  currentLyric.lines.map((item, index) => {
+                    // 每一个current也是 ref
+                    lyricLineRefs.current[index] = React.createRef();
+                    return (
+                      <p
+                        ref={lyricLineRefs.current[index]}
+                        className={`text ${
+                          currentLineNum === index ? 'current' : ''
+                        }`}
+                        key={item + index}
+                      >
+                        {item.txt}
+                      </p>
+                    );
+                  })
+                ) : (
+                  <p className="text pure"> 纯音乐，请欣赏。</p>
+                )}
+              </LyricContainer>
+            </Scroll>
+          </LyricWrapper>
+        </CSSTransition>
+      </Middle>
+    );
+  };
   const renderBottom = () => {
     return (
       <Bottom className="bottom">
@@ -193,20 +299,6 @@ export default memo(function NormalPlayer(props) {
       </Bottom>
     );
   };
-  useEffect(() => {
-    console.log('currentLineNum', currentLineNum);
-    if (!lyricScrollRef.current) return;
-    let bScroll = lyricScrollRef.current.getBScroll();
-    if (!bScroll) return;
-    if (currentLineNum > 5) {
-      // 保持当前歌词在第 5 条的位置
-      let lineEl = lyricLineRefs.current[currentLineNum - 5].current;
-      bScroll.scrollToElement(lineEl, 1000);
-    } else {
-      // 当前歌词行数 <=5, 直接滚动到最顶端
-      bScroll.scrollTo(0, 0, 1000);
-    }
-  }, [currentLineNum]);
   return (
     <CSSTransition
       classNames="normal"
@@ -222,88 +314,8 @@ export default memo(function NormalPlayer(props) {
       onExited={afterLeave}
     >
       <NormalPlayerContainer ref={normalPlayerRef}>
-        <div className="background">
-          <img
-            src={song.al.picUrl + '?param=300x300'}
-            width="100%"
-            height="100%"
-            alt="歌曲图片"
-          />
-        </div>
-        <div className="background layer"></div>
-        <Top className="top">
-          <div
-            className="back"
-            onClick={() => {
-              changeFullScreenDispatch(false);
-            }}
-          >
-            <i className="iconfont icon-back">&#xe662;</i>
-          </div>
-          <h1 className="title">{song.name}</h1>
-          <h1 className="subtitle">{getName(song.ar)}</h1>
-        </Top>
-        <Middle ref={cdWrapperRef} onClick={toggleCurrentState}>
-          <CSSTransition
-            timeout={400}
-            classNames="fade"
-            in={currentState !== 'lyric'}
-          >
-            <CDWrapper
-              style={{
-                visibility: currentState !== 'lyric' ? 'visible' : 'hidden',
-              }}
-            >
-              <div className="cd">
-                <img
-                  className={playing ? 'image play' : 'image play pause'}
-                  src={song.al.picUrl + '?param=400x400'}
-                  alt=""
-                />
-              </div>
-              <p className="playing_lyric">{currentPlayingLyric}</p>
-            </CDWrapper>
-          </CSSTransition>
-          <CSSTransition
-            timeout={400}
-            classNames="fade"
-            in={currentState === 'lyric'}
-          >
-            <LyricWrapper>
-              <Scroll
-                ref={lyricScrollRef}
-                data={currentLyric && currentLyric.lines}
-              >
-                <LyricContainer
-                  style={{
-                    visibility: currentState === 'lyric' ? 'visible' : 'hidden',
-                  }}
-                  className="lyric_container"
-                >
-                  {currentLyric ? (
-                    currentLyric.lines.map((item, index) => {
-                      // 每一个current也是 ref
-                      lyricLineRefs.current[index] = React.createRef();
-                      return (
-                        <p
-                          ref={lyricLineRefs.current[index]}
-                          className={`text ${
-                            currentLineNum === index ? 'current' : ''
-                          }`}
-                          key={item + index}
-                        >
-                          {item.txt}
-                        </p>
-                      );
-                    })
-                  ) : (
-                    <p className="text pure"> 纯音乐，请欣赏。</p>
-                  )}
-                </LyricContainer>
-              </Scroll>
-            </LyricWrapper>
-          </CSSTransition>
-        </Middle>
+        {renderTop()}
+        {renderMiddle()}
         {renderBottom()}
       </NormalPlayerContainer>
     </CSSTransition>

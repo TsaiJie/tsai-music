@@ -7179,11 +7179,6 @@ lru-cache@^6.0.0:
   dependencies:
     yallist "^4.0.0"
 
-lyric-parser@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.npm.taobao.org/lyric-parser/download/lyric-parser-1.0.1.tgz#a1f8aa77653cf947ecf94df51d5f816afc9ed44c"
-  integrity sha1-ofiqd2U8+Ufs+U31HV+Bavye1Ew=
-
 lz-string@^1.4.4:
   version "1.4.4"
   resolved "https://registry.npm.taobao.org/lz-string/download/lz-string-1.4.4.tgz#c0d8eaf36059f705796e1e344811cf4c498d3a26"
