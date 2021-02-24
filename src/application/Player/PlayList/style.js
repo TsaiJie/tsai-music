@@ -12,4 +12,4 @@ export const PlayListWrapper = styled.div`
 `;
 export const ScrollWrapper = styled.div``;
 export const ListHeader = styled.div``;
-export const ListContent = styled.div``;
+export const ListContent = styled.ul``;
