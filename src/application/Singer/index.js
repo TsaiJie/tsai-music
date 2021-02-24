@@ -14,6 +14,7 @@ import {
   BgLayer,
   SongListWrapper,
 } from './style';
+
 export default memo(function Singer(props) {
   const collectButtonRef = useRef();
   const imageWrapperRef = useRef();
@@ -108,7 +109,7 @@ export default memo(function Singer(props) {
       unmountOnExit
       onExited={() => props.history.goBack()}
     >
-      <Container playList={playList.length}> 
+      <Container playList={playList.length}>
         <Header
           ref={headerRef}
           handleClick={setShowStatusFalse}

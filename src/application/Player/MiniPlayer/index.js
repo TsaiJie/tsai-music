@@ -6,8 +6,16 @@ import { MiniPlayerContainer } from './style';
 import ProgressCircle from '@/baseUI/ProgressCircle';
 export default memo(function MiniPlayer(props) {
   const { song, fullScreen, playing, percent } = props;
-  const { changeFullScreenDispatch, changePlayingStateDispatch } = props;
+  const {
+    changeFullScreenDispatch,
+    changePlayingStateDispatch,
+    changeShowPlayListDispatch,
+  } = props;
   const miniPlayerRef = useRef();
+  const handleTogglePlayList = (e) => {
+    changeShowPlayListDispatch(true);
+    e.stopPropagation();
+  };
   return (
     <CSSTransition
       in={!fullScreen}
@@ -54,7 +62,7 @@ export default memo(function MiniPlayer(props) {
           </ProgressCircle>
         </div>
 
-        <div className="control">
+        <div className="control" onClick={handleTogglePlayList}>
           <i className="iconfont">&#xe640;</i>
         </div>
       </MiniPlayerContainer>

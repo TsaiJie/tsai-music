@@ -6,6 +6,7 @@ import {
   changePlayListAction,
   changePlayModeAction,
   changePlayingStateAction,
+  changeShowPlayListAction,
 } from './store';
 import Lyric from '@/api/lyric-parser';
 import MiniPlayer from './MiniPlayer';
@@ -13,6 +14,7 @@ import NormalPlayer from './NormalPlayer';
 import { formatTime, shuffle } from '@/api/utils';
 import { playMode } from '@/api/config';
 import { getLyricRequest } from '@/api/lyric';
+import PlayList from './PlayList';
 const getSongPlayUrl = (id) => {
   if (!id) return '';
   return `https://music.163.com/song/media/outer/url?id=${id}.mp3`;
@@ -26,6 +28,7 @@ export default memo(function Player() {
     mode,
     currentIndex,
     currentSong,
+    showPlayList,
   } = useSelector(
     (state) => ({
       playing: state.player.playing,
@@ -35,6 +38,7 @@ export default memo(function Player() {
       mode: state.player.mode,
       currentIndex: state.player.currentIndex,
       currentSong: state.player.playList[state.player.currentIndex] || {},
+      showPlayList: state.player.showPlayList,
     }),
     shallowEqual
   );
@@ -48,7 +52,12 @@ export default memo(function Player() {
   const [currentPlayingLyric, setPlayingLyric] = useState('');
   const currentSongPlayUrl = getSongPlayUrl(currentSong.id);
   const dispatch = useDispatch();
-
+  const changeShowPlayListDispatch = useCallback(
+    (data) => {
+      dispatch(changeShowPlayListAction(data));
+    },
+    [dispatch]
+  );
   const changeFullScreenDispatch = useCallback(
     (data) => {
       dispatch(changeFullScreenAction(data));
@@ -207,6 +216,7 @@ export default memo(function Player() {
             playing={playing}
             changeFullScreenDispatch={changeFullScreenDispatch}
             changePlayingStateDispatch={changePlayingStateDispatch}
+            changeShowPlayListDispatch={changeShowPlayListDispatch}
           />
           <NormalPlayer
             mode={mode}
@@ -217,18 +227,20 @@ export default memo(function Player() {
             songReady={songReady}
             currentTime={formatTime(currentTime)}
             duration={formatTime(duration)}
-            handleChangeMode={handleChangeMode}
-            changeFullScreenDispatch={changeFullScreenDispatch}
-            changePlayingStateDispatch={changePlayingStateDispatch}
-            toggleNextSong={toggleNextSong}
-            togglePrevSong={togglePrevSong}
-            triggerTouchPercentChange={triggerTouchPercentChange}
             currentLyric={currentLyric.current}
             currentPlayingLyric={currentPlayingLyric}
             currentLineNum={currentLineNum.current}
+            handleChangeMode={handleChangeMode}
+            changeFullScreenDispatch={changeFullScreenDispatch}
+            changePlayingStateDispatch={changePlayingStateDispatch}
+            changeShowPlayListDispatch={changeShowPlayListDispatch}
+            toggleNextSong={toggleNextSong}
+            togglePrevSong={togglePrevSong}
+            triggerTouchPercentChange={triggerTouchPercentChange}
           />
         </div>
       ) : null}
+      <PlayList showPlayList={showPlayList}></PlayList>
       {currentSongPlayUrl && (
         <audio
           ref={audioRef}

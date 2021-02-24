@@ -23,3 +23,7 @@ export const changeCurrentIndexAction = (currentIndex) => ({
   type: actionTypes.SET_CURRENT_INDEX,
   currentIndex,
 });
+export const changeShowPlayListAction = data => ({
+  type: actionTypes.SET_SHOW_PLAYLIST,
+  showPlayList: data
+})

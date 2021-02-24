@@ -24,11 +24,11 @@ function noop() {
 }
 
 export default class Lyric {
-  constructor(lrc, hanlder = noop, speed = 1) {
+  constructor(lrc, handler = noop, speed = 1) {
     this.lrc = lrc
     this.tags = {}
     this.lines = []
-    this.handler = hanlder
+    this.handler = handler
     this.state = STATE_PAUSE
     this.curLineIndex = 0
     this.speed = speed
@@ -75,7 +75,7 @@ export default class Lyric {
 
   }
 
-  _findcurLineIndex(time) {
+  _findCurLineIndex(time) {
     for (let i = 0; i < this.lines.length; i++) {
       if (time <= this.lines[i].time) {
         return i
@@ -122,7 +122,7 @@ export default class Lyric {
     }
     this.state = STATE_PLAYING
 
-    this.curLineIndex = this._findcurLineIndex(offset)
+    this.curLineIndex = this._findCurLineIndex(offset)
     //现在正处于第this.curLineIndex-1行
     this._callHandler(this.curLineIndex-1)
     this.offset = offset

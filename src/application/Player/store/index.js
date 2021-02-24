@@ -6,6 +6,7 @@ import {
   changePlayModeAction,
   changePlayingStateAction,
   changeSequenceListAction,
+  changeShowPlayListAction
 } from './actionCreators';
 export {
   reducer,
@@ -15,4 +16,5 @@ export {
   changePlayModeAction,
   changePlayingStateAction,
   changeSequenceListAction,
+  changeShowPlayListAction
 };

@@ -37,6 +37,7 @@ export default memo(function NormalPlayer(props) {
     togglePrevSong,
     toggleNextSong,
     triggerTouchPercentChange,
+    changeShowPlayListDispatch,
   } = props;
   const normalPlayerRef = useRef();
   const cdWrapperRef = useRef();
@@ -292,7 +293,10 @@ export default memo(function NormalPlayer(props) {
           >
             <i className="iconfont">&#xe718;</i>
           </div>
-          <div className="icon i-right">
+          <div
+            className="icon i-right"
+            onClick={() => changeShowPlayListDispatch(true)}
+          >
             <i className="iconfont">&#xe640;</i>
           </div>
         </Operators>

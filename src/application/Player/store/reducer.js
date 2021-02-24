@@ -8,6 +8,7 @@ const defaultState = {
   sequenceList: [], // 顺序列表
   mode: playMode.sequence, // 播放模式
   currentIndex: -1, // 当前播放索引
+  showPlayList: false, // 是否展示播放列表
 };
 
 const reducer = produce((draft, action) => {
@@ -29,6 +30,9 @@ const reducer = produce((draft, action) => {
       break;
     case actionTypes.SET_CURRENT_INDEX:
       draft.currentIndex = action.currentIndex;
+      break;
+    case actionTypes.SET_SHOW_PLAYLIST:
+      draft.showPlayList = action.showPlayList;
       break;
     default:
       break;
