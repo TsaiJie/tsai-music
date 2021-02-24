@@ -50,6 +50,10 @@ export default memo(function PlayList(props) {
         <div className="list_wrapper">
           <ListHeader>
             <h1 className="title">
+              <div>
+                <i className="iconfont">iconfont</i>
+                <span className="text">text</span>
+              </div>
               <span className="iconfont clear">&#xe63d;</span>
             </h1>
           </ListHeader>

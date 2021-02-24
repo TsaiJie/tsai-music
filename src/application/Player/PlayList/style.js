@@ -28,5 +28,29 @@ export const ScrollWrapper = styled.div`
   height: 400px;
   overflow: hidden;
 `;
-export const ListHeader = styled.div``;
+export const ListHeader = styled.div`
+  position: relative;
+  padding: 20px 30px 10px 20px;
+  .title {
+    display: flex;
+    align-items: center;
+    > div {
+      flex: 1;
+      .text {
+        flex: 1;
+        font-size: ${style['font-size-medium']};
+        color: ${style['color-text-ll']};
+      }
+    }
+    .iconfont {
+      margin-right: 10px;
+      font-size: ${style['font-size-large']};
+      color: ${style['color-theme']};
+    }
+    .clear {
+      ${style.extendClick()}
+      font-size: ${style['font-size-large']}
+    }
+  }
+`;
 export const ListContent = styled.ul``;
