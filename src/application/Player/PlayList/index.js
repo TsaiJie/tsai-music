@@ -1,4 +1,4 @@
-import React, { memo, useCallback } from 'react';
+import React, { memo, useCallback, useRef } from 'react';
 import { useSelector, shallowEqual, useDispatch } from 'react-redux';
 import { CSSTransition } from 'react-transition-group';
 import {
@@ -14,8 +14,11 @@ import {
   changeShowPlayListAction,
 } from '../store';
 import Scroll from '@/baseUI/Scroll';
-import { getName } from '@/api/utils';
+import { getName, prefixStyle } from '@/api/utils';
 export default memo(function PlayList(props) {
+  const playListRef = useRef();
+  const listWrapperRef = useRef();
+
   const {
     playList,
     sequenceList,
@@ -35,9 +38,26 @@ export default memo(function PlayList(props) {
     shallowEqual
   );
   const dispatch = useDispatch();
+  const transform = prefixStyle('transform');
+  const onEnterCB = useCallback(() => {
+    listWrapperRef.current.style[transform] = `translate3d(0, 100%, 0)`;
+  }, [transform]);
+  const onEnteringCB = useCallback(() => {
+    // 让列表展现
+    listWrapperRef.current.style['transition'] = 'all 0.3s';
+    listWrapperRef.current.style[transform] = `translate3d(0, 0, 0)`;
+  }, [transform]);
+  const onExitingCB = useCallback(() => {
+    listWrapperRef.current.style['transition'] = 'all 0.3s';
+    listWrapperRef.current.style[transform] = `translate3d(0px, 100%, 0px)`;
+  }, [transform]);
+  const onExitedCB = useCallback(() => {
+    listWrapperRef.current.style[transform] = `translate3d(0px, 100%, 0px)`;
+  }, [transform]);
   const changeShowPlayListDispatch = useCallback(() => {
     dispatch(changeShowPlayListAction(false));
   }, [dispatch]);
+
   return (
     <CSSTransition
       in={showPlayList}
@@ -46,9 +66,16 @@ export default memo(function PlayList(props) {
       appear={true}
       mountOnEnter
       unmountOnExit
+      onEnter={onEnterCB}
+      onEntering={onEnteringCB}
+      onExiting={onExitingCB}
+      onExited={onExitedCB}
     >
-      <PlayListWrapper onClick={() => changeShowPlayListDispatch()}>
-        <div className="list_wrapper">
+      <PlayListWrapper
+        ref={playListRef}
+        onClick={() => changeShowPlayListDispatch()}
+      >
+        <div className="list_wrapper" ref={listWrapperRef}>
           <ListHeader>
             <h1 className="title">
               <div>
