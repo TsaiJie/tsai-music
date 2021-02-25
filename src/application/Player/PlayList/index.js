@@ -1,7 +1,7 @@
 import React, { memo, useCallback, useEffect, useRef } from 'react';
 import { shuffle } from '@/api/utils';
 import { useSelector, shallowEqual, useDispatch } from 'react-redux';
-import { CSSTransition } from 'react-transition-group';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import {
   PlayListWrapper,
   ScrollWrapper,
@@ -29,6 +29,7 @@ export default memo(function PlayList(props) {
   const listWrapperRef = useRef();
   const listScrollRef = useRef();
   const lisRef = useRef([]);
+  const deleteIndex = useRef();
   const confirmRef = useRef(null);
   const {
     playList,
@@ -80,9 +81,13 @@ export default memo(function PlayList(props) {
   const deleteSongDispatch = (data) => {
     dispatch(deleteSongAction(data));
   };
-  const handleDeleteSong = (e, song) => {
+  const handleDeleteSong = (e, current) => {
     e.stopPropagation();
-    deleteSongDispatch(song);
+    const index = playList.findIndex((song) => {
+      return current.id === song.id;
+    });
+    deleteIndex.current = index;
+    deleteSongDispatch(current);
   };
   // 修改当前的播放模式
   const changeModeDispatch = useCallback(
@@ -140,10 +145,16 @@ export default memo(function PlayList(props) {
     } else if (newMode === playMode.loop) {
       list = sequenceList;
     }
-    dispatch(changePlayModeAction(newMode));
-    dispatch(changePlayListAction(list));
+    changeModeDispatch(newMode);
+    changePlayListDispatch(list);
     resetCurrentIndex(list);
-  }, [dispatch, mode, sequenceList, resetCurrentIndex]);
+  }, [
+    mode,
+    sequenceList,
+    resetCurrentIndex,
+    changeModeDispatch,
+    changePlayListDispatch,
+  ]);
   const getPlayMode = () => {
     let content, text;
     if (mode === playMode.sequence) {
@@ -177,9 +188,21 @@ export default memo(function PlayList(props) {
   };
   const scrollToCurrentSong = useCallback(
     (current) => {
-      const index = playList.findIndex((song) => {
+      let index = playList.findIndex((song) => {
         return current.id === song.id;
       });
+      if (deleteIndex.current !== undefined) {
+        if (deleteIndex.current < index) {
+          console.log("千米啊");
+          index = index - 1 < 0 ? 0 : index - 1;
+        } else if (deleteIndex.current === index) {
+          console.log('自己', deleteIndex.current, index);
+          index = index - 1 < 0 ? 0 : index - 1;
+        } else if (deleteIndex.current > index) {
+          console.log('后面', deleteIndex.current, index);
+        }
+      }
+      console.log(index);
       const bScroll = listScrollRef.current.getBScroll();
       const liEl = lisRef.current[index].current;
       bScroll && bScroll.scrollToElement(liEl, 300);
@@ -235,31 +258,38 @@ export default memo(function PlayList(props) {
           <ScrollWrapper>
             <Scroll ref={listScrollRef}>
               <ListContent>
-                {playList.map((item, index) => {
-                  lisRef.current[index] = React.createRef();
-                  return (
-                    <li
-                      ref={lisRef.current[index]}
-                      className="item"
-                      key={item.id}
-                      onClick={(e) => handleChangeCurrentIndex(index)}
-                    >
-                      {getCurrentIcon(item)}
-                      <span className="text">
-                        {item.name} - {getName(item.ar)}
-                      </span>
-                      <span className="like">
-                        <i className="iconfont">&#xe601;</i>
-                      </span>
-                      <span
-                        className="delete"
-                        onClick={(e) => handleDeleteSong(e, item)}
+                <TransitionGroup>
+                  {playList.map((item, index) => {
+                    lisRef.current[index] = React.createRef();
+                    return (
+                      <CSSTransition
+                        key={item.id}
+                        timeout={200}
+                        classNames="listItem"
                       >
-                        <i className="iconfont">&#xe63d;</i>
-                      </span>
-                    </li>
-                  );
-                })}
+                        <li
+                          ref={lisRef.current[index]}
+                          className="item"
+                          onClick={(e) => handleChangeCurrentIndex(index)}
+                        >
+                          {getCurrentIcon(item)}
+                          <span className="text">
+                            {item.name} - {getName(item.ar)}
+                          </span>
+                          <span className="like">
+                            <i className="iconfont">&#xe601;</i>
+                          </span>
+                          <span
+                            className="delete"
+                            onClick={(e) => handleDeleteSong(e, item)}
+                          >
+                            <i className="iconfont">&#xe63d;</i>
+                          </span>
+                        </li>
+                      </CSSTransition>
+                    );
+                  })}
+                </TransitionGroup>
               </ListContent>
             </Scroll>
           </ScrollWrapper>

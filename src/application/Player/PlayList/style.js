@@ -14,11 +14,11 @@ export const PlayListWrapper = styled.div`
     opacity: 0;
   }
   &.list-fade-appear-active,
-  &.list-fade-enter-active{
+  &.list-fade-enter-active {
     opacity: 1;
     transition: all 0.3s;
   }
-  &.list-fade-exit{
+  &.list-fade-exit {
     opacity: 1;
   }
   &.list-fade-exit-active {
@@ -76,6 +76,20 @@ export const ListContent = styled.ul`
     height: 40px;
     padding: 0 30px 0 20px;
     overflow: hidden;
+    &.listItem-enter {
+      height: 0;
+    }
+    &.listItem-enter-active {
+      height: 40px;
+      transition: all 0.3s;
+    }
+    &.listItem-exit {
+      height: 40px;
+    }
+    &.listItem-exit-active {
+      height: 0;
+      transition: all 0.3s;
+    }
     .current {
       flex: 0 0 20px;
       width: 20px;
