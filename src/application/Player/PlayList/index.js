@@ -17,6 +17,7 @@ import {
 import Scroll from '@/baseUI/Scroll';
 import { getName, prefixStyle } from '@/api/utils';
 import { playMode } from '@/api/config';
+import { deleteSongAction } from '../store/actionCreators';
 export default memo(function PlayList(props) {
   const { songReady, setSongReady } = props;
   const playListRef = useRef();
@@ -70,6 +71,14 @@ export default memo(function PlayList(props) {
     },
     [dispatch]
   );
+  // 删除歌曲
+  const deleteSongDispatch = (data) => {
+    dispatch(deleteSongAction(data));
+  };
+  const handleDeleteSong = (e, song) => {
+    e.stopPropagation();
+    deleteSongDispatch(song);
+  };
   // 修改当前的播放模式
   const changeModeDispatch = useCallback(
     (data) => {
@@ -140,6 +149,7 @@ export default memo(function PlayList(props) {
     },
     [playList]
   );
+
   useEffect(() => {
     if (!showPlayList) return;
     scrollToCurrentSong(currentSong);
@@ -192,7 +202,10 @@ export default memo(function PlayList(props) {
                       <span className="like">
                         <i className="iconfont">&#xe601;</i>
                       </span>
-                      <span className="delete">
+                      <span
+                        className="delete"
+                        onClick={(e) => handleDeleteSong(e, item)}
+                      >
                         <i className="iconfont">&#xe63d;</i>
                       </span>
                     </li>

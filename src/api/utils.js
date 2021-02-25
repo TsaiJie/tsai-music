@@ -103,3 +103,9 @@ export const shuffle = (arr) => {
   }
   return new_arr;
 };
+// 找到当前的歌曲索引
+export const findIndex = (song, list) => {
+  return list.findIndex((item) => {
+    return song.id === item.id;
+  });
+};

@@ -13,8 +13,8 @@ export const changePlayListAction = (playList) => ({
 });
 export const changeSequenceListAction = (sequenceList) => ({
   type: actionTypes.SET_SEQUENCE_LIST,
-  sequenceList
-})
+  sequenceList,
+});
 export const changePlayModeAction = (mode) => ({
   type: actionTypes.SET_PLAY_MODE,
   mode,
@@ -23,7 +23,11 @@ export const changeCurrentIndexAction = (currentIndex) => ({
   type: actionTypes.SET_CURRENT_INDEX,
   currentIndex,
 });
-export const changeShowPlayListAction = data => ({
+export const changeShowPlayListAction = (data) => ({
   type: actionTypes.SET_SHOW_PLAYLIST,
-  showPlayList: data
-})
+  showPlayList: data,
+});
+export const deleteSongAction = (data) => ({
+  type: actionTypes.DELETE_SONG,
+  data,
+});
