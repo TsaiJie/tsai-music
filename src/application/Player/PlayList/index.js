@@ -1,4 +1,5 @@
 import React, { memo, useCallback, useEffect, useRef } from 'react';
+import { shuffle } from '@/api/utils';
 import { useSelector, shallowEqual, useDispatch } from 'react-redux';
 import { CSSTransition } from 'react-transition-group';
 import {
@@ -35,6 +36,7 @@ export default memo(function PlayList(props) {
     currentIndex,
     currentSong,
     showPlayList,
+    sequenceList,
   } = useSelector(
     (state) => ({
       playList: state.player.playList,
@@ -119,10 +121,29 @@ export default memo(function PlayList(props) {
     // 5. 重置播放状态
     dispatch(changePlayingStateAction(false));
   };
-  const changeMode = (e) => {
-    let newMode = (mode + 1) % 3;
-    // 具体逻辑比较复杂 后面来实现
-  };
+  const resetCurrentIndex = useCallback(
+    (list) => {
+      let index = list.findIndex((item) => {
+        return item.id === currentSong.id;
+      });
+      dispatch(changeCurrentIndexAction(index));
+    },
+    [dispatch, currentSong]
+  );
+  const handleChangeMode = useCallback(() => {
+    const newMode = (mode + 1) % 3;
+    let list = null;
+    if (newMode === playMode.random) {
+      list = shuffle(sequenceList);
+    } else if (newMode === playMode.sequence) {
+      list = sequenceList;
+    } else if (newMode === playMode.loop) {
+      list = sequenceList;
+    }
+    dispatch(changePlayModeAction(newMode));
+    dispatch(changePlayListAction(list));
+    resetCurrentIndex(list);
+  }, [dispatch, mode, sequenceList, resetCurrentIndex]);
   const getPlayMode = () => {
     let content, text;
     if (mode === playMode.sequence) {
@@ -199,7 +220,12 @@ export default memo(function PlayList(props) {
           onClick={(e) => e.stopPropagation()}
         >
           <ListHeader>
-            <h1 className="title">
+            <h1
+              className="title"
+              onClick={(e) => {
+                handleChangeMode();
+              }}
+            >
               {getPlayMode()}
               <span className="iconfont clear" onClick={handleShowClear}>
                 &#xe63d;
