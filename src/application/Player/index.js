@@ -69,12 +69,12 @@ export default memo(function Player() {
   );
   const changePlayingStateDispatch = useCallback(
     (e, data) => {
+      dispatch(changePlayingStateAction(data));
       if (!songReady) return;
       e && e.stopPropagation();
       if (currentLyric.current) {
         currentLyric.current.togglePlay(currentTime * 1000);
       }
-      dispatch(changePlayingStateAction(data));
     },
     [dispatch, songReady, currentTime]
   );
@@ -113,9 +113,10 @@ export default memo(function Player() {
     setSongReady(true);
   };
   const handleError = () => {
-    alert('报错');
+    alert('该音乐是VIP音乐或者播放url出现404错误，我们不能访问，报错');
     // 如果发生错误  canPlay不能执行，就需要error来处理
     setSongReady(true);
+    changePlayingStateDispatch(null, false);
   };
   const handleTimeUpdate = (e) => {
     setCurrentTime(e.target.currentTime);
@@ -176,7 +177,7 @@ export default memo(function Player() {
     currentLineNum.current = lineNum;
     setPlayingLyric(txt);
   };
-  const getLyric = async (id) => {
+  const getLyric = useCallback(async (id) => {
     try {
       // res.lrc.lyric
       const res = await getLyricRequest(id);
@@ -197,7 +198,7 @@ export default memo(function Player() {
       setSongReady(true);
       audioRef.current.play().catch((err) => {});
     }
-  };
+  }, []);
   useEffect(() => {
     if (currentSong && audioRef.current) {
       setDuration(currentSong.dt / 1000);
@@ -207,7 +208,7 @@ export default memo(function Player() {
         audioRef.current.play().catch((err) => {});
       }, 0);
     }
-  }, [currentSong]);
+  }, [currentSong, getLyric]);
   useEffect(() => {
     if (audioRef.current) {
       setTimeout(() => {

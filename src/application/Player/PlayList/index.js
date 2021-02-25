@@ -129,21 +129,21 @@ export default memo(function PlayList(props) {
       ></i>
     );
   };
-  const scrollToCurrentSong = (current) => {
-    const index = playList.findIndex((song) => {
-      return current.id === song.id;
-    });
-    const bScroll = listScrollRef.current.getBScroll();
-    const liEl = lisRef.current[index].current;
-    console.log(bScroll,"执行啦");
-    bScroll && bScroll.scrollToElement(liEl, 300);
-  };
+  const scrollToCurrentSong = useCallback(
+    (current) => {
+      const index = playList.findIndex((song) => {
+        return current.id === song.id;
+      });
+      const bScroll = listScrollRef.current.getBScroll();
+      const liEl = lisRef.current[index].current;
+      bScroll && bScroll.scrollToElement(liEl, 300);
+    },
+    [playList]
+  );
   useEffect(() => {
-    
     if (!showPlayList) return;
     scrollToCurrentSong(currentSong);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentSong, showPlayList]);
+  }, [currentSong, showPlayList, scrollToCurrentSong]);
 
   return (
     <CSSTransition
@@ -174,7 +174,7 @@ export default memo(function PlayList(props) {
             </h1>
           </ListHeader>
           <ScrollWrapper>
-            <Scroll ref={listScrollRef} >
+            <Scroll ref={listScrollRef}>
               <ListContent>
                 {playList.map((item, index) => {
                   lisRef.current[index] = React.createRef();
