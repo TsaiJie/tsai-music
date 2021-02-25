@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useEffect, useRef } from 'react';
+import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { shuffle } from '@/api/utils';
 import { useSelector, shallowEqual, useDispatch } from 'react-redux';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
@@ -31,6 +31,14 @@ export default memo(function PlayList(props) {
   const lisRef = useRef([]);
   const deleteIndex = useRef();
   const confirmRef = useRef(null);
+  //touchStart 后记录 y 值
+  const [startY, setStartY] = useState(0);
+  //touchStart 事件是否已经被触发
+  const [initialed, setInitialed] = useState(0);
+  // 用户下滑的距离
+  const [distance, setDistance] = useState(0);
+  // 是否允许滑动事件生效
+  const [canTouch, setCanTouch] = useState(true);
   const {
     playList,
     mode,
@@ -193,7 +201,7 @@ export default memo(function PlayList(props) {
       });
       if (deleteIndex.current !== undefined) {
         if (deleteIndex.current < index) {
-          console.log("千米啊");
+          console.log('前面');
           index = index - 1 < 0 ? 0 : index - 1;
         } else if (deleteIndex.current === index) {
           console.log('自己', deleteIndex.current, index);
@@ -215,11 +223,43 @@ export default memo(function PlayList(props) {
   const handleConfirmClear = () => {
     clearDispatch();
   };
+  const handleTouchStart = (e) => {
+    if (!canTouch || initialed) return;
+    listWrapperRef.current.style['transition'] = '';
+    setStartY(e.nativeEvent.touches[0].pageY); // 记录 y 值
+    setInitialed(true);
+  };
+  const handleTouchMove = (e) => {
+    if (!canTouch || !initialed) return;
+    let distance = e.nativeEvent.touches[0].pageY - startY;
+    if (distance < 0) return;
+    setDistance(distance); // 记录下滑距离
+    console.log(distance);
+    listWrapperRef.current.style.transform = `translate3d(0, ${distance}px, 0)`;
+  };
+  const handleTouchEnd = (e) => {
+    setInitialed(false);
+    // 这里设置阈值为 150px
+    if (distance >= 150) {
+      // 大于 150px 则关闭 PlayList
+      dispatch(changeShowPlayListAction(false));
+    } else {
+      // 否则反弹回去
+      listWrapperRef.current.style['transition'] = 'all 0.3s';
+      listWrapperRef.current.style[transform] = `translate3d(0px, 0px, 0px)`;
+    }
+  };
   useEffect(() => {
     if (!showPlayList) return;
     scrollToCurrentSong(currentSong);
   }, [currentSong, showPlayList, scrollToCurrentSong]);
+  // 是否允许滑动事件生效
 
+  const handleScroll = useCallback((pos) => {
+    // 只有当内容偏移量为 0 的时候才能下滑关闭 PlayList。否则一边内容在移动，一边列表在移动，出现 bug
+    let state = pos.y === 0;
+    setCanTouch(state);
+  }, []);
   return (
     <CSSTransition
       in={showPlayList}
@@ -241,6 +281,9 @@ export default memo(function PlayList(props) {
           className="list_wrapper"
           ref={listWrapperRef}
           onClick={(e) => e.stopPropagation()}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
         >
           <ListHeader>
             <h1
@@ -256,7 +299,11 @@ export default memo(function PlayList(props) {
             </h1>
           </ListHeader>
           <ScrollWrapper>
-            <Scroll ref={listScrollRef}>
+            <Scroll
+              ref={listScrollRef}
+              onScroll={(pos) => handleScroll(pos)}
+              bounceTop={false}
+            >
               <ListContent>
                 <TransitionGroup>
                   {playList.map((item, index) => {
