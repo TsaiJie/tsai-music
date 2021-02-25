@@ -18,21 +18,23 @@ import Scroll from '@/baseUI/Scroll';
 import Confirm from '@/baseUI/Confirm';
 import { getName, prefixStyle } from '@/api/utils';
 import { playMode } from '@/api/config';
-import { deleteSongAction } from '../store/actionCreators';
+import {
+  changeSequenceListAction,
+  deleteSongAction,
+} from '../store/actionCreators';
 export default memo(function PlayList(props) {
   const { songReady, setSongReady } = props;
   const playListRef = useRef();
   const listWrapperRef = useRef();
   const listScrollRef = useRef();
   const lisRef = useRef([]);
+  const confirmRef = useRef(null);
   const {
     playList,
-    sequenceList,
     mode,
     currentIndex,
     currentSong,
     showPlayList,
-    playing,
   } = useSelector(
     (state) => ({
       playList: state.player.playList,
@@ -104,6 +106,19 @@ export default memo(function PlayList(props) {
     changePlayingStateDispatch();
     setSongReady(false);
   };
+  const clearDispatch = () => {
+    // 1. 清空两个列表
+    dispatch(changePlayListAction([]));
+    dispatch(changeSequenceListAction([]));
+    // 2. 初始 currentIndex
+    dispatch(changeCurrentIndexAction(-1));
+    // 3. 关闭 PlayList 的显示
+    dispatch(changeShowPlayListAction(false));
+    // 4. 将当前歌曲置空
+    // dispatch(changeCurrentSong({}));
+    // 5. 重置播放状态
+    dispatch(changePlayingStateAction(false));
+  };
   const changeMode = (e) => {
     let newMode = (mode + 1) % 3;
     // 具体逻辑比较复杂 后面来实现
@@ -150,7 +165,12 @@ export default memo(function PlayList(props) {
     },
     [playList]
   );
-
+  const handleShowClear = useCallback(() => {
+    confirmRef.current.show();
+  }, []);
+  const handleConfirmClear = () => {
+    clearDispatch();
+  };
   useEffect(() => {
     if (!showPlayList) return;
     scrollToCurrentSong(currentSong);
@@ -181,7 +201,9 @@ export default memo(function PlayList(props) {
           <ListHeader>
             <h1 className="title">
               {getPlayMode()}
-              <span className="iconfont clear">&#xe63d;</span>
+              <span className="iconfont clear" onClick={handleShowClear}>
+                &#xe63d;
+              </span>
             </h1>
           </ListHeader>
           <ScrollWrapper>
@@ -217,9 +239,11 @@ export default memo(function PlayList(props) {
           </ScrollWrapper>
         </div>
         <Confirm
+          ref={confirmRef}
           text={'是否删除全部？'}
           cancelBtnText={'取消'}
           confirmBtnText={'确定'}
+          handleConfirm={handleConfirmClear}
         />
       </PlayListWrapper>
     </CSSTransition>

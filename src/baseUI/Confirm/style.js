@@ -1,5 +1,25 @@
 import styled, { keyframes } from 'styled-components';
 import style from '@/assets/global-style';
+
+const confirmFadeIn = keyframes`
+  0%{
+    opacity: 0;
+  }
+  100%{
+    opacity: 1;
+  }
+`;
+const confirmZoom = keyframes`
+  0%{
+    transform: scale(0);
+  }
+  50%{
+    transform: scale(1.1);
+  }
+  100%{
+    transform: scale(1);
+  }
+`;
 export const ConfirmWrapper = styled.div`
   position: fixed;
   left: 0;
@@ -8,6 +28,12 @@ export const ConfirmWrapper = styled.div`
   bottom: 0;
   z-index: 1000;
   background: ${style['color-background-d']};
+  &.confirm-fade-enter-active {
+    animation: ${confirmFadeIn} 0.3s;
+    .confirm_content {
+      animation: ${confirmZoom} 0.3s;
+    }
+  }
   > div {
     position: absolute;
     top: 50%;
