@@ -15,6 +15,7 @@ import {
   changePlayingStateAction,
 } from '../store';
 import Scroll from '@/baseUI/Scroll';
+import Confirm from '@/baseUI/Confirm';
 import { getName, prefixStyle } from '@/api/utils';
 import { playMode } from '@/api/config';
 import { deleteSongAction } from '../store/actionCreators';
@@ -215,6 +216,11 @@ export default memo(function PlayList(props) {
             </Scroll>
           </ScrollWrapper>
         </div>
+        <Confirm
+          text={'是否删除全部？'}
+          cancelBtnText={'取消'}
+          confirmBtnText={'确定'}
+        />
       </PlayListWrapper>
     </CSSTransition>
   );
