@@ -27,9 +27,10 @@ export const PlayListWrapper = styled.div`
   }
   .list_wrapper {
     position: absolute;
-    left: 0;
+    left: 5%;
+    right: 5%;
     bottom: 0;
-    width: 100%;
+    margin: auto;
     opacity: 1;
     border-radius: 10px 10px 0 0;
     background: ${style['color-background']};
@@ -37,6 +38,11 @@ export const PlayListWrapper = styled.div`
     .list_close {
       text-align: center;
       background: red;
+    }
+    .bottom_close {
+      text-align: center;
+      line-height: 45px;
+      border-top: 1px solid gray;
     }
   }
 `;

@@ -245,7 +245,6 @@ export default memo(function PlayList(props) {
     let distance = e.nativeEvent.touches[0].pageY - startY;
     if (distance < 0) return;
     setDistance(distance); // 记录下滑距离
-    console.log(distance);
     listWrapperRef.current.style.transform = `translate3d(0, ${distance}px, 0)`;
   };
   const handleTouchEnd = (e) => {
@@ -353,6 +352,12 @@ export default memo(function PlayList(props) {
               </ListContent>
             </Scroll>
           </ScrollWrapper>
+          <div
+            className="bottom_close"
+            onClick={() => changeShowPlayListDispatch()}
+          >
+            关闭
+          </div>
         </div>
         <Confirm
           ref={confirmRef}
