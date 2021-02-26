@@ -1,6 +1,8 @@
+import Loading from '@/baseUI/Loading';
 import Scroll from '@/baseUI/Scroll';
 import SearchBox from '@/baseUI/SearchBox';
 import React, { memo, useEffect, useState, useCallback } from 'react';
+import LazyLoad, { forceCheck } from 'react-lazyload';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { CSSTransition } from 'react-transition-group';
 import {
@@ -8,7 +10,13 @@ import {
   getSuggestListAction,
   changeEnterLoadingAction,
 } from './store/actionCreators';
-import { Container, ShortcutWrapper, HotKeyList } from './style';
+import {
+  Container,
+  ShortcutWrapper,
+  HotKeyList,
+  List,
+  ListItem,
+} from './style';
 // 当搜索框为空，展示热门搜索列表
 // 当搜索框有内容时，发送 Ajax 请求，显示搜索结果
 // 点击搜索结果，分别进入到不同的详情页中
@@ -33,9 +41,13 @@ export default memo(function Search(props) {
   );
   const dispatch = useDispatch();
 
-  const handleQuery = (q) => {
+  const handleQuery = useCallback((q) => {
     setQuery(q);
-  };
+    if (!q) return;
+    console.log('发送请求', q);
+    changeEnterLoadingDispatch(true);
+    getSuggestListDispatch(q);
+  }, []);
   const getHotKeyWordsDispatch = useCallback(() => {
     dispatch(getHotKeyWordsAction());
   }, [dispatch]);
@@ -47,7 +59,7 @@ export default memo(function Search(props) {
   };
   useEffect(() => {
     setShow(true);
-    if (!hotList.length) return;
+    if (hotList.length) return;
     getHotKeyWordsDispatch();
   }, [getHotKeyWordsDispatch, hotList]);
   const searchBack = useCallback(() => {
@@ -71,7 +83,43 @@ export default memo(function Search(props) {
       </ul>
     );
   };
-  console.log(hotList);
+  const renderSingers = () => {};
+  const renderAlbum = () => {
+    const albums = suggestList.playlists;
+    console.log(albums);
+    if (!albums || !albums.length) return;
+    return (
+      <List>
+        <h1 className="title"> 相关歌单 </h1>
+        {albums.map((item, index) => (
+          <ListItem key={item.accountId + '' + index}>
+            <div className="img_wrapper">
+              <LazyLoad
+                placeholder={
+                  <img
+                    width="100%"
+                    height="100%"
+                    src={require('./music.png').default}
+                    alt="music"
+                  />
+                }
+              >
+                <img
+                  src={item.coverImgUrl}
+                  width="100%"
+                  height="100%"
+                  alt="music"
+                />
+              </LazyLoad>
+            </div>
+            <span className="name"> 歌单: {item.name}</span>
+          </ListItem>
+        ))}
+      </List>
+    );
+  };
+  const renderSongs = () => {};
+  console.log(suggestList, query);
   return (
     <CSSTransition
       in={show}
@@ -100,6 +148,16 @@ export default memo(function Search(props) {
             </div>
           </Scroll>
         </ShortcutWrapper>
+        <ShortcutWrapper show={query}>
+          <Scroll onScroll={forceCheck}>
+            <div>
+              {renderSingers()}
+              {renderAlbum()}
+              {renderSongs()}
+            </div>
+          </Scroll>
+        </ShortcutWrapper>
+        {enterLoading ? <Loading></Loading> : null}
       </Container>
     </CSSTransition>
   );

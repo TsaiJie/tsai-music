@@ -37,6 +37,7 @@ export default memo(function SearchBox(props) {
   const clearQuery = () => {
     setQuery('');
     queryRef.current.focus();
+    // handleQueryDebounce('')
   };
   return (
     <SearchBoxWrapper>
