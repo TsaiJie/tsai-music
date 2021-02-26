@@ -1,5 +1,5 @@
 import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
-import { shuffle } from '@/api/utils';
+import { isEmptyObject, shuffle } from '@/api/utils';
 import { useSelector, shallowEqual, useDispatch } from 'react-redux';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import {
@@ -29,7 +29,7 @@ export default memo(function PlayList(props) {
   const listWrapperRef = useRef();
   const listScrollRef = useRef();
   const lisRef = useRef([]);
-  const deleteIndex = useRef();
+  const deleteSong = useRef({});
   const confirmRef = useRef(null);
   //touchStart 后记录 y 值
   const [startY, setStartY] = useState(0);
@@ -89,13 +89,15 @@ export default memo(function PlayList(props) {
   const deleteSongDispatch = (data) => {
     dispatch(deleteSongAction(data));
   };
-  const handleDeleteSong = (e, current) => {
+  const handleDeleteSong = (e, item, current) => {
     e.stopPropagation();
     const index = playList.findIndex((song) => {
-      return current.id === song.id;
+      return item.id === song.id;
     });
-    deleteIndex.current = index;
-    deleteSongDispatch(current);
+    deleteSong.current.index = index;
+    deleteSong.current.song = item.id;
+    deleteSong.current.curSong = current.id;
+    deleteSongDispatch(item);
   };
   // 修改当前的播放模式
   const changeModeDispatch = useCallback(
@@ -199,18 +201,27 @@ export default memo(function PlayList(props) {
       let index = playList.findIndex((song) => {
         return current.id === song.id;
       });
-      if (deleteIndex.current !== undefined) {
-        if (deleteIndex.current < index) {
+      if (deleteSong.current.index !== undefined) {
+        if (deleteSong.current.index < index) {
           console.log('前面');
           index = index - 1 < 0 ? 0 : index - 1;
-        } else if (deleteIndex.current === index) {
-          console.log('自己', deleteIndex.current, index);
-          index = index - 1 < 0 ? 0 : index - 1;
-        } else if (deleteIndex.current > index) {
-          console.log('后面', deleteIndex.current, index);
+        } else if (deleteSong.current.index === index) {
+          if (deleteSong.current.curSong === deleteSong.current.song) {
+            console.log('删除的是当前歌曲');
+            // index = index - 1 < 0 ? 0 : index - 1;
+          } else {
+            console.log('删除的是当前歌曲前一首');
+            index = index - 1 < 0 ? 0 : index - 1;
+          }
+        } else if (deleteSong.current.index > index) {
+          console.log(
+            '后面',
+            deleteSong.current.index,
+            index,
+            deleteSong.current.song
+          );
         }
       }
-      console.log(index);
       const bScroll = listScrollRef.current.getBScroll();
       const liEl = lisRef.current[index].current;
       bScroll && bScroll.scrollToElement(liEl, 300);
@@ -328,7 +339,9 @@ export default memo(function PlayList(props) {
                           </span>
                           <span
                             className="delete"
-                            onClick={(e) => handleDeleteSong(e, item)}
+                            onClick={(e) =>
+                              handleDeleteSong(e, item, currentSong)
+                            }
                           >
                             <i className="iconfont">&#xe63d;</i>
                           </span>
