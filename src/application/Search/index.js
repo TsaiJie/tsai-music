@@ -83,7 +83,44 @@ export default memo(function Search(props) {
       </ul>
     );
   };
-  const renderSingers = () => {};
+  const renderSingers = () => {
+    const singers = suggestList.artists;
+    if (!singers || !singers.length) return;
+    return (
+      <List>
+        <h1 className="title"> 相关歌手 </h1>
+        {singers.map((item, index) => {
+          return (
+            <ListItem
+              key={item.accountId + '' + index}
+              onClick={() => props.history.push(`/singers/${item.id}`)}
+            >
+              <div className="img_wrapper">
+                <LazyLoad
+                  placeholder={
+                    <img
+                      width="100%"
+                      height="100%"
+                      src={require('./singer.png').default}
+                      alt="singer"
+                    />
+                  }
+                >
+                  <img
+                    src={item.picUrl}
+                    width="100%"
+                    height="100%"
+                    alt="music"
+                  />
+                </LazyLoad>
+              </div>
+              <span className="name"> 歌手: {item.name}</span>
+            </ListItem>
+          );
+        })}
+      </List>
+    );
+  };
   const renderAlbum = () => {
     const albums = suggestList.playlists;
     console.log(albums);
