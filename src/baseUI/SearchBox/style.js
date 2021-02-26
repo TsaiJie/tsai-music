@@ -22,7 +22,10 @@ export const SearchBoxWrapper = styled.div`
     font-size: ${style['font-size-medium']};
     outline: none;
     border: none;
+    padding: 0 10px;
     border-bottom: 1px solid ${style['color-text-l']};
+    -webkit-transform: rotate(0deg);
+    border-radius: 10px;
     &::placeholder {
       color: ${style['color-text-l']};
     }
