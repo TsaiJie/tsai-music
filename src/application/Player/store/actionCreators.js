@@ -1,4 +1,5 @@
 import * as actionTypes from './constants';
+import { getSongDetailRequest } from '@/api/play';
 export const changeFullScreenAction = (fullScreen) => ({
   type: actionTypes.SET_FULL_SCREEN,
   fullScreen,
@@ -31,3 +32,14 @@ export const deleteSongAction = (data) => ({
   type: actionTypes.DELETE_SONG,
   data,
 });
+export const insertSongAction = (data) => ({
+  type: actionTypes.INSERT_SONG,
+  song: data,
+});
+export const getSongDetailAction = (id) => {
+  return async (dispatch) => {
+    const data = await getSongDetailRequest(id);
+    const song = data.songs[0];
+    dispatch(insertSongAction(song));
+  };
+};

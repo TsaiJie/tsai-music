@@ -223,8 +223,8 @@ export default memo(function PlayList(props) {
         }
       }
       const bScroll = listScrollRef.current.getBScroll();
-      const liEl = lisRef.current[index].current;
-      bScroll && bScroll.scrollToElement(liEl, 300);
+      const liEl = lisRef.current[index] && lisRef.current[index].current;
+      liEl && bScroll && bScroll.scrollToElement(liEl, 300);
     },
     [playList]
   );

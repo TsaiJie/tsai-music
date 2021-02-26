@@ -6,6 +6,7 @@ import React, { memo, useEffect, useState, useCallback } from 'react';
 import LazyLoad, { forceCheck } from 'react-lazyload';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { CSSTransition } from 'react-transition-group';
+import { getSongDetailAction } from '../Player/store/actionCreators';
 import {
   getHotKeyWordsAction,
   getSuggestListAction,
@@ -38,11 +39,20 @@ export default memo(function Search(props) {
       suggestList: state.search.suggestList,
       songsList: state.search.songsList,
       songsCount: state.player.playList.length,
+      
     }),
     shallowEqual
   );
   const dispatch = useDispatch();
-
+  const getSongDetailDispatch = useCallback(
+    (id) => {
+      dispatch(getSongDetailAction(id));
+    },
+    [dispatch]
+  );
+  const selectItem = (e, id) => {
+    getSongDetailDispatch(id);
+  };
   const handleQuery = useCallback((q) => {
     setQuery(q);
     if (!q) return;
@@ -165,7 +175,7 @@ export default memo(function Search(props) {
       <SongItem>
         {songsList.map((item, index) => {
           return (
-            <li key={item.id}>
+            <li key={item.id} onClick={(e) => selectItem(e, item.id)}>
               <div className="index">{index + 1}</div>
               <div className="info">
                 <span>{item.name}</span>

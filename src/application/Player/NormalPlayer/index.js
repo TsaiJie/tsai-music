@@ -1,7 +1,7 @@
-import React, { memo, useEffect, useRef, useState } from 'react';
+import React, { Fragment, memo, useEffect, useRef, useState } from 'react';
 import { CSSTransition } from 'react-transition-group';
 import animations from 'create-keyframe-animation';
-import { getName, prefixStyle } from '@/api/utils';
+import { getName, isEmptyObject, prefixStyle } from '@/api/utils';
 import { playMode } from '@/api/config';
 import {
   NormalPlayerContainer,
@@ -304,6 +304,11 @@ export default memo(function NormalPlayer(props) {
       </Bottom>
     );
   };
+  const render = () => {
+    if (!isEmptyObject(song)) {
+      return;
+    }
+  };
   return (
     <CSSTransition
       classNames="normal"
@@ -319,9 +324,13 @@ export default memo(function NormalPlayer(props) {
       onExited={afterLeave}
     >
       <NormalPlayerContainer ref={normalPlayerRef}>
-        {renderTop()}
-        {renderMiddle()}
-        {renderBottom()}
+        {!isEmptyObject(song) ? (
+          <Fragment>
+            {renderTop()}
+            {renderMiddle()}
+            {renderBottom()}
+          </Fragment>
+        ) : null}
       </NormalPlayerContainer>
     </CSSTransition>
   );
