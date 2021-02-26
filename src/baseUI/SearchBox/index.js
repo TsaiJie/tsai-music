@@ -26,7 +26,6 @@ export default memo(function SearchBox(props) {
   }, []);
   useEffect(() => {
     // 注意防抖
-    console.log(query);
     handleQueryDebounce(query);
   }, [query, handleQueryDebounce]);
   useEffect(() => {
