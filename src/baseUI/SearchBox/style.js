@@ -8,7 +8,7 @@ export const SearchBoxWrapper = styled.div`
   padding: 0 6px;
   padding-right: 20px;
   height: 40px;
-  margin-top: 5px;
+  margin-top: 10px;
   .icon-back {
     font-size: 24px;
     color: ${style['color-text-ll']};
