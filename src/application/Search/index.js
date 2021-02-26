@@ -1,3 +1,4 @@
+import { getName } from '@/api/utils';
 import Loading from '@/baseUI/Loading';
 import Scroll from '@/baseUI/Scroll';
 import SearchBox from '@/baseUI/SearchBox';
@@ -16,6 +17,7 @@ import {
   HotKeyList,
   List,
   ListItem,
+  SongItem,
 } from './style';
 // 当搜索框为空，展示热门搜索列表
 // 当搜索框有内容时，发送 Ajax 请求，显示搜索结果
@@ -158,7 +160,25 @@ export default memo(function Search(props) {
       </List>
     );
   };
-  const renderSongs = () => {};
+  const renderSongs = () => {
+    return (
+      <SongItem>
+        {songsList.map((item, index) => {
+          return (
+            <li key={item.id}>
+              <div className="index">{index + 1}</div>
+              <div className="info">
+                <span>{item.name}</span>
+                <span>
+                  {getName(item.artists)} - {item.album.name}
+                </span>
+              </div>
+            </li>
+          );
+        })}
+      </SongItem>
+    );
+  };
   console.log(suggestList, query);
   return (
     <CSSTransition
