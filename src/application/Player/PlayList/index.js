@@ -1,5 +1,5 @@
 import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
-import { isEmptyObject, shuffle } from '@/api/utils';
+import { shuffle } from '@/api/utils';
 import { useSelector, shallowEqual, useDispatch } from 'react-redux';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import {

@@ -5,12 +5,18 @@ import Singers from '@/application/Singers';
 import Rank from '@/application/Rank';
 import Album from '@/application/Album';
 import Singer from '@/application/Singer';
-
+import Search from '@/application/Search';
 const routes = [
   {
     path: '/',
     component: Home,
     routes: [
+      {
+        path: '/search',
+        exact: true,
+        ket: 'search',
+        component: Search,
+      },
       {
         path: '/',
         exact: true,
@@ -45,7 +51,7 @@ const routes = [
             component: Album,
           },
         ],
-      }
+      },
     ],
   },
 ];

@@ -18,6 +18,7 @@ import PlayList from './PlayList';
 import Toast from '@/baseUI/Toast';
 const getSongPlayUrl = (id) => {
   if (!id) return '';
+  // console.log(`/check/music?id=${id}`);
   return `https://music.163.com/song/media/outer/url?id=${id}.mp3`;
 };
 export default memo(function Player() {
