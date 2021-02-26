@@ -41,7 +41,6 @@ export const getSuggestListAction = (query) => {
     const suggestData = await getSuggestListRequest(query);
     if (!suggestData) return;
     const suggestRes = suggestData.result || {};
-    console.log(suggestData);
     dispatch(changeSuggestListAction(suggestRes));
 
     const songData = await getResultSongsListRequest(query);

@@ -6,7 +6,7 @@ import React, { memo, useEffect, useState, useCallback } from 'react';
 import LazyLoad, { forceCheck } from 'react-lazyload';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { CSSTransition } from 'react-transition-group';
-import { getSongDetailAction } from '../Player/store/actionCreators';
+import { changeFullScreenAction, changePlayingStateAction, getSongDetailAction } from '../Player/store/actionCreators';
 import {
   getHotKeyWordsAction,
   getSuggestListAction,
@@ -20,10 +20,12 @@ import {
   ListItem,
   SongItem,
 } from './style';
+// changePlayingStateAction,
 // 当搜索框为空，展示热门搜索列表
 // 当搜索框有内容时，发送 Ajax 请求，显示搜索结果
 // 点击搜索结果，分别进入到不同的详情页中
 export default memo(function Search(props) {
+  
   const [show, setShow] = useState(false);
   const [query, setQuery] = useState('');
   const {
@@ -47,6 +49,8 @@ export default memo(function Search(props) {
   const getSongDetailDispatch = useCallback(
     (id) => {
       dispatch(getSongDetailAction(id));
+      dispatch(changePlayingStateAction(true))
+      dispatch(changeFullScreenAction(true))
     },
     [dispatch]
   );
@@ -135,7 +139,6 @@ export default memo(function Search(props) {
   };
   const renderAlbum = () => {
     const albums = suggestList.playlists;
-    console.log(albums);
     if (!albums || !albums.length) return;
     return (
       <List>
@@ -189,7 +192,6 @@ export default memo(function Search(props) {
       </SongItem>
     );
   };
-  console.log(suggestList, query);
   return (
     <CSSTransition
       in={show}

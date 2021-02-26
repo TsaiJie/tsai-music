@@ -16,7 +16,6 @@ export default memo(function MiniPlayer(props) {
     changeShowPlayListDispatch(true);
     e.stopPropagation();
   };
-  console.log(song);
   return (
     <CSSTransition
       in={!fullScreen}
