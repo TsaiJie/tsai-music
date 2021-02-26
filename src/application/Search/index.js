@@ -1,4 +1,5 @@
-import React, { memo, useEffect, useState } from 'react';
+import SearchBox from '@/baseUI/SearchBox';
+import React, { memo, useEffect, useState, useCallback } from 'react';
 import { CSSTransition } from 'react-transition-group';
 import { Container } from './style';
 
@@ -6,6 +7,9 @@ export default memo(function Search(props) {
   const [show, setShow] = useState(false);
   useEffect(() => {
     setShow(true);
+  }, []);
+  const searchBack = useCallback(() => {
+    setShow(false);
   }, []);
   return (
     <CSSTransition
@@ -18,7 +22,9 @@ export default memo(function Search(props) {
       onExited={() => props.history.goBack()}
     >
       <Container>
-        <div onClick={() => setShow(false)}> 返回 </div>Search
+        <div className="search_box_wrapper">
+          <SearchBox back={searchBack}></SearchBox>
+        </div>
       </Container>
     </CSSTransition>
   );
