@@ -92,7 +92,10 @@ export default memo(function Search(props) {
       <List>
         <h1 className="title"> 相关歌单 </h1>
         {albums.map((item, index) => (
-          <ListItem key={item.accountId + '' + index}>
+          <ListItem
+            key={item.accountId + '' + index}
+            onClick={() => props.history.push(`/album/${item.id}`)}
+          >
             <div className="img_wrapper">
               <LazyLoad
                 placeholder={

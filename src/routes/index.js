@@ -18,6 +18,12 @@ const routes = [
         component: Search,
       },
       {
+        path: '/album/:id', // 增加 album 路由，用来显示歌单
+        exact: true,
+        key: 'album',
+        component: Album,
+      },
+      {
         path: '/',
         exact: true,
         render: () => <Redirect to={'/recommend'} />,
