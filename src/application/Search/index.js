@@ -202,7 +202,7 @@ export default memo(function Search(props) {
       mountOnEnter
       onExited={() => props.history.goBack()}
     >
-      <Container>
+      <Container songsCount={songsCount}>
         <div className="search_box_wrapper">
           <SearchBox
             back={searchBack}

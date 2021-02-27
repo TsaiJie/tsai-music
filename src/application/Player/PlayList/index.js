@@ -23,6 +23,8 @@ import {
   changeSequenceListAction,
   deleteSongAction,
 } from '../store/actionCreators';
+import { Swiper } from 'swiper';
+import 'swiper/swiper-bundle';
 export default memo(function PlayList(props) {
   const { songReady, setSongReady } = props;
   const playListRef = useRef();
@@ -39,6 +41,7 @@ export default memo(function PlayList(props) {
   const [distance, setDistance] = useState(0);
   // 是否允许滑动事件生效
   const [canTouch, setCanTouch] = useState(true);
+  const [sliderSwiper, setSliderSwiper] = useState(null);
   const {
     playList,
     mode,
@@ -264,7 +267,7 @@ export default memo(function PlayList(props) {
     scrollToCurrentSong(currentSong);
   }, [currentSong, showPlayList, scrollToCurrentSong]);
   // 是否允许滑动事件生效
-
+  
   const handleScroll = useCallback((pos) => {
     // 只有当内容偏移量为 0 的时候才能下滑关闭 PlayList。否则一边内容在移动，一边列表在移动，出现 bug
     let state = pos.y === 0;

@@ -27,8 +27,8 @@ export const PlayListWrapper = styled.div`
   }
   .list_wrapper {
     position: absolute;
-    left: 5%;
-    right: 5%;
+    left: 2%;
+    right: 2%;
     bottom: 0;
     margin: auto;
     opacity: 1;
@@ -41,7 +41,7 @@ export const PlayListWrapper = styled.div`
     }
     .bottom_close {
       text-align: center;
-      line-height: 45px;
+      line-height: 40px;
       border-top: 1px solid gray;
     }
   }
