@@ -18,6 +18,7 @@ export const MiniPlayerContainer = styled.div`
   z-index: 1000;
   width: 100%;
   height: 60px;
+  border-top: 1px solid ${style['color-theme-d']};
   background: ${style['color-background']};
   &.mini-enter {
     transform: translate3d(0, 100%, 0);

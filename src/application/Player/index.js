@@ -82,9 +82,10 @@ export default memo(function Player() {
   const toggleNextSong = useCallback(() => {
     if (!songReady) return;
     let index = currentIndex + 1;
-    if (index === playList.length - 1) {
+    if (index >= playList.length - 1) {
       index = 0;
     }
+    console.log('index', index, 'playList.length ', playList.length - 1);
     dispatch(changeCurrentIndexAction(index));
     if (!playing) {
       changePlayingStateDispatch(null, !playing);

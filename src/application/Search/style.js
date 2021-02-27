@@ -73,7 +73,7 @@ export const ListItem = styled.div`
   margin: 0 10px;
   padding: 5px 0;
   align-items: center;
-  border-bottom: 1px solid ${style['border-color']};
+  border-bottom: 1px solid grey;
   .img_wrapper {
     margin-right: 20px;
     img {
@@ -107,7 +107,7 @@ export const SongItem = styled.ul`
       padding: 5px 0;
       flex-direction: column;
       justify-content: space-around;
-      border-bottom: 1px solid ${style['border-color']};
+      border-bottom: 1px solid grey;
       > span:first-child {
         color: ${style['color-text-ll']};
       }
