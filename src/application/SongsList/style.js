@@ -6,7 +6,7 @@ export const SongList = styled.div`
   background: ${style['color-highlight-background']};
   .first_line {
     box-sizing: border-box;
-    border-bottom: 1px solid ${style['border-color']};
+    border-bottom: 1px solid grey;
     padding: 10px 0;
     position: relative;
     justify-content: space-between;
@@ -73,7 +73,7 @@ export const SongItem = styled.ul`
       padding: 5px 0;
       flex-direction: column;
       justify-content: space-around;
-      border-bottom: 1px solid ${style['border-color']};
+      border-bottom: 1px solid gray;
       ${style.noWrap()}
       > span {
         ${style.noWrap()}
