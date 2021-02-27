@@ -32,7 +32,12 @@ export const changeEnterLoadingAction = (data) => ({
 export const getHotKeyWordsAction = () => {
   return async (dispatch) => {
     const data = await getHotKeyWordsRequest();
-    const list = data.result.hots;
+    let list;
+    if (!data) {
+      list = [];
+    } else {
+      list = data.result.hots;
+    }
     dispatch(changeHotKeyWordsAction(list));
   };
 };

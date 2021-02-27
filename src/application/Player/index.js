@@ -80,6 +80,7 @@ export default memo(function Player() {
     [dispatch, songReady, currentTime]
   );
   const toggleNextSong = useCallback(() => {
+    console.log('1 next', 'songReady', songReady);
     if (!songReady) return;
     let index = currentIndex + 1;
     if (index >= playList.length - 1) {
@@ -91,6 +92,7 @@ export default memo(function Player() {
       changePlayingStateDispatch(null, !playing);
     }
     setSongReady(false);
+    console.log('2 next', 'songReady', false);
   }, [
     dispatch,
     currentIndex,
@@ -112,6 +114,7 @@ export default memo(function Player() {
     setSongReady(false);
   }, [dispatch, currentIndex, playList, playing, songReady]);
   const handleCanPlay = (e) => {
+    console.log('canPlay', e, true);
     setSongReady(true);
   };
   const handleError = () => {
@@ -225,6 +228,14 @@ export default memo(function Player() {
       }, 0);
     }
   }, [playing, currentTime]);
+  const handlePlay = (e) => {
+    setSongReady(true);
+    console.log('handlePlay', e);
+  };
+  const handlePlaying = (e) => {
+    setSongReady(true);
+    console.log('handlePlay', e);
+  };
   return (
     <div>
       {playList.length > 0 ? (
@@ -270,6 +281,8 @@ export default memo(function Player() {
           ref={audioRef}
           src={currentSongPlayUrl}
           onCanPlay={handleCanPlay}
+          onPlay={handlePlay}
+          onPlaying={handlePlaying}
           onError={handleError}
           onTimeUpdate={handleTimeUpdate}
           onEnded={handleEnd}

@@ -140,7 +140,6 @@ export default memo(function NormalPlayer(props) {
       setCurrentState('');
     }
   };
-
   useEffect(() => {
     if (!lyricScrollRef.current) return;
     let bScroll = lyricScrollRef.current.getBScroll();
@@ -304,11 +303,11 @@ export default memo(function NormalPlayer(props) {
       </Bottom>
     );
   };
-  const render = () => {
-    if (!isEmptyObject(song)) {
-      return;
-    }
-  };
+  console.log(
+    'songReady',
+    songReady,
+    songReady ? 'icon i-center' : 'icon i-center disable'
+  );
   return (
     <CSSTransition
       classNames="normal"
