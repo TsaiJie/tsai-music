@@ -1,4 +1,5 @@
-# 仿网易云音乐项目
+# 仿网易云音乐项目 
+<a href="http://39.103.216.202:8080/" target="_blank">在线体验</a>
 
 本项目使用的是 `react hooks` + `redux(hooks)` + `immer ` 主要技术栈。
 其他技术栈包括
